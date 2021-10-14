@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--  
+    Document Title
+    =============================================
+    -->
+    <title>Hanoi Food Bank</title>
+    <!--  
+    Favicons
+    =============================================
+    -->
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="assets/images/favicons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/images/favicons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/images/favicons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/images/favicons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/images/favicons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="assets/images/favicons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!--  
+    Stylesheets
+    =============================================
+    
+    -->
+    <!-- Default stylesheets-->
+    <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Template specific stylesheets-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="assets/lib/animate.css/animate.css" rel="stylesheet">
+    <link href="assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet">
+    <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet">
+    <link href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css" rel="stylesheet">
+    <link href="assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet">
+    <link href="assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet">
+    <!-- Main stylesheet and color file-->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="./assets/css/repository.css">
+  </head>
+  <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+    <main>
+      <div class="page-loader">
+        <div class="loader">Loading...</div>
+      </div>
+      <header id="header">
+      </header>
+      <div class="main">
+        <section class="module bg-dark-30 about-page-header" data-background="assets/images/about_bg.jpg">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <h1 class="module-title font-alt mb-0">Tabs &amp; Accordions</h1>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="module">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-2 col-md-2">
+                <div class="gallery-item"  >
+                  <div class="gallery-image gallery-avatar"><a class="gallery" href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" title="Avatar">
+                    <img 
+                    src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="img-avatar">
+                      <div class="gallery-caption">
+                        <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
+                      </div></a></div>
+                </div>
+                
+                <h4 class="name-account">Name</h4>
+                <ul class="list-option">
+                  <li>
+                      <a onclick="myaccount()">- Tài khoản của tôi</a>
+                  </li>
+                  <li>
+                      <a onclick="myorder()">- Đơn hàng của tôi</a>
+                  </li>
+                  <li>
+                      <a href="#">- Một cái gì đó</a>
+                  </li>
+                  <li>
+                      <a href="#">- Hai cái gì đó</a>
+                  </li>
+                </ul>
+              </div>
+
+
+              <div class="col-sm-10 col-md-10">
+                <div role="tabpanel" class="my-account">
+                  <ul class="nav nav-tabs font-alt" role="tablist">
+                    <li class="active"><a href="#support" data-toggle="tab"><span class="icon-tools-2"></span>Thông tin tài khoản</a></li>
+                    <li><a href="#addnew" data-toggle="tab"><span class="icon-tools-2"></span>Chỉnh sửa thông tin</a></li>
+                  </ul>
+                  <div class="tab-content content-des">
+                    <div class="tab-pane active" id="support">Hello my boy
+                    </div>
+                    <div class="tab-pane" id="addnew">
+                      <form class="form registerform" role="form">
+                        <div class="form-group">
+                          <input class="form-control input-lg" type="text" placeholder="Large input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Default input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control input-sm" type="text" placeholder="Small input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Disabled input" disabled=""/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Readonly input" readonly=""/>
+                        </div>
+                        <textarea class="form-control" rows="7" placeholder="Textarea"></textarea>
+                        <div>
+                          <button class="btn btn-b btn-round btnSubmit" >Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane" id="sales">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="my-order">
+                  <ul class="nav nav-tabs font-alt" role="tablist">
+                    <li class="active"><a href="#addnew2" data-toggle="tab"><span class="icon-tools-2"></span>Thêm mới</a></li>
+                    <li><a href="#support2" data-toggle="tab"><span class="icon-tools-2"></span>Chờ xác nhận</a></li>
+                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Chờ lấy hàng</a></li>
+                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đang giao</a></li>
+                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đã giao</a></li>
+                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đã hủy</a></li>
+                  </ul>
+                  <div class="tab-content content-des">
+                    <div class="tab-pane active"  id="addnew2">
+                      <form class="form addform" role="form">
+                        <div class="form-group">
+                          <input class="form-control input-lg" type="text" placeholder="Large input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Default input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control input-sm" type="text" placeholder="Small input"/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Disabled input" disabled=""/>
+                        </div>
+                        <div class="form-group">
+                          <input class="form-control" type="text" placeholder="Readonly input" readonly=""/>
+                        </div>
+                        <textarea class="form-control" rows="7" placeholder="Textarea"></textarea>
+                        <div>
+                          <button class="btn btn-b btn-round btnSubmit">Submit</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="tab-pane" id="support2">The European languages are members of the same family. Their separate existence is a myth.
+                    </div>
+                    <div class="tab-pane" id="sales2">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div id="footer">
+
+        </div>
+      </div>
+      <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
+    </main>
+
+    <script>
+      var myAccount = document.querySelector('.my-account');
+      var myOrder = document.querySelector('.my-order');
+      myAccount.classList.add('li-active');
+
+      function myaccount(){
+        myAccount.classList.forEach(
+          function(value) {
+            if(value !== 'li-active'){
+              myAccount.classList.add('li-active');
+            }
+          }
+        );
+        myOrder.classList.forEach(
+                function(value) {
+                  if(value == 'li-active'){
+                    myOrder.classList.remove('li-active');
+                  }
+                }
+              );
+      }
+      function myorder(){
+        myOrder.classList.forEach(
+          function(value) {
+            if(value !== 'li-active'){
+              myOrder.classList.add('li-active');
+            }
+          }
+        );
+        myAccount.classList.forEach(
+          function(value) {
+            if(value == 'li-active'){
+              myAccount.classList.remove('li-active');
+            }
+          }
+        );
+      }
+    </script>
+
+    <!--  
+    JavaScripts
+    =============================================
+    -->
+    <script src="assets/lib/jquery/dist/jquery.js"></script>
+    <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/lib/wow/dist/wow.js"></script>
+    <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
+    <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
+    <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
+    <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
+    <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
+    <script src="assets/lib/smoothscroll.js"></script>
+    <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
+    <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script src="./assets/js/app.js"></script>
+  </body>
+</html>
