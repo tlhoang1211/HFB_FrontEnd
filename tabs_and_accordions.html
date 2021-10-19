@@ -75,107 +75,196 @@
         </section>
         <section class="module">
           <div class="container">
-            <div class="row">
-              <div class="col-sm-2 col-md-2">
-                <div class="gallery-item"  >
-                  <div class="gallery-image gallery-avatar"><a class="gallery" href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" title="Avatar">
-                    <img 
-                    src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="img-avatar">
-                      <div class="gallery-caption">
-                        <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
-                      </div></a></div>
-                </div>
-                
-                <h4 class="name-account">Name</h4>
-                <ul class="list-option">
-                  <li>
-                      <a onclick="myaccount()">- Tài khoản của tôi</a>
-                  </li>
-                  <li>
-                      <a onclick="myorder()">- Đơn hàng của tôi</a>
-                  </li>
-                  <li>
-                      <a href="#">- Một cái gì đó</a>
-                  </li>
-                  <li>
-                      <a href="#">- Hai cái gì đó</a>
-                  </li>
-                </ul>
-              </div>
-
-
-              <div class="col-sm-10 col-md-10">
-                <div role="tabpanel" class="my-account">
-                  <ul class="nav nav-tabs font-alt" role="tablist">
-                    <li class="active"><a href="#support" data-toggle="tab"><span class="icon-tools-2"></span>Thông tin tài khoản</a></li>
-                    <li><a href="#addnew" data-toggle="tab"><span class="icon-tools-2"></span>Chỉnh sửa thông tin</a></li>
+            <div >
+              <div class="row">
+                <div class="col-sm-2 col-md-2">
+                  <div class="gallery-item"  >
+                    <div class="gallery-image gallery-avatar"><a class="gallery" href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" title="Avatar">
+                      <img 
+                      src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="img-avatar">
+                        <div class="gallery-caption">
+                          <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
+                        </div></a></div>
+                  </div>
+                  
+                  <h4 class="name-account">Name</h4>
+                  <ul class="list-option">
+                    <li>
+                        <a onclick="myaccount()">- My account</a>
+                    </li>
+                    <li>
+                        <a onclick="myorder()">- My order</a>
+                    </li>
+                    <li>
+                        <a href="#">- One something</a>
+                    </li>
+                    <li>
+                        <a href="#">- Two something</a>
+                    </li>
                   </ul>
-                  <div class="tab-content content-des">
-                    <div class="tab-pane active" id="support">Hello my boy
-                    </div>
-                    <div class="tab-pane" id="addnew">
-                      <form class="form registerform" role="form">
-                        <div class="form-group">
-                          <input class="form-control input-lg" type="text" placeholder="Large input"/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Default input"/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control input-sm" type="text" placeholder="Small input"/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Disabled input" disabled=""/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Readonly input" readonly=""/>
-                        </div>
-                        <textarea class="form-control" rows="7" placeholder="Textarea"></textarea>
-                        <div>
-                          <button class="btn btn-b btn-round btnSubmit" >Submit</button>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="tab-pane" id="sales">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                </div>
+  
+  
+                <div class="col-sm-10 col-md-10">
+                  <div role="tabpanel" class="my-account">
+                    <ul class="nav nav-tabs font-alt" role="tablist">
+                      <li class="active"><a href="#acount-information" data-toggle="tab"><span class="icon-tools-2"></span>Account information</a></li>
+                      <li><a href="#edit-information" data-toggle="tab"><span class="icon-tools-2"></span>Edit information</a></li>
+                    </ul>
+                    <div class="tab-content content-des">
+                      <div class="tab-pane active" id="acount-information">Hello my boy
+                      </div>
+                      <div class="tab-pane" id="edit-information">
+                        <form class="form registerform" role="form">
+                          <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input class="form-control" type="text" placeholder="Enter Full Name"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Address</label>
+                            <input class="form-control" type="text" placeholder="Enter Address"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Avatar</label>
+                            <input class="form-control" type="file" placeholder="Avatar"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Password</label>
+                            <input class="form-control" type="text" placeholder="Password"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Re-Password</label>
+                            <input class="form-control" type="text" placeholder="Re-Password"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div>
+                            <button class="btn btn-b btn-round btnSubmit">Save</button>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="tab-pane" id="sales">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div role="tabpanel" class="my-order">
-                  <ul class="nav nav-tabs font-alt" role="tablist">
-                    <li class="active"><a href="#addnew2" data-toggle="tab"><span class="icon-tools-2"></span>Thêm mới</a></li>
-                    <li><a href="#support2" data-toggle="tab"><span class="icon-tools-2"></span>Chờ xác nhận</a></li>
-                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Chờ lấy hàng</a></li>
-                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đang giao</a></li>
-                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đã giao</a></li>
-                    <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>Đã hủy</a></li>
-                  </ul>
-                  <div class="tab-content content-des">
-                    <div class="tab-pane active"  id="addnew2">
-                      <form class="form addform" role="form">
-                        <div class="form-group">
-                          <input class="form-control input-lg" type="text" placeholder="Large input"/>
+                  <div role="tabpanel" class="my-order">
+                    <ul class="nav nav-tabs font-alt" role="tablist">
+                      <li class="active" id="addnew-food-donor"><a href="#addneworder" data-toggle="tab"><span class="icon-tools-2"></span>Add new</a></li>
+                      <li><a href="#listorder" data-toggle="tab"><span class="icon-tools-2"></span>List order</a></li>
+                      <li><a href="#support3" data-toggle="tab"><span class="icon-tools-2"></span>Wait for confirmation</a></li>
+                      <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>List of applicants</a></li>
+                    </ul>
+                    
+                    <div class="tab-content content-des">
+                      <!-- Add new order -->
+                      <div class="tab-pane active"  id="addneworder">
+                        <form class="form addform" role="form">
+                          <div class="form-group">
+                            <label for="name" class="form-label">Food Name</label>
+                            <input class="form-control" type="text" placeholder="Enter Food Name"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Image Food</label>
+                            <input class="form-control" type="file"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Category</label>
+                            <select name="category" id="category" class="form-control required">
+                              <option selected disabled>Select</option>
+                              <option value="1">Drinks</option>
+                              <option value="2">Noodle</option>
+                              <option value="3">Bread</option>
+                              <option value="4">Rice</option>
+                              <option value="5">Meat</option>
+                              <option value="6">Seafood</option>
+                              <option value="7">Vegetables</option>
+                              <option value="8">Vegetarian Food</option>
+                              <option value="9">Fruit</option>
+                              <option value="10">Fast Food</option>
+                              <option value="11">Snacks</option>
+                              <option value="12">Others</option>
+                            </select>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Description</label>
+                            <textarea class="form-control" rows="4" placeholder="Enter Description"></textarea>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Quantity</label>
+                            <input class="form-control" type="number" placeholder="Enter Quantity"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Manufacture Date</label>
+                            <input class="form-control" type="datetime-local"/>
+                            <span class="form-message"></span>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Expiration Date</label>
+                            <input class="form-control" type="datetime-local"/>
+                          </div>
+                          <div>
+                            <button class="btn btn-b btn-round btnSubmit">Add</button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- List order -->
+                      <div class="tab-pane" id="listorder" style="padding: 20px;">
+                        <div class="card radius-10">
+                          <div class="card-body">
+                            <div class="table-responsive">
+                              <table class="table align-middle mb-0">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Roll Number</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Created At</th>
+                                    <th>Status</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="list-student">
+                                  <!-- <tr>
+                                    <td>#897656</td>
+                                    <td>
+                                      <div class="d-flex align-items-center">
+                                          <h6 class="mb-0 font-16" style="margin: 0;">Light Blue Chair</h6>
+                                      </div>
+                                    </td>
+                                    <td>Brooklyn Zeo</td>
+                                    <td>12 Jul 2020</td>
+                                    <td>$64.00</td>
+                                    <td>
+                                      <div class="d-flex align-items-center text-danger">
+                                        <span>Pending</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div class="d-flex order-actions">	
+                                        <a href="javascript:;" class=""></a>
+                                        <a href="javascript:;" class="ms-4"></a>
+                                      </div>
+                                    </td>
+                                  </tr> -->
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Default input"/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control input-sm" type="text" placeholder="Small input"/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Disabled input" disabled=""/>
-                        </div>
-                        <div class="form-group">
-                          <input class="form-control" type="text" placeholder="Readonly input" readonly=""/>
-                        </div>
-                        <textarea class="form-control" rows="7" placeholder="Textarea"></textarea>
-                        <div>
-                          <button class="btn btn-b btn-round btnSubmit">Submit</button>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="tab-pane" id="support2">The European languages are members of the same family. Their separate existence is a myth.
-                    </div>
-                    <div class="tab-pane" id="sales2">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                      </div>
+                      <div class="tab-pane" id="support3">The European languages are members of the same family. Their separate existence is a myth.
+                      </div>
+                      <div class="tab-pane" id="sales2">To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -227,6 +316,55 @@
           }
         );
       }
+
+
+      // Call Api
+      var listStudent = document.querySelector('#list-student');
+      var studentAPI = 'http://localhost:8080/api/v1/students';
+      function start(){
+          getStudent(function(students){
+              renderStudent(students);
+          });
+      };
+      start();
+
+      // GET
+      function getStudent(callback){
+          fetch(studentAPI)
+              .then(response => response.json())
+              .then(callback)
+              .catch(function(error){
+                  console.log(error);
+              });
+      };
+      function renderStudent(students){
+    
+        var htmls = students.map(function(student){
+            return `
+              <tr class="student-item-${student.rollNumber}">
+                <td>${student.rollNumber}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <h6 class="mb-0 font-16" style="margin: 0;">${student.fullName}</h6>
+                  </div>
+                </td>
+                <td>${student.email}</td>
+                <td>${student.createdAt}</td>
+                <td>${student.status}</td>
+                <td><button onclick="handleUpdateForm('${student.rollNumber}')">Edit</button></td>
+                <td><button onclick="handleDeleteStudent('${student.rollNumber}')">Delete</button></td>
+              </tr>
+            `
+        })
+        listStudent.innerHTML = htmls.join('');
+      }
+      
+
+      function guests(role){
+        if(role == 'guests'){
+          document.getElementById('addnew-food-donor').style.display = 'none';
+        }
+      }
     </script>
 
     <!--  
@@ -247,6 +385,12 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <script src="./assets/js/app.js"></script>
+    <!-- <script src="./assets/js/app.js"></script> -->
+    <script>
+      $(function(){
+        $("#header").load("../inc/header.html"); 
+        $("#footer").load("../inc/footer.html"); 
+      });
+    </script>
   </body>
 </html>

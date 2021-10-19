@@ -32,7 +32,7 @@
     display: none;
 }
 .content-des{
-    height: 500px; 
+    min-height: 500px; 
     position: relative; 
     background-color: #00000005;
 }
@@ -41,7 +41,7 @@
     padding: 20px;
 }
 .btnSubmit{
-    float: right; margin-top: 10px;
+    float: right;
 }
 /* Tablet & Mobile */
 @media only screen and (max-width: 63.9375em){

@@ -80,16 +80,20 @@
                   <h4 class="font-alt">Login</h4>
                   <hr class="divider-w mb-10">
                   <form class="form" id="form-login">
+                    <!-- <div class="form-group">
+                      <input class="form-control" id="phone-login" type="tel" name="phone" placeholder="Phone Number"/>
+                      <span class="form-message"></span>
+                    </div> -->
                     <div class="form-group">
-                      <input class="form-control" id="username-login" type="text" name="username" placeholder="Username"/>
+                      <input class="form-control" id="username-login" type="text" name="username-login" placeholder="Username"/>
                       <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" id="password-login" type="password" name="password" placeholder="Password"/>
+                      <input class="form-control" id="password-login" type="password" name="password-login" placeholder="Password"/>
                       <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                      <button class="btn btn-round btn-b">Login</button>
+                      <button class="btn btn-round btn-b" type="button" onclick="btnLogin()">Login</button>
                     </div>
                     <div class="form-group"><a onclick="forgotpassword()">Forgot Password?</a></div>
                   </form>
@@ -99,11 +103,11 @@
                   <hr class="divider-w mb-10">
                   <form class="form" id="form-forgot">
                     <div class="form-group">
-                      <input class="form-control" id="username-forgot" type="text" name="username" placeholder="Username"/>
+                      <input class="form-control" id="username-forgot" type="text" name="username" placeholder="Username" disabled=""/>
                       <span class="form-message"></span>
                     </div>
                     <div class="form-group">
-                      <input class="form-control" id="password-forgot" type="password" name="password" placeholder="Password"/>
+                      <input class="form-control" id="password-forgot" type="password" name="password" placeholder="Password" disabled=""/>
                       <span class="form-message"></span>
                     </div>
                     <div class="form-group">
@@ -118,11 +122,19 @@
                 <hr class="divider-w mb-10">
                 <form class="form" id="form-register">
                   <div class="form-group">
+                    <input class="form-control" id="fullname" type="text" name="fullname" placeholder="Full Name"/>
+                    <span class="form-message"></span>
+                  </div>
+                  <div class="form-group">
                     <input class="form-control" id="E-mail" type="text" name="email" placeholder="Email"/>
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="username" type="text" name="username" placeholder="Username"/>
+                    <input class="form-control" id="phone-register" type="text" name="phone-register" placeholder="Phone Number"/>
+                    <span class="form-message"></span>
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control" id="address" type="text" name="address" placeholder="Address"/>
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
@@ -166,10 +178,15 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <script src="./assets/js/app.js"></script>
+    <!-- <script src="./assets/js/app.js"></script> -->
     <script src="./assets/js/validator.js"></script>
 
     <script>
+      $(function(){
+        $("#header").load("../inc/header.html"); 
+        $("#footer").load("../inc/footer.html"); 
+      });
+
       var loginForm = document.querySelector('.loginform');
       var forgotPassword = document.querySelector('.forgot-password');
       forgotPassword.style.display = 'none';
@@ -180,6 +197,39 @@
       function loginform(){
         loginForm.style.display = 'block';
         forgotPassword.style.display = 'none';
+      }
+
+      // Login
+      var token;
+      var contactAPI = 'http://localhost:8080/api/auth/signin';
+      function btnLogin(){
+        var username = document.querySelector('input[name="username-login"]').value;
+        var password = document.querySelector('input[name="password-login"]').value;
+        var formData = {
+          'username': username,
+          'password': password
+        }
+        fetch(contactAPI, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)})
+          .then(response => response.json())
+          .then(function(data){
+            if(data.token != undefined && data.token!= null){
+              // window.location="../index_shop.html";
+              document.cookie = data.token;
+              token = document.cookie;
+              location.replace('../index_shop.html');
+            }
+            else{
+              alert('Incorrect account or password');
+            }
+          })
+          .catch(function(error){
+            console.log(error);
+        });
       }
 
       // Validator Forgot
@@ -199,8 +249,9 @@
             formGroupSelector: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#username-login'),
-                Validator.minLength('#password-login', 6)
+                Validator.isRequired('#phone-login', 'This field cannot be left blank'),
+                Validator.isPhone('#phone-login', 'Please enter correct phone number format'),
+                Validator.minLength('#password-login', 6, 'Please enter at least 6 characters')
             ]
         });
 
@@ -210,20 +261,24 @@
             formGroupSelector: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#username'),
-                Validator.isRequired('#E-mail'),
-                Validator.isEmail('#E-mail', 'Vui lòng nhập đúng định dạng gmail'),
-                Validator.minLength('#password', 6),
-                Validator.isRequired('#re-password'),
+                Validator.isRequired('#fullname', 'This field cannot be left blank'),
+                Validator.isRequired('#E-mail', 'This field cannot be left blank'),
+                Validator.isEmail('#E-mail', 'Please enter correct email format'),
+                Validator.isRequired('#phone-register', 'This field cannot be left blank'),
+                Validator.isPhone('#phone-register', 'Please enter correct phone number format'),
+                Validator.isRequired('#address', 'This field cannot be left blank'),
+                Validator.minLength('#password', 6, 'Please enter at least 6 characters'),
+                Validator.isRequired('#re-password', 'This field cannot be left blank'),
                 Validator.isConfirmed('#re-password', function(){
                     return document.querySelector('#form-register #password').value;
-                }, 'Mật khẩu nhập lại không chính xác')
+                }, 'Re-entered password is incorrect')
             ],
             // onSubmit: function(data){
             //     // Call API
             //     console.log(data);
             // }
         });
+    
     </script>
   </body>
 </html>
