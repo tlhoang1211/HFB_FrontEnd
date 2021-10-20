@@ -201,7 +201,8 @@
 
       // Login
       var token;
-      var contactAPI = 'http://localhost:8080/api/auth/signin';
+      var contactAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/login';
+      
       function btnLogin(){
         var username = document.querySelector('input[name="username-login"]').value;
         var password = document.querySelector('input[name="password-login"]').value;
@@ -209,17 +210,25 @@
           'username': username,
           'password': password
         }
+        // $(document).ready(function(){
+        //   $.post(contactAPI,
+        //   {
+        //     'username': username,
+        //     'password': password
+        //   })
+        // });
         fetch(contactAPI, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(formData)})
+          body: JSON.stringify(formData)
+        })
           .then(response => response.json())
           .then(function(data){
-            if(data.token != undefined && data.token!= null){
+            if(data.status == 200){
               // window.location="../index_shop.html";
-              document.cookie = data.token;
+              document.cookie = data.data.access_token;
               token = document.cookie;
               location.replace('../index_shop.html');
             }
@@ -228,8 +237,7 @@
             }
           })
           .catch(function(error){
-            console.log(error);
-        });
+            console.log(error);})
       }
 
       // Validator Forgot
@@ -239,7 +247,7 @@
             errorSelector: '.form-message',
             rules: [
                 Validator.isRequired('#username-forgot'),
-                Validator.minLength('#password-forgot', 6)
+                Validator.minLength('#password-forgot', 3)
             ]
         });
 
@@ -251,7 +259,7 @@
             rules: [
                 Validator.isRequired('#phone-login', 'This field cannot be left blank'),
                 Validator.isPhone('#phone-login', 'Please enter correct phone number format'),
-                Validator.minLength('#password-login', 6, 'Please enter at least 6 characters')
+                Validator.minLength('#password-login', 3, 'Please enter at least 3 characters')
             ]
         });
 
@@ -267,7 +275,7 @@
                 Validator.isRequired('#phone-register', 'This field cannot be left blank'),
                 Validator.isPhone('#phone-register', 'Please enter correct phone number format'),
                 Validator.isRequired('#address', 'This field cannot be left blank'),
-                Validator.minLength('#password', 6, 'Please enter at least 6 characters'),
+                Validator.minLength('#password', 3, 'Please enter at least 3 characters'),
                 Validator.isRequired('#re-password', 'This field cannot be left blank'),
                 Validator.isConfirmed('#re-password', function(){
                     return document.querySelector('#form-register #password').value;

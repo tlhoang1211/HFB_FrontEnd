@@ -93,7 +93,7 @@
                         <a onclick="myaccount()">- My account</a>
                     </li>
                     <li>
-                        <a onclick="myorder()">- My order</a>
+                        <a onclick="myorder()">- My request</a>
                     </li>
                     <li>
                         <a href="#">- One something</a>
@@ -153,8 +153,8 @@
                   <div role="tabpanel" class="my-order">
                     <ul class="nav nav-tabs font-alt" role="tablist">
                       <li class="active" id="addnew-food-donor"><a href="#addneworder" data-toggle="tab"><span class="icon-tools-2"></span>Add new</a></li>
-                      <li><a href="#listorder" data-toggle="tab"><span class="icon-tools-2"></span>List order</a></li>
-                      <li><a href="#support3" data-toggle="tab"><span class="icon-tools-2"></span>Wait for confirmation</a></li>
+                      <li><a href="#listorder" data-toggle="tab"><span class="icon-tools-2"></span>List Requests</a></li>
+                      <li><a href="#support3" data-toggle="tab"><span class="icon-tools-2"></span>List Uploaded Food</a></li>
                       <li><a href="#sales2" data-toggle="tab"><span class="icon-tools-2"></span>List of applicants</a></li>
                     </ul>
                     
@@ -192,16 +192,6 @@
                             <span class="form-message"></span>
                           </div>
                           <div class="form-group">
-                            <label for="name" class="form-label">Description</label>
-                            <textarea class="form-control" rows="4" placeholder="Enter Description"></textarea>
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label">Quantity</label>
-                            <input class="form-control" type="number" placeholder="Enter Quantity"/>
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
                             <label for="name" class="form-label">Manufacture Date</label>
                             <input class="form-control" type="datetime-local"/>
                             <span class="form-message"></span>
@@ -209,6 +199,11 @@
                           <div class="form-group">
                             <label for="name" class="form-label">Expiration Date</label>
                             <input class="form-control" type="datetime-local"/>
+                          </div>
+                          <div class="form-group">
+                            <label for="name" class="form-label">Description</label>
+                            <textarea class="form-control" rows="4" style="resize: vertical;" placeholder="Enter Description"></textarea>
+                            <span class="form-message"></span>
                           </div>
                           <div>
                             <button class="btn btn-b btn-round btnSubmit">Add</button>
@@ -229,11 +224,12 @@
                                     <th>Created At</th>
                                     <th>Status</th>
                                     <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th></th>
+                                    <th></th>
                                   </tr>
                                 </thead>
                                 <tbody id="list-student">
-                                  <!-- <tr>
+                                  <tr>
                                     <td>#897656</td>
                                     <td>
                                       <div class="d-flex align-items-center">
@@ -250,11 +246,14 @@
                                     </td>
                                     <td>
                                       <div class="d-flex order-actions">	
-                                        <a href="javascript:;" class=""></a>
-                                        <a href="javascript:;" class="ms-4"></a>
+                                        <a onclick="" class="ms-4"><i class="fa fa-gavel"></i></a>
+                                        
                                       </div>
                                     </td>
-                                  </tr> -->
+                                    <td>
+                                      <a onclick="" class=""><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                  </tr>
                                 </tbody>
                               </table>
                             </div>
@@ -387,6 +386,14 @@
 
     <!-- <script src="./assets/js/app.js"></script> -->
     <script>
+      function started(){
+        var tokenaccount = document.cookie;
+        if(tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === ''){
+          location.replace('../login_register.html');
+        }
+      }
+      started();
+      
       $(function(){
         $("#header").load("../inc/header.html"); 
         $("#footer").load("../inc/footer.html"); 
