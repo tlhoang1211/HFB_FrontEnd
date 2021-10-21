@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -146,12 +146,12 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <!-- <script src="./assets/js/app.js"></script> -->
+    <script src="./assets/js/app.js"></script>
     <script>
-      $(function(){
-        $("#header").load("../inc/header.html"); 
-        $("#footer").load("../inc/footer.html"); 
-      });
+      // $(function(){
+      //   $("#header").load("./inc/header.html"); 
+      //   $("#footer").load("./inc/footer.html"); 
+      // });
 
       var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search';
 			var shopItem = document.querySelector('.list-shop-item');
@@ -160,22 +160,21 @@
 				fetch(shopitemAPI,{
           method: 'GET',
           headers: {
-            "Authorization":`Bearer ${token}`
+            "Authorization":`Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXBodW9uZyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1NVUEVSX0FETUlOIl0sImlzcyI6Imh0dHBzOi8vaGZiLXQxMDk4ZS5oZXJva3VhcHAuY29tL2FwaS92MS9oZmIvbG9naW4iLCJleHAiOjE2MzUwMDQ0NDJ9.vsN2x5yYS-lqeNXikU50OoJjJ6KBgXW7IeZdAifa4hA`
           }
         })
 				.then(response => response.json())
 				.then(listItems => {
-          console.log(listItems.data.content);
+          // console.log(listItems.data.content);
 					var htmlsItem = listItems.data.content.map(function(item){
 						return `
-            <div class="col-sm-6 col-md-3 col-lg-3">
-              <div class="shop-item">
-                <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="shop-item">
+                  <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                  <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+                  </div>
+                  <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
                 </div>
-                <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                <p onload="countdown('${item.expirationDate}', '${item.id}')" class="countdown123" style="color: #000;"></p>
-              </div>
               </div>
 							`
 						})
@@ -184,46 +183,45 @@
 				.catch(error => console.log(error));
       }
 			getListItem();
-
-      function getTimeFromString2(strDate) {
-          var arrDate = strDate.split('/');
-          var year = parseInt(arrDate[2]);
-          var month = parseInt(arrDate[1]) - 1;
-          var date = parseInt(arrDate[0]);
-          return new Date(year, month, date).getTime();
-      }
-
-      function countdown(date, id){
-        console.log(date);
-        var tet = getTimeFromString2(date);
+      
+      // function getTimeFromString2(strDate) {
+      //     var arrDate = strDate.split('/');
+      //     var year = parseInt(arrDate[2]);
+      //     var month = parseInt(arrDate[1]) - 1;
+      //     var date = parseInt(arrDate[0]);
+      //     return new Date(year, month, date).getTime();
+      // }
         
-        console.log(tet);
-
-        var p = document.querySelector('.countdown123');
+      //   function countdown(date, id){
+      //   // console.log(date);
+      //   var tet = getTimeFromString2(date);
+      //   // console.log(tet);
         
-        //Tổng số giây 
-        var countDown = setInterval(run,1000);
-        function run(){
-            var now = new Date().getTime();
-            //Số s đến thời gian hiện tại
-            var timeRest = tet - now;
-            //Số s còn lại để đến tết;
-            var day = Math.floor(timeRest/(1000*60*60*24));
-            //Số ngày còn lại
-            var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
-            // Số giờ còn lại
-            var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
-            // Số phút còn lại
-            var sec = Math.floor(timeRest%(1000*60)/(1000));
-            console.log('123');
-            // Số giây còn lại
-            if(timeRest <= 0){
-              clearInterval(countDown);
-            }
-            
-            p.innerHTML = day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
-        }   
-      }
+      //   // Tổng số giây 
+      //   var countDown = setInterval(run,10000);
+      //   function run(){
+      //       var s = document.querySelector(`#countdown-${id}`);
+      //       var now = new Date().getTime();
+      //       //Số s đến thời gian hiện tại
+      //       var timeRest = tet - now;
+      //       //Số s còn lại để đến tết;
+      //       var day = Math.floor(timeRest/(1000*60*60*24));
+      //       //Số ngày còn lại
+      //       var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
+      //       // Số giờ còn lại
+      //       var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
+      //       // Số phút còn lại
+      //       var sec = Math.floor(timeRest%(1000*60)/(1000));
+      //       // Số giây còn lại
+      //       if(timeRest <= 0){
+      //         clearInterval(countDown);
+      //       }
+      //       console.log(s);
+      //       // p.innerHTML = day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+      //   }   
+      // }
+      
+      
     </script>
   </body>
 </html>
