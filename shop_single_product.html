@@ -346,6 +346,9 @@
         $("#header").load("../inc/header.html"); 
         $("#footer").load("../inc/footer.html"); 
       });
+
+      let params = (new URL(document.URL)).searchParams;
+      console.log(params.get('id'));
     </script>
   </body>
 </html>

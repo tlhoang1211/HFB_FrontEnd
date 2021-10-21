@@ -168,14 +168,13 @@
           // console.log(listItems.data.content);
 					var htmlsItem = listItems.data.content.map(function(item){
 						return `
-            <div class="col-sm-6 col-md-3 col-lg-3">
-              <div class="shop-item">
-                <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html"><span class="icon-basket">View Details</span></a></div>
+              <div class="col-sm-6 col-md-3 col-lg-3">
+                <div class="shop-item">
+                  <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                  <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+                  </div>
+                  <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
                 </div>
-                <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                <p onload="countdown('${item.expirationDate}', '${item.id}')" class="countdown123" style="color: #000;"></p>
-              </div>
               </div>
 							`
 						})
@@ -184,46 +183,45 @@
 				.catch(error => console.log(error));
       }
 			getListItem();
-
-      function getTimeFromString2(strDate) {
-          var arrDate = strDate.split('/');
-          var year = parseInt(arrDate[2]);
-          var month = parseInt(arrDate[1]) - 1;
-          var date = parseInt(arrDate[0]);
-          return new Date(year, month, date).getTime();
-      }
-
-      function countdown(date, id){
-        console.log(date);
-        var tet = getTimeFromString2(date);
+      
+      // function getTimeFromString2(strDate) {
+      //     var arrDate = strDate.split('/');
+      //     var year = parseInt(arrDate[2]);
+      //     var month = parseInt(arrDate[1]) - 1;
+      //     var date = parseInt(arrDate[0]);
+      //     return new Date(year, month, date).getTime();
+      // }
         
-        console.log(tet);
-
-        var p = document.querySelector('.countdown123');
+      //   function countdown(date, id){
+      //   // console.log(date);
+      //   var tet = getTimeFromString2(date);
+      //   // console.log(tet);
         
-        //Tổng số giây 
-        var countDown = setInterval(run,1000);
-        function run(){
-            var now = new Date().getTime();
-            //Số s đến thời gian hiện tại
-            var timeRest = tet - now;
-            //Số s còn lại để đến tết;
-            var day = Math.floor(timeRest/(1000*60*60*24));
-            //Số ngày còn lại
-            var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
-            // Số giờ còn lại
-            var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
-            // Số phút còn lại
-            var sec = Math.floor(timeRest%(1000*60)/(1000));
-            console.log('123');
-            // Số giây còn lại
-            if(timeRest <= 0){
-              clearInterval(countDown);
-            }
-            
-            p.innerHTML = day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
-        }   
-      }
+      //   // Tổng số giây 
+      //   var countDown = setInterval(run,10000);
+      //   function run(){
+      //       var s = document.querySelector(`#countdown-${id}`);
+      //       var now = new Date().getTime();
+      //       //Số s đến thời gian hiện tại
+      //       var timeRest = tet - now;
+      //       //Số s còn lại để đến tết;
+      //       var day = Math.floor(timeRest/(1000*60*60*24));
+      //       //Số ngày còn lại
+      //       var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
+      //       // Số giờ còn lại
+      //       var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
+      //       // Số phút còn lại
+      //       var sec = Math.floor(timeRest%(1000*60)/(1000));
+      //       // Số giây còn lại
+      //       if(timeRest <= 0){
+      //         clearInterval(countDown);
+      //       }
+      //       console.log(s);
+      //       // p.innerHTML = day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+      //   }   
+      // }
+      
+      
     </script>
   </body>
 </html>
