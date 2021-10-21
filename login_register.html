@@ -52,7 +52,6 @@
     <!-- Main stylesheet and color file-->
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
-
     <link rel="stylesheet" href="./assets/css/validator.css">
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
@@ -183,8 +182,8 @@
 
     <script>
       $(function(){
-        $("#header").load("../inc/header.html"); 
-        $("#footer").load("../inc/footer.html"); 
+        $("#header").load("./inc/header.html"); 
+        $("#footer").load("./inc/footer.html"); 
       });
 
       var loginForm = document.querySelector('.loginform');
@@ -230,7 +229,8 @@
               // window.location="../index_shop.html";
               document.cookie = data.data.access_token;
               token = document.cookie;
-              location.replace('../index_shop.html');
+              window.history.back();
+              // location.replace('../index_shop.html');
             }
             else{
               alert('Incorrect account or password');
