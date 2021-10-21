@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-US" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -146,12 +146,12 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
 
-    <!-- <script src="./assets/js/app.js"></script> -->
+    <script src="./assets/js/app.js"></script>
     <script>
-      $(function(){
-        $("#header").load("../inc/header.html"); 
-        $("#footer").load("../inc/footer.html"); 
-      });
+      // $(function(){
+      //   $("#header").load("./inc/header.html"); 
+      //   $("#footer").load("./inc/footer.html"); 
+      // });
 
       var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods';
 			var shopItem = document.querySelector('.list-shop-item');
@@ -160,12 +160,12 @@
 				fetch(shopitemAPI,{
           method: 'GET',
           headers: {
-            "Authorization":`Bearer ${token}`
+            "Authorization":`Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXBodW9uZyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1NVUEVSX0FETUlOIl0sImlzcyI6Imh0dHBzOi8vaGZiLXQxMDk4ZS5oZXJva3VhcHAuY29tL2FwaS92MS9oZmIvbG9naW4iLCJleHAiOjE2MzUwMDQ0NDJ9.vsN2x5yYS-lqeNXikU50OoJjJ6KBgXW7IeZdAifa4hA`
           }
         })
 				.then(response => response.json())
 				.then(listItems => {
-          console.log(listItems.data.content);
+          // console.log(listItems.data.content);
 					var htmlsItem = listItems.data.content.map(function(item){
 						return `
               <div class="col-sm-6 col-md-3 col-lg-3">
