@@ -230,7 +230,8 @@
               // window.location="../index_shop.html";
               document.cookie = data.data.access_token;
               token = document.cookie;
-              location.replace('../index_shop.html');
+              window.history.back();
+              // location.replace('../index_shop.html');
             }
             else{
               alert('Incorrect account or password');

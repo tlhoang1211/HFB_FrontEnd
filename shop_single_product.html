@@ -52,6 +52,64 @@
     <!-- Main stylesheet and color file-->
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
+
+    <style>
+      .img-avatar{
+        pointer-events: none;
+        cursor: default;
+      }
+      /* modal */
+      .modal-overlay{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(119, 116, 116, 0.5);
+        }
+        .modal-dialog{
+            margin: auto;
+            pointer-events: auto;
+        }
+        .modal-main{
+            width: 100%;
+            background: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .modal-container{
+            padding: 0 16px;
+        }
+        .modal-heading{
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+    <style>
+      .slider-info-food {
+        display: none;
+      }
+      
+      .cursor-img-info-food {
+        cursor: pointer;
+      }
+      
+      .column-img-info-food {
+        float: left;
+        width: 16.66%;
+        margin: 10px 10px 0 0;
+        height: 120px;
+      }
+      
+      .demo-slides-img-food {
+        height: 100%;
+        opacity: 0.6;
+      }
+      
+      .active-info-food,
+      .demo-slides-img-food:hover {
+        opacity: 1;
+      }
+      </style>
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -64,55 +122,27 @@
         <section class="module">
           <div class="container">
             <div class="row">
-              <div class="col-sm-6 mb-sm-40"><a class="gallery" href="assets/images/shop/product-7.jpg"><img src="assets/images/shop/product-7.jpg" alt="Single Product Image"/></a>
-                <ul class="product-gallery">
-                  <li><a class="gallery" href="assets/images/shop/product-8.jpg"></a><img src="assets/images/shop/product-8.jpg" alt="Single Product"/></li>
-                  <li><a class="gallery" href="assets/images/shop/product-9.jpg"></a><img src="assets/images/shop/product-9.jpg" alt="Single Product"/></li>
-                  <li><a class="gallery" href="assets/images/shop/product-10.jpg"></a><img src="assets/images/shop/product-10.jpg" alt="Single Product"/></li>
-                </ul>
+              <div class="col-sm-8 mb-sm-40">
+                <div class="view-image-product">
+                  <!-- <a class="gallery" href="assets/images/shop/product-7.jpg">
+                    <img src="assets/images/shop/product-7.jpg" alt="Single Product Image"/>
+                  </a>
+                  <ul class="product-gallery">
+                    <li><a class="gallery" href="assets/images/shop/product-8.jpg"></a><img src="assets/images/shop/product-8.jpg" alt="Single Product"/></li>
+                    <li><a class="gallery" href="assets/images/shop/product-9.jpg"></a><img src="assets/images/shop/product-9.jpg" alt="Single Product"/></li>
+                    <li><a class="gallery" href="assets/images/shop/product-10.jpg"></a><img src="assets/images/shop/product-10.jpg" alt="Single Product"/></li>
+                  </ul> -->
+                </div>
               </div>
-              <div class="col-sm-6">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h1 class="product-title font-alt">Accessories Pack</h1>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12"><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star-off"></i></span><a class="open-tab section-scroll" href="#reviews">-2customer reviews</a>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12">
-                    <div class="price font-alt"><span class="amount">£20.00</span></div>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12">
-                    <div class="description">
-                      <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-4 mb-sm-20">
-                    <input class="form-control input-lg" type="number" name="" value="1" max="40" min="1" required="required"/>
-                  </div>
-                  <div class="col-sm-8"><a class="btn btn-lg btn-block btn-round btn-b" href="#">Add To Cart</a></div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12">
-                    <div class="product_meta">Categories:<a href="#"> Man, </a><a href="#">Clothing, </a><a href="#">T-shirts</a>
-                    </div>
-                  </div>
-                </div>
+              <div class="col-sm-4 view-info-product" style="max-height: 200px;">
+                
               </div>
             </div>
-            <div class="row mt-70">
+            <div class="row" style="margin-top: 100px;">
               <div class="col-sm-12">
                 <ul class="nav nav-tabs font-alt" role="tablist">
                   <li class="active"><a href="#description" data-toggle="tab"><span class="icon-tools-2"></span>Description</a></li>
                   <li><a href="#data-sheet" data-toggle="tab"><span class="icon-tools-2"></span>Data sheet</a></li>
-                  <li><a href="#reviews" data-toggle="tab"><span class="icon-tools-2"></span>Reviews (2)</a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="description">
@@ -145,77 +175,14 @@
                       </tbody>
                     </table>
                   </div>
-                  <div class="tab-pane" id="reviews">
-                    <div class="comments reviews">
-                      <div class="comment clearfix">
-                        <div class="comment-avatar"><img src="" alt="avatar"/></div>
-                        <div class="comment-content clearfix">
-                          <div class="comment-author font-alt"><a href="#">John Doe</a></div>
-                          <div class="comment-body">
-                            <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The European languages are members of the same family. Their separate existence is a myth.</p>
-                          </div>
-                          <div class="comment-meta font-alt">Today, 14:55 -<span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star-off"></i></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="comment clearfix">
-                        <div class="comment-avatar"><img src="" alt="avatar"/></div>
-                        <div class="comment-content clearfix">
-                          <div class="comment-author font-alt"><a href="#">Mark Stone</a></div>
-                          <div class="comment-body">
-                            <p>Europe uses the same vocabulary. The European languages are members of the same family. Their separate existence is a myth.</p>
-                          </div>
-                          <div class="comment-meta font-alt">Today, 14:59 -<span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star"></i></span><span><i class="fa fa-star star-off"></i></span><span><i class="fa fa-star star-off"></i></span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="comment-form mt-30">
-                      <h4 class="comment-form-title font-alt">Add review</h4>
-                      <form method="post">
-                        <div class="row">
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label class="sr-only" for="name">Name</label>
-                              <input class="form-control" id="name" type="text" name="name" placeholder="Name"/>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <label class="sr-only" for="email">Name</label>
-                              <input class="form-control" id="email" type="text" name="email" placeholder="E-mail"/>
-                            </div>
-                          </div>
-                          <div class="col-sm-4">
-                            <div class="form-group">
-                              <select class="form-control">
-                                <option selected="true" disabled="">Rating</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-12">
-                            <div class="form-group">
-                              <textarea class="form-control" id="" name="" rows="4" placeholder="Review"></textarea>
-                            </div>
-                          </div>
-                          <div class="col-sm-12">
-                            <button class="btn btn-round btn-d" type="submit">Submit Review</button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
         <hr class="divider-w">
+
+        <!-- sản phẩm tương tự -->
         <section class="module-small">
           <div class="container">
             <div class="row">
@@ -316,6 +283,40 @@
             </div>
           </div>
         </section>
+
+
+        <!-- Modal layout -->
+        <section class="modalLayout">
+          <div class="modal">
+              <div class="modal-overlay"></div>
+
+              <div class="modal-dialog">
+                  <div class="modal-main">
+                      <div class="modal-container">
+                          <div class="modal-header">
+                              <h3 class="modal-heading">Send message</h3>
+                          </div>
+                          <div class="modal-body">
+                              <form action="" method="POST">
+                                  <div>
+                                      <div class="form-group">
+                                          <label for="messageModal" class="form-label">Say something to Food Donor</label>
+                                          <textarea id="messageModal" required name="message" style="resize: vertical;" rows="10" placeholder="Enter message" class="form-control"></textarea>
+                                          <span class="form-message"></span>
+                                      </div>
+                                  </div>
+                              </form>
+                          </div>
+      
+                          <div class="modal-footer">
+                              <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
+                              <button class="btn btn-b btn-round btnSubmit" type="button">Submit</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </section>
         <div id="footer">
 
         </div>
@@ -346,6 +347,138 @@
         $("#header").load("../inc/header.html"); 
         $("#footer").load("../inc/footer.html"); 
       });
+
+      let params = (new URL(document.URL)).searchParams;
+      var id = params.get('id');
+
+      console.log(id);
+      var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
+      var shopItem = document.querySelector('.view-image-product');
+      var viewInfoProduct = document.querySelector('.view-info-product');
+      var token = document.cookie;
+      console.log(getDetailFood);
+      function getInfoFood(){
+				fetch(getDetailFood,{
+          method: 'GET',
+          // headers: {
+          //   "Authorization":`Bearer ${token}`
+          // }
+        })
+				.then(response => response.json())
+				.then(listItems => {
+					var htmlsItem = `
+            <div class="row multi-columns-row" >
+                  <div class="avatar-info-food">
+                    <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
+                  </div>
+                  <div class="slider-image">
+                    <div class="slider-info-food">
+                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
+                    </div>
+                  
+                    <div class="slider-info-food">
+                      <img src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100% ; max-height: 450px">
+                    </div>
+                  
+                    <div class="slider-info-food">
+                      <img src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%; max-height: 450px">
+                    </div>
+                    <div>
+                      <div class="column-img-info-food">
+                        <img class="demo-slides-img-food cursor-img-info-food active-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                      </div>
+                      <div class="column-img-info-food">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
+                      </div>
+                      <div class="column-img-info-food">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+                      </div>
+                    </div>
+                  </div>
+            </div>
+						`
+
+          var htmlsInfoProduct =`
+            <div class="row">
+                  <div class="col-sm-12">
+                    <h1 class="product-title font-alt">${listItems.data.name}</h1>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12">
+                    <div class="col-sm-12">
+                      <div class="description">
+                        <p><span style="font-size: 16px; color: #000;">Expiration Date: ${listItems.data.expirationDate}</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12">
+                    <div class="description">
+                      <p>${listItems.data.description}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Add To Cart</a></div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12">
+                    <div class="product_meta">Categories:<a href="#"> ${listItems.data.category}, </a><a href="#">Clothing, </a><a href="#">T-shirts</a>
+                    </div>
+                  </div>
+                </div>
+          `
+					shopItem.innerHTML = htmlsItem;
+          viewInfoProduct.innerHTML = htmlsInfoProduct;
+				})
+				.catch(error => console.log(error));
+      }
+			getInfoFood()
+
+      var modal = document.querySelector('.modal');
+      function addToCart(){
+        var tokenaccount = document.cookie;
+        if(tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === ''){
+          location.replace('../login_register.html');
+        }else{
+          modal.style.display = 'flex';
+        }
+      }
+
+      function closeSendMail(){
+				modal.style.display = 'none';
+			}
+
+
+
+      
+    </script>
+    <script>
+      showSlides(1);
+      document.querySelector(".demo-slides-img-food").classList.remove('active-info-food')
+      
+      function currentSlide(n) {
+        showSlides(slideIndex = n);
+        document.querySelector(".avatar-info-food").style.display = 'none';
+      }
+      
+      function showSlides(n) {
+        var slides = document.getElementsByClassName("slider-info-food");
+        var dots = document.getElementsByClassName("demo-slides-img-food");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (var i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active-info-food", "");
+        }
+        slides[slideIndex-1].style.display = "block";
+        dots[slideIndex-1].className += " active-info-food";
+      }
+      
     </script>
   </body>
 </html>

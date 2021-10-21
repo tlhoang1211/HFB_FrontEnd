@@ -153,7 +153,7 @@
         $("#footer").load("../inc/footer.html"); 
       });
 
-      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods';
+      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search';
 			var shopItem = document.querySelector('.list-shop-item');
       var token = document.cookie;
       function getListItem(){
@@ -171,7 +171,7 @@
             <div class="col-sm-6 col-md-3 col-lg-3">
               <div class="shop-item">
                 <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html"><span class="icon-basket">View Details</span></a></div>
+                <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
                 </div>
                 <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
                 <p onload="countdown('${item.expirationDate}', '${item.id}')" class="countdown123" style="color: #000;"></p>
