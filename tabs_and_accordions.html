@@ -61,8 +61,10 @@
       <div class="page-loader">
         <div class="loader">Loading...</div>
       </div>
+
       <header id="header">
       </header>
+
       <div class="main">
         <section class="module bg-dark-30 about-page-header" data-background="assets/images/about_bg.jpg">
           <div class="container">
@@ -79,12 +81,14 @@
               <div class="row">
                 <div class="col-sm-2 col-md-2">
                   <div class="gallery-item"  >
-                    <div class="gallery-image gallery-avatar"><a class="gallery" href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" title="Avatar">
-                      <img 
-                      src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="img-avatar">
+                    <div class="gallery-image gallery-avatar">
+                      <a class="gallery" href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" title="Avatar">
+                        <img id="avatar_account" src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="img-avatar">
                         <div class="gallery-caption">
                           <div class="gallery-icon"><span class="icon-magnifying-glass"></span></div>
-                        </div></a></div>
+                        </div>
+                      </a>
+                    </div>
                   </div>
                   
                   <h4 class="name-account">Name</h4>
@@ -103,18 +107,14 @@
                     </li>
                   </ul>
                 </div>
-  
-  
+
                 <div class="col-sm-10 col-md-10">
                   <div role="tabpanel" class="my-account">
                     <ul class="nav nav-tabs font-alt" role="tablist">
                       <li class="active"><a href="#acount-information" data-toggle="tab"><span class="icon-tools-2"></span>Account information</a></li>
-                      <li><a href="#edit-information" data-toggle="tab"><span class="icon-tools-2"></span>Edit information</a></li>
                     </ul>
                     <div class="tab-content content-des">
-                      <div class="tab-pane active" id="acount-information">Hello my boy
-                      </div>
-                      <div class="tab-pane" id="edit-information">
+                      <div class="tab-pane active" id="acount-information">
                         <form class="form registerform" role="form">
                           <div class="form-group">
                             <label for="name" class="form-label">Full Name</label>
@@ -128,7 +128,7 @@
                           </div>
                           <div class="form-group">
                             <label for="name" class="form-label">Avatar</label>
-                            <input class="form-control" type="file" placeholder="Avatar"/>
+                            <input id="upload_widget" class="form-control" type="file" placeholder="Avatar"/>
                             <span class="form-message"></span>
                           </div>
                           <div class="form-group">
@@ -318,14 +318,14 @@
 
 
       // Call Api
-      var listStudent = document.querySelector('#list-student');
-      var studentAPI = 'http://localhost:8080/api/v1/students';
-      function start(){
-          getStudent(function(students){
-              renderStudent(students);
-          });
-      };
-      start();
+      // var listStudent = document.querySelector('#list-student');
+      // var studentAPI = 'http://localhost:8080/api/v1/students';
+      // function start(){
+      //     getStudent(function(students){
+      //         renderStudent(students);
+      //     });
+      // };
+      // start();
 
       // GET
       function getStudent(callback){
@@ -370,6 +370,7 @@
     JavaScripts
     =============================================
     -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="assets/lib/jquery/dist/jquery.js"></script>
     <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="assets/lib/wow/dist/wow.js"></script>
@@ -383,6 +384,7 @@
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/account.js"></script>
 
     <!-- <script src="./assets/js/app.js"></script> -->
     <script>
@@ -395,9 +397,10 @@
       started();
       
       $(function(){
-        $("#header").load("../inc/header.html"); 
-        $("#footer").load("../inc/footer.html"); 
+        $("#header").load("./inc/header.html"); 
+        $("#footer").load("./inc/footer.html"); 
       });
     </script>
+    
   </body>
 </html>
