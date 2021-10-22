@@ -53,6 +53,9 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/validator.css">
+    <link rel="stylesheet" href="./assets/css/repository.css">
+
+  
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -186,6 +189,11 @@
         $("#footer").load("./inc/footer.html"); 
       });
 
+      if(document.cookie){
+        alert('You are logged in!');
+        location.replace('../tabs_and_accordions.html');
+      }
+
       var loginForm = document.querySelector('.loginform');
       var forgotPassword = document.querySelector('.forgot-password');
       forgotPassword.style.display = 'none';
@@ -199,7 +207,7 @@
       }
 
       // Login
-      var token;
+      
       var contactAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/login';
       
       function btnLogin(){
@@ -226,9 +234,13 @@
           .then(response => response.json())
           .then(function(data){
             if(data.status == 200){
+              var usernamecookie = document.querySelector('input[name="username-login"]').value;
               // window.location="../index_shop.html";
               document.cookie = data.data.access_token;
               token = document.cookie;
+              document.cookie = `token=${data.data.access_token}`;
+              document.cookie = `username=${usernamecookie}`;
+              
               window.history.back();
               // location.replace('../index_shop.html');
             }

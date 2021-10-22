@@ -53,6 +53,7 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="./assets/css/repository.css">
     <style>
       .img-avatar{
         pointer-events: none;
@@ -310,7 +311,7 @@
       
                           <div class="modal-footer">
                               <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
-                              <button class="btn btn-b btn-round btnSubmit" type="button">Submit</button>
+                              <button onclick="sendRequest()" class="btn btn-b btn-round btnSubmit" type="button">Submit</button>
                           </div>
                       </div>
                   </div>
@@ -355,6 +356,7 @@
       var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
       var shopItem = document.querySelector('.view-image-product');
       var viewInfoProduct = document.querySelector('.view-info-product');
+
       var token = document.cookie;
       console.log(getDetailFood);
       function getInfoFood(){
@@ -366,11 +368,9 @@
         })
 				.then(response => response.json())
 				.then(listItems => {
-					var htmlsItem = `
+					let myPromise = new Promise(function(myResolve) {
+            var htmlsItem = `
             <div class="row multi-columns-row" >
-                  <div class="avatar-info-food">
-                    <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
-                  </div>
                   <div class="slider-image">
                     <div class="slider-info-food">
                       <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
@@ -385,20 +385,20 @@
                     </div>
                     <div>
                       <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food active-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(1)" alt="The Woods">
                       </div>
                       <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100%" onclick="currentSlide(2)" alt="Cinque Terre">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100%" onclick="showSlides(2)" alt="Cinque Terre">
                       </div>
                       <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%" onclick="showSlides(3)" alt="Mountains and fjords">
                       </div>
                     </div>
                   </div>
             </div>
 						`
 
-          var htmlsInfoProduct =`
+            var htmlsInfoProduct =`
             <div class="row">
                   <div class="col-sm-12">
                     <h1 class="product-title font-alt">${listItems.data.name}</h1>
@@ -430,8 +430,16 @@
                   </div>
                 </div>
           `
-					shopItem.innerHTML = htmlsItem;
-          viewInfoProduct.innerHTML = htmlsInfoProduct;
+            shopItem.innerHTML = htmlsItem;
+            viewInfoProduct.innerHTML = htmlsInfoProduct;
+            myResolve();
+          });
+
+          myPromise.then(
+            function() {
+              showSlides(1);
+            }
+          );
 				})
 				.catch(error => console.log(error));
       }
@@ -439,8 +447,8 @@
 
       var modal = document.querySelector('.modal');
       function addToCart(){
-        var tokenaccount = document.cookie;
-        if(tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === ''){
+        var cookie = document.cookie;
+        if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
           location.replace('../login_register.html');
         }else{
           modal.style.display = 'flex';
@@ -451,32 +459,72 @@
 				modal.style.display = 'none';
 			}
 
+      function sendRequest(){
+        var pairs = document.cookie.split(";");
+        var cookies = {};
+        for (var i=0; i<pairs.length; i++){
+          var pair = pairs[i].split("=");
+          cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
+        }
+        var token = cookies.token;
+        var usernameAccount = cookies.username;
 
+        var message = document.querySelector('#messageModal').value;
+        // get Id User
+        var idAccount;
+        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        fetch(getDetailFood,{
+          method: 'GET',
+          headers: {
+            "Authorization":`Bearer ${token}`
+          }
+        })
+        .then(response => response.json())
+        .then(account => { 
+          idAccount = account.data.id;
+          postrequest();
+        })
+        .catch(error => console.log(error));
 
-      
+        // post request
+        function postrequest(){
+          var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
+          fetch(postrequestAPI, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+              'userId': idAccount,
+						  'foodId': id,
+						  'message': message
+            })})
+						.then(response => response.json())
+						.then(data => {
+							console.log(data);
+							alert('Success!');
+						})
+						.catch(function(error){
+							console.log(error);
+						});
+					}
+        }
     </script>
     <script>
-      showSlides(1);
-      document.querySelector(".demo-slides-img-food").classList.remove('active-info-food')
-      
-      function currentSlide(n) {
-        showSlides(slideIndex = n);
-        document.querySelector(".avatar-info-food").style.display = 'none';
-      }
-      
+      // slides image
       function showSlides(n) {
         var slides = document.getElementsByClassName("slider-info-food");
         var dots = document.getElementsByClassName("demo-slides-img-food");
-        if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
+        if (n > slides.length) {n = 1}
+        if (n < 1) {n = slides.length}
         for (var i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+          slides[i].style.display = "none";
         }
         for (var i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active-info-food", "");
+          dots[i].className = dots[i].className.replace(" active-info-food", "");
         }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active-info-food";
+        slides[n-1].style.display = "block";
+        dots[n-1].className += " active-info-food";
       }
     </script>
   </body>

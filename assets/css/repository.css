@@ -1,3 +1,9 @@
+.form-control {
+    text-transform: none;
+    font-size: 14px;
+  }
+
+
 /* index_shop.html */
 .img-food{
     width: 100%;

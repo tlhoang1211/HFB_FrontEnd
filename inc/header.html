@@ -22,9 +22,7 @@
           <li class="dropdown" id="user-account">
             <a class="dropdown-toggle" href="./tabs_and_accordions.html" data-toggle="dropdown">
               <div class="navbar__user">
-                <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-                 src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
-                <span>Xuân Hùng</span>
+                
               </div>
             </a>
             <ul class="dropdown-menu" id="dropavatar">
@@ -41,10 +39,16 @@
     document.getElementById ("logout").addEventListener ("click", logoutAccount);
     var loginregister = document.querySelector('#login-register');
     var useraccount = document.querySelector('#user-account')
-    var token = document.cookie;
+
+
+    var token = null;
+    var usernameAccount = null;
+    
     function logoutAccount(){
-      document.cookie = `${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+      document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+      document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
       token = null;
+      usernameAccount = null;
       start();
       if(location.href == 'http://127.0.0.1:5500/tabs_and_accordions.html'){
         location.replace('../index_shop.html');
@@ -56,7 +60,16 @@
     
     start();
     function start(){
-      console.log(token);
+      if(document.cookie != null && document.cookie != ''){
+        var pairs = document.cookie.split(";");
+        var cookies = {};
+        for (var i=0; i<pairs.length; i++){
+          var pair = pairs[i].split("=");
+          cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
+        }
+        token = cookies.token;
+        usernameAccount = cookies.username;
+      }
       if(token ===null || token === undefined || token === NaN || token === ''){
         
         loginregister.style.display = 'block';
@@ -64,6 +77,27 @@
       }else {
         loginregister.style.display = 'none';
         useraccount.style.display = 'block';
+
+        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        var viewAccount = document.querySelector('.navbar__user');
+        fetch(getDetailFood,{
+          method: 'GET',
+          headers: {
+            "Authorization":`Bearer ${token}`
+          }
+        })
+        .then(response => response.json())
+        .then(account => {
+          var htmlsItem = `
+                <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+                    src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
+                <span>${account.data.name}</span>
+                `
+          viewAccount.innerHTML = htmlsItem;
+        })
+        .catch(error => console.log(error));
       }
     }
+
+    
   </script>
