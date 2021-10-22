@@ -1,34 +1,6 @@
-// var cloudinary_url = 'https://api.cloudinary.com/v1_1/vernom/image/upload';
-// var cloudinary_upload = 'ml_default';
-// var imgPreview = document.getElementById('avatar_account');
-// var fileUpload = document.getElementById('upload_widget');
-
-// fileUpload.addEventListener("change", function(e){
-//     var file = e.target.files[0];
-//     var formData = new FormData();
-//     formData.append("file", file);
-//     console.log(formData)
-//     formData.append("upload_preset", cloudinary_upload);
-//     console.log(formData)
-//     $.ajax({
-//         url : cloudinary_url,
-//         type : "post",
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded',
-//             'Access-Control-Allow-Origin': '*'
-//         },
-//         crossDomain: true,
-//         dataType:"json",
-//         contentType: false,
-//         processData: false,
-//         data : formData,
-//         success : function (result){
-//             console.log(result)
-//         }
-//     });
-// }, false);
-
-
+"use strict"
+var cookie = document.cookie;
+console.log(document.cookie)
 var myWidget = cloudinary.createUploadWidget({	
     cloudName: 'vernom',
     uploadPreset: 'fn5rpymu'
@@ -43,4 +15,63 @@ var myWidget = cloudinary.createUploadWidget({
 
 document.getElementById("upload_widget").addEventListener("click", function(){
     myWidget.open();
+}, false);
+
+// Validator register
+Validator({
+    form: '#addneworder',
+    formGroupSelector: '.form-group',
+    errorSelector: '.form-message',
+    rules: [
+        Validator.isRequired('#nameFood', 'Food name is required!'),
+        // Validator.isRequired('#imageFoods', 'Image is required!'),
+        Validator.isRequired('#category', 'Category is required!'),
+        Validator.isRequired('#manufactureDate', 'Manufacture Date is required!'),
+        Validator.isRequired('#expirationDate', 'Expiration Date is required!'),
+        Validator.isRequired('#description', 'Description is required!')
+    ],
+    // onSubmit: function(data){
+    //     // Call API
+    //     console.log(data);
+    // }
+});
+
+document.getElementById("newFood").addEventListener("click", function(){
+    console.log(document.getElementById("nameFood").value)
+    var nameFood = document.getElementById("nameFood").value;
+    var category = document.getElementById("category").value;
+    var manufactureDate = document.getElementById("manufactureDate").value;
+    manufactureDate
+    var expirationDate = document.getElementById("expirationDate").value;
+    if (expirationDate) {
+
+    } else {
+
+    }
+    var description = document.getElementById("description").value;
+    var dataPost = {
+        name: nameFood || '',
+        avatar: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+        images: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+        manufactureDate: document.getElementById("manufactureDate").value,
+        expirationDate: document.getElementById("expirationDate").value,
+        createdBy: 2,
+        categoryId: parseInt(category),
+        description: description
+    }
+        fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${cookie}`
+            },
+            body: JSON.stringify(dataPost)
+        })
+        .then(response => response.json())
+        .then(function(data){
+            console.log(data)
+        })
+        .catch(function(error){
+            console.log(error);
+        });
 }, false);
