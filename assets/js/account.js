@@ -1,29 +1,46 @@
-var cloudinary_url = 'https://api.cloudinary.com/v1_1/vernom/image/upload';
-var cloudinary_upload = 'ml_default';
-var imgPreview = document.getElementById('avatar_account');
-var fileUpload = document.getElementById('upload_widget');
+var myWidget = cloudinary.createUploadWidget(
+  {
+    cloudName: "vernom",
+    uploadPreset: "fn5rpymu",
+    form: "#edit-account-form",
+    folder: "hanoi_food_bank_project/users_avatar",
+    fieldName: "thumbnails[]",
+    thumbnails: ".thumbnails",
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      console.log("Done! Here is the image info: ", result.info.url);
+      var arrayThumnailInputs = document.querySelectorAll(
+        'input[name="thumbnails[]"]'
+      );
+      for (let i = 0; i < arrayThumnailInputs.length; i++) {
+        arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
+          "data-cloudinary-public-id"
+        );
+      }
+      console.log(arrayThumnailInputs);
+    }
+  }
+);
 
-fileUpload.addEventListener("change", function(e){
-    var file = e.target.files[0];
-    var formData = new FormData();
-    formData.append("file", file);
-    console.log(formData)
-    formData.append("upload_preset", cloudinary_upload);
-    console.log(formData)
-    $.ajax({
-        url : cloudinary_url,
-        type : "post",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin': '*'
-        },
-        crossDomain: true,
-        dataType:"json",
-        contentType: false,
-        processData: false,
-        data : formData,
-        success : function (result){
-            console.log(result)
-        }
-    });
-}, false);
+document.getElementById("upload_widget").addEventListener(
+  "click",
+  function () {
+    myWidget.open();
+  },
+  false
+);
+
+$("body").on("click", ".cloudinary-delete", function () {
+  var splittedImg = $(this).parent().find("img").attr("src").split("/");
+  var imgName =
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+  console.log(imgName);
+  var publicId = $(this).parent().attr("data-cloudinary");
+  $(this).parent().remove();
+  $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
+});
