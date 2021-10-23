@@ -26,14 +26,22 @@ document.getElementById("newFood").addEventListener("click", function(){
     var nameFood = document.getElementById("nameFood").value;
     var category = document.getElementById("category").value;
     var manufactureDate = document.getElementById("manufactureDate").value;
-    if (manufactureDate){
-        manufactureDate = new
-    }
+    
     var expirationDate = document.getElementById("expirationDate").value;
-    if (expirationDate && ) {
-
+    if (manufactureDate){
+        manufactureDate = getTimeFromString(manufactureDate);
+    }
+    if (expirationDate){
+        expirationDate = getTimeFromString(manufactureDate);
     } else {
-
+        $('.alert-danger').alert();
+        return false;
+    }
+    if (expirationDate && manufactureDate) {
+        if (manufactureDate > expirationDate) {
+            $('.alert-danger').alert();
+            return false;
+        }
     }
     var description = document.getElementById("description").value;
     var dataPost = {
