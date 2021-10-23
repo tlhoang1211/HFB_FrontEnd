@@ -1,0 +1,19 @@
+.custom-header-img {
+  padding-top: 100px;
+}
+
+.upload-btn {
+  height: auto;
+}
+
+.list-action {
+  padding: 0 0 10px 0;
+}
+
+.custom-i {
+  margin-right: 20px;
+}
+
+.active-action {
+  color: red;
+}
