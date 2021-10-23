@@ -41,9 +41,11 @@ document.getElementById("newFood").addEventListener("click", function(){
     var nameFood = document.getElementById("nameFood").value;
     var category = document.getElementById("category").value;
     var manufactureDate = document.getElementById("manufactureDate").value;
-    manufactureDate
+    if (manufactureDate){
+        manufactureDate = new
+    }
     var expirationDate = document.getElementById("expirationDate").value;
-    if (expirationDate) {
+    if (expirationDate && ) {
 
     } else {
 
