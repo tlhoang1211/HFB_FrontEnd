@@ -1010,6 +1010,21 @@
             myAccount.classList.remove("li-active");
           }
         });
+        listStudent.innerHTML = htmls.join("");
+      }
+
+      function guests(role) {
+        if (role == "guests") {
+          document.getElementById("addnew-food-donor").style.display = "none";
+        }
+      }
+  </script>
+  <script>
+    function started() {
+      var tokenaccount = document.cookie;
+      if (tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === '') {
+        location.replace('../login_register.html');
+
       }
 
       // Call Api

@@ -92,20 +92,23 @@
 			$('#Transaction-History').DataTable({
 				lengthMenu: [[6, 10, 20, -1], [6, 10, 20, 'Todos']]
 			});
-			function initHeader(url){
+			function initHeader(url, type){
 			  	fetch(url).then(function(response){
 			      console.log(response)
 			      return response.text()
 			    })
 			    .then(function (html){
 			      console.log(html)
-			      // var header = document.createElement('header');
-			      // console.log(header)
-			      document.body.innerHTML = html;
+			      var header = document.createElement('header');
+			      console.log(header)
+				  header.innerHTML = html;
+				  document.body.appendChild(header);
+				  
 			    })
 			    .catch(error => console.log(console.log(error)));
 			}
 			initHeader('head.html');
+			initHeader('sidebar.html');
 		} );
 	</script>
 	

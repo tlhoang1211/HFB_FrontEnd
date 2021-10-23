@@ -21,45 +21,55 @@ Validator({
   // }
 });
 
-// document.getElementById("newFood").addEventListener("click", function(){
-//     console.log(document.getElementById("nameFood").value)
-//     var nameFood = document.getElementById("nameFood").value;
-//     var category = document.getElementById("category").value;
-//     var manufactureDate = document.getElementById("manufactureDate").value;
-//     manufactureDate
-//     var expirationDate = document.getElementById("expirationDate").value;
-//     if (expirationDate) {
-
-//     } else {
-
-//     }
-//     var description = document.getElementById("description").value;
-//     var dataPost = {
-//         name: nameFood || '',
-//         avatar: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
-//         images: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
-//         manufactureDate: document.getElementById("manufactureDate").value,
-//         expirationDate: document.getElementById("expirationDate").value,
-//         createdBy: 2,
-//         categoryId: parseInt(category),
-//         description: description
-//     }
-//         fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 "Authorization": `Bearer ${cookie}`
-//             },
-//             body: JSON.stringify(dataPost)
-//         })
-//         .then(response => response.json())
-//         .then(function(data){
-//             console.log(data)
-//         })
-//         .catch(function(error){
-//             console.log(error);
-//         });
-// }, false);
+document.getElementById("newFood").addEventListener("click", function(){
+    console.log(document.getElementById("nameFood").value)
+    var nameFood = document.getElementById("nameFood").value;
+    var category = document.getElementById("category").value;
+    var manufactureDate = document.getElementById("manufactureDate").value;
+    
+    var expirationDate = document.getElementById("expirationDate").value;
+    if (manufactureDate){
+        manufactureDate = getTimeFromString(manufactureDate);
+    }
+    if (expirationDate){
+        expirationDate = getTimeFromString(manufactureDate);
+    } else {
+        $('.alert-danger').alert();
+        return false;
+    }
+    if (expirationDate && manufactureDate) {
+        if (manufactureDate > expirationDate) {
+            $('.alert-danger').alert();
+            return false;
+        }
+    }
+    var description = document.getElementById("description").value;
+    var dataPost = {
+        name: nameFood || '',
+        avatar: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+        images: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+        manufactureDate: document.getElementById("manufactureDate").value,
+        expirationDate: document.getElementById("expirationDate").value,
+        createdBy: 2,
+        categoryId: parseInt(category),
+        description: description
+    }
+        fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${cookie}`
+            },
+            body: JSON.stringify(dataPost)
+        })
+        .then(response => response.json())
+        .then(function(data){
+            console.log(data)
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+}, false);
 
 var myWidget = cloudinary.createUploadWidget(
   {
