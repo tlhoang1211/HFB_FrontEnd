@@ -1,65 +1,65 @@
-"use strict"
+"use strict";
 var cookie = document.cookie;
-console.log(document.cookie)
+console.log(document.cookie);
 
 // Validator register
 Validator({
-    form: '#addneworder',
-    formGroupSelector: '.form-group',
-    errorSelector: '.form-message',
-    rules: [
-        Validator.isRequired('#nameFood', 'Food name is required!'),
-        // Validator.isRequired('#imageFoods', 'Image is required!'),
-        Validator.isRequired('#category', 'Category is required!'),
-        Validator.isRequired('#manufactureDate', 'Manufacture Date is required!'),
-        Validator.isRequired('#expirationDate', 'Expiration Date is required!'),
-        Validator.isRequired('#description', 'Description is required!')
-    ],
-    // onSubmit: function(data){
-    //     // Call API
-    //     console.log(data);
-    // }
+  form: "#addneworder",
+  formGroupSelector: ".form-group",
+  errorSelector: ".form-message",
+  rules: [
+    Validator.isRequired("#nameFood", "Food name is required!"),
+    // Validator.isRequired('#imageFoods', 'Image is required!'),
+    Validator.isRequired("#category", "Category is required!"),
+    Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
+    Validator.isRequired("#expirationDate", "Expiration Date is required!"),
+    Validator.isRequired("#description", "Description is required!"),
+  ],
+  // onSubmit: function(data){
+  //     // Call API
+  //     console.log(data);
+  // }
 });
 
-document.getElementById("newFood").addEventListener("click", function(){
-    console.log(document.getElementById("nameFood").value)
-    var nameFood = document.getElementById("nameFood").value;
-    var category = document.getElementById("category").value;
-    var manufactureDate = document.getElementById("manufactureDate").value;
-    manufactureDate
-    var expirationDate = document.getElementById("expirationDate").value;
-    if (expirationDate) {
+// document.getElementById("newFood").addEventListener("click", function(){
+//     console.log(document.getElementById("nameFood").value)
+//     var nameFood = document.getElementById("nameFood").value;
+//     var category = document.getElementById("category").value;
+//     var manufactureDate = document.getElementById("manufactureDate").value;
+//     manufactureDate
+//     var expirationDate = document.getElementById("expirationDate").value;
+//     if (expirationDate) {
 
-    } else {
+//     } else {
 
-    }
-    var description = document.getElementById("description").value;
-    var dataPost = {
-        name: nameFood || '',
-        avatar: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
-        images: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
-        manufactureDate: document.getElementById("manufactureDate").value,
-        expirationDate: document.getElementById("expirationDate").value,
-        createdBy: 2,
-        categoryId: parseInt(category),
-        description: description
-    }
-        fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": `Bearer ${cookie}`
-            },
-            body: JSON.stringify(dataPost)
-        })
-        .then(response => response.json())
-        .then(function(data){
-            console.log(data)
-        })
-        .catch(function(error){
-            console.log(error);
-        });
-}, false);
+//     }
+//     var description = document.getElementById("description").value;
+//     var dataPost = {
+//         name: nameFood || '',
+//         avatar: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+//         images: "v1633966671/hanoi_food_bank_project/uploaded_food/Rice/fried_rice_xhdufj.jpg",
+//         manufactureDate: document.getElementById("manufactureDate").value,
+//         expirationDate: document.getElementById("expirationDate").value,
+//         createdBy: 2,
+//         categoryId: parseInt(category),
+//         description: description
+//     }
+//         fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 "Authorization": `Bearer ${cookie}`
+//             },
+//             body: JSON.stringify(dataPost)
+//         })
+//         .then(response => response.json())
+//         .then(function(data){
+//             console.log(data)
+//         })
+//         .catch(function(error){
+//             console.log(error);
+//         });
+// }, false);
 
 var myWidget = cloudinary.createUploadWidget(
   {
