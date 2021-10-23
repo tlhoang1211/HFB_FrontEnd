@@ -391,7 +391,7 @@
                   </div>
                 </div>
                 <div class="row mb-20">
-                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Add To Cart</a></div>
+                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Ask for food</a></div>
                 </div>
                 <div class="row mb-20">
                   <div class="col-sm-12">
@@ -549,7 +549,8 @@
           fetch(postrequestAPI, {
 						method: 'POST',
 						headers: {
-							'Content-Type': 'application/json'
+							'Content-Type': 'application/json',
+              "Authorization":`Bearer ${token}`
 						},
 						body: JSON.stringify({
               'userId': idAccount,
