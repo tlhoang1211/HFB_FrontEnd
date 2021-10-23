@@ -1,103 +1,105 @@
 .form-control {
-    text-transform: none;
-    font-size: 14px;
-  }
-
+  text-transform: none;
+  font-size: 14px;
+}
 
 /* index_shop.html */
-.img-food{
-    width: 100%;
-    height: 15vw;
+.img-food {
+  width: 100%;
+  height: 15vw;
 }
-
 
 /* tabs_and_accordions.html */
-.li-active{
-    display: block !important;
+.li-active {
+  display: block !important;
 }
-.name-account{
-    position: absolute; 
-    top: 80px; 
-    text-align: center; 
-    width: 160px;
+.name-account {
+  text-align: center;
+  margin: auto;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #efefef;
 }
-.list-option{
-    list-style: none;
-    padding: 0;
-    top: -50px; 
-    position: relative; 
-    font-size: 15px;
+
+.list-option {
+  list-style: none;
+  padding: 0;
+  top: 30px;
+  position: relative;
+  font-size: 15px;
 }
-.gallery-avatar{
-    border-radius: 50%; 
-    border: 1px solid rgba(0, 0, 0, 0.1); 
-    top: -75px; 
+
+.gallery-avatar {
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
+
 .my-account,
-.my-order{
-    display: none;
+.my-request,
+.my-food,
+.my-feedback {
+  display: none;
 }
-.content-des{
-    min-height: 500px; 
-    position: relative; 
-    background-color: #00000005;
+
+.content-des {
+  min-height: 500px;
+  position: relative;
+  background-color: #00000005;
 }
+
 .registerform,
-.addform{
-    padding: 20px;
+.addform {
+  padding: 20px;
 }
-.btnSubmit{
-    float: right;
+
+.btnSubmit {
+  float: right;
 }
+
 /* Tablet & Mobile */
-@media only screen and (max-width: 63.9375em){
-    
+@media only screen and (max-width: 63.9375em) {
 }
 
 /* Mobile: width < 740px */
 @media only screen and (max-width: 46.1875em) {
-    /* index_shop.html*/
-    .img-food{
-        width: 100%;
-        height: 70vw;
-    }
-    /* tabs_and_accordions.html */
-    .name-account {
-        width: 100%;
-        top: 280px;
-        padding-right: 35px;
-        font-size: 22px;
-    }
-    .list-option{
-        top: -10px;
-        text-align: center;
-    }
+  /* index_shop.html*/
+  .img-food {
+    width: 100%;
+    height: 70vw;
+  }
+  /* tabs_and_accordions.html */
+  .name-account {
+    width: 100%;
+    top: 280px;
+    font-size: 22px;
+  }
+  .list-option {
+    top: 10px;
+    text-align: center;
+  }
 }
 
 /* Tablet: width >= 740px and width < 1024px */
 @media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
-    /* index_shop.html */
-    .img-food{
-        width: 100%;
-        height: 33vw;
-    }
+  /* index_shop.html */
+  .img-food {
+    width: 100%;
+    height: 33vw;
+  }
 
-    /* tabs_and_accordions.html */
-    .name-account {
-        width: 100%;
-        top: 50px;
-    }
-    .gallery-avatar{
-        width: 120px;
-        top: -60px;
-    }
-    .list-option{
-        top: -30px;
-    }
+  /* tabs_and_accordions.html */
+  .name-account {
+    width: 100%;
+    top: 50px;
+  }
+  .gallery-avatar {
+    width: 120px;
+    top: -60px;
+  }
+  .list-option {
+    top: -30px;
+  }
 }
 
 /* PC */
 @media only screen and (min-width: 63.9375em) {
-    
 }
-

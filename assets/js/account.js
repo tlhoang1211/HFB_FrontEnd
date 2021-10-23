@@ -1,24 +1,24 @@
-"use strict"
+"use strict";
 var cookie = document.cookie;
-console.log(document.cookie)
+console.log(document.cookie);
 
 // Validator register
 Validator({
-    form: '#addneworder',
-    formGroupSelector: '.form-group',
-    errorSelector: '.form-message',
-    rules: [
-        Validator.isRequired('#nameFood', 'Food name is required!'),
-        // Validator.isRequired('#imageFoods', 'Image is required!'),
-        Validator.isRequired('#category', 'Category is required!'),
-        Validator.isRequired('#manufactureDate', 'Manufacture Date is required!'),
-        Validator.isRequired('#expirationDate', 'Expiration Date is required!'),
-        Validator.isRequired('#description', 'Description is required!')
-    ],
-    // onSubmit: function(data){
-    //     // Call API
-    //     console.log(data);
-    // }
+  form: "#addneworder",
+  formGroupSelector: ".form-group",
+  errorSelector: ".form-message",
+  rules: [
+    Validator.isRequired("#nameFood", "Food name is required!"),
+    // Validator.isRequired('#imageFoods', 'Image is required!'),
+    Validator.isRequired("#category", "Category is required!"),
+    Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
+    Validator.isRequired("#expirationDate", "Expiration Date is required!"),
+    Validator.isRequired("#description", "Description is required!"),
+  ],
+  // onSubmit: function(data){
+  //     // Call API
+  //     console.log(data);
+  // }
 });
 
 document.getElementById("newFood").addEventListener("click", function(){
