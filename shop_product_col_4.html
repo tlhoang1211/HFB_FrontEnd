@@ -155,7 +155,6 @@
 
       var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search';
 			var shopItem = document.querySelector('.list-shop-item');
-      var token = document.cookie;
       function getListItem(){
 				fetch(shopitemAPI,{
           method: 'GET'
@@ -207,7 +206,7 @@
                         clearInterval(countDown);
                         document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
                       }
-                      p.innerHTML = day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+                      p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
                   }
                 })
               }

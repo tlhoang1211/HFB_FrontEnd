@@ -316,54 +316,7 @@
         );
       }
 
-
-      // Call Api
-      var listStudent = document.querySelector('#list-student');
-      var studentAPI = 'http://localhost:8080/api/v1/students';
-      function start(){
-          getStudent(function(students){
-              renderStudent(students);
-          });
-      };
-      start();
-
-      // GET
-      function getStudent(callback){
-          fetch(studentAPI)
-              .then(response => response.json())
-              .then(callback)
-              .catch(function(error){
-                  console.log(error);
-              });
-      };
-      function renderStudent(students){
-    
-        var htmls = students.map(function(student){
-            return `
-              <tr class="student-item-${student.rollNumber}">
-                <td>${student.rollNumber}</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <h6 class="mb-0 font-16" style="margin: 0;">${student.fullName}</h6>
-                  </div>
-                </td>
-                <td>${student.email}</td>
-                <td>${student.createdAt}</td>
-                <td>${student.status}</td>
-                <td><button onclick="handleUpdateForm('${student.rollNumber}')">Edit</button></td>
-                <td><button onclick="handleDeleteStudent('${student.rollNumber}')">Delete</button></td>
-              </tr>
-            `
-        })
-        listStudent.innerHTML = htmls.join('');
-      }
       
-
-      function guests(role){
-        if(role == 'guests'){
-          document.getElementById('addnew-food-donor').style.display = 'none';
-        }
-      }
     </script>
 
     <!--  
