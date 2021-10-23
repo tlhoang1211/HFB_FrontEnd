@@ -191,39 +191,8 @@
                 <h2 class="module-title font-alt">Related Products</h2>
               </div>
             </div>
-            <div class="row multi-columns-row">
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="shop-item">
-                  <div class="shop-item-image"><img src="assets/images/shop/product-11.jpg" alt="Accessories Pack"/>
-                    <div class="shop-item-detail"><a class="btn btn-round btn-b"><span class="icon-basket">Add To Cart</span></a></div>
-                  </div>
-                  <h4 class="shop-item-title font-alt"><a href="#">Accessories Pack</a></h4>£9.00
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="shop-item">
-                  <div class="shop-item-image"><img src="assets/images/shop/product-12.jpg" alt="Men’s Casual Pack"/>
-                    <div class="shop-item-detail"><a class="btn btn-round btn-b"><span class="icon-basket">Add To Cart</span></a></div>
-                  </div>
-                  <h4 class="shop-item-title font-alt"><a href="#">Men’s Casual Pack</a></h4>£12.00
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="shop-item">
-                  <div class="shop-item-image"><img src="assets/images/shop/product-13.jpg" alt="Men’s Garb"/>
-                    <div class="shop-item-detail"><a class="btn btn-round btn-b"><span class="icon-basket">Add To Cart</span></a></div>
-                  </div>
-                  <h4 class="shop-item-title font-alt"><a href="#">Men’s Garb</a></h4>£6.00
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="shop-item">
-                  <div class="shop-item-image"><img src="assets/images/shop/product-14.jpg" alt="Cold Garb"/>
-                    <div class="shop-item-detail"><a class="btn btn-round btn-b"><span class="icon-basket">Add To Cart</span></a></div>
-                  </div>
-                  <h4 class="shop-item-title font-alt"><a href="#">Cold Garb</a></h4>£14.00
-                </div>
-              </div>
+            <div class="row multi-columns-row related-products">
+              
             </div>
           </div>
         </section>
@@ -349,15 +318,14 @@
         $("#footer").load("../inc/footer.html"); 
       });
 
+      
       let params = (new URL(document.URL)).searchParams;
       var id = params.get('id');
-
-      console.log(id);
       var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
       var shopItem = document.querySelector('.view-image-product');
       var viewInfoProduct = document.querySelector('.view-info-product');
-      var token = document.cookie;
-      console.log(getDetailFood);
+      var listFoodCategory;
+      
       function getInfoFood(){
 				fetch(getDetailFood,{
           method: 'GET',
@@ -367,6 +335,7 @@
         })
 				.then(response => response.json())
 				.then(listItems => {
+          listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}`;
 					let myPromise = new Promise(function(myResolve) {
             var htmlsItem = `
             <div class="row multi-columns-row" >
@@ -407,7 +376,8 @@
                   <div class="col-sm-12">
                     <div class="col-sm-12">
                       <div class="description">
-                        <p><span style="font-size: 16px; color: #000;">Expiration Date: ${listItems.data.expirationDate}</span></p>
+                        <span style="font-size: 16px; color: #000;">Expiration Date: ${listItems.data.expirationDate}</span>
+                        <p id="expirationdate"><span style="font-size: 14px; color: #000;"></span></p>
                       </div>
                     </div>
                   </div>
@@ -432,18 +402,105 @@
             shopItem.innerHTML = htmlsItem;
             viewInfoProduct.innerHTML = htmlsInfoProduct;
             myResolve();
+            
           });
-
+          
           myPromise.then(
             function() {
               showSlides(1);
+
+              var tet = getTimeFromString2(listItems.data.expirationDate);
+              run();
+                  
+                  // Tổng số giây 
+              var countDown = setInterval(run,1000);
+              function run(){
+                      var p = document.querySelector(`#expirationdate`);
+                      var now = new Date().getTime();
+                      //Số s đến thời gian hiện tại
+                      var timeRest = tet - now;
+                      //Số s còn lại để đến tết;
+                      var day = Math.floor(timeRest/(1000*60*60*24));
+                      //Số ngày còn lại
+                      var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
+                      // Số giờ còn lại
+                      var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
+                      // Số phút còn lại
+                      var sec = Math.floor(timeRest%(1000*60)/(1000));
+                      // Số giây còn lại
+                      if(timeRest <= 0){
+                        clearInterval(countDown);
+                        document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
+                      }
+                      p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+              }
             }
           );
+          
+          // tai day
+          var relatedProducts = document.querySelector('.related-products');
+      console.log(listFoodCategory);
+      fetch(listFoodCategory)
+				.then(response => response.json())
+				.then(listFood => {
+          let myPromise = new Promise(function(myResolve) {
+            // console.log(listFood.data.content);
+					  var htmlsItem = listFood.data.content.map(function(item){
+              return `
+                <div class="col-sm-6 col-md-3 col-lg-3" id="shop-item-${item.id}">
+                  <div class="shop-item">
+                    <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                    <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+                    </div>
+                    <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
+                    <p id="countdown-${item.id}"></p>
+                  </div>
+                </div>
+                `
+              })
+              relatedProducts.innerHTML = htmlsItem.join('');
+              myResolve(); // when successful
+            });
+
+            myPromise.then(
+              function() { 
+                listFood.data.content.map(function(item2){
+                  var tet = getTimeFromString2(item2.expirationDate);
+                  run();
+                  
+                  // Tổng số giây 
+                  var countDown = setInterval(run,1000);
+                  function run(){
+                      var p = document.querySelector(`#countdown-${item2.id}`);
+                      var now = new Date().getTime();
+                      //Số s đến thời gian hiện tại
+                      var timeRest = tet - now;
+                      //Số s còn lại để đến tết;
+                      var day = Math.floor(timeRest/(1000*60*60*24));
+                      //Số ngày còn lại
+                      var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
+                      // Số giờ còn lại
+                      var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
+                      // Số phút còn lại
+                      var sec = Math.floor(timeRest%(1000*60)/(1000));
+                      // Số giây còn lại
+                      if(timeRest <= 0){
+                        clearInterval(countDown);
+                        document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
+                      }
+                      p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+                  }
+                })
+              }
+            );
+          
+        })
+        .catch(error => console.log(error));
 				})
 				.catch(error => console.log(error));
       }
 			getInfoFood()
-
+      console.log(listFoodCategory);
       var modal = document.querySelector('.modal');
       function addToCart(){
         var cookie = document.cookie;
@@ -507,7 +564,16 @@
 							console.log(error);
 						});
 					}
-        }
+      }
+
+      
+      function getTimeFromString2(strDate) {
+          var arrDate = strDate.split('/');
+          var year = parseInt(arrDate[2]);
+          var month = parseInt(arrDate[1]) - 1;
+          var date = parseInt(arrDate[0]);
+          return new Date(year, month, date).getTime();
+      }
     </script>
     <script>
       // slides image

@@ -917,6 +917,44 @@
         <a href="#totop"><i class="fa fa-angle-double-up"></i></a>
       </div>
     </main>
+    <script>
+      var myAccount = document.querySelector('.my-account');
+      var myOrder = document.querySelector('.my-order');
+      myAccount.classList.add('li-active');
+
+      function myaccount(){
+        myAccount.classList.forEach(
+          function(value) {
+            if(value !== 'li-active'){
+              myAccount.classList.add('li-active');
+            }
+          }
+        );
+        myOrder.classList.forEach(
+                function(value) {
+                  if(value == 'li-active'){
+                    myOrder.classList.remove('li-active');
+                  }
+                }
+              );
+      }
+      function myorder(){
+        myOrder.classList.forEach(
+          function(value) {
+            if(value !== 'li-active'){
+              myOrder.classList.add('li-active');
+            }
+          }
+        );
+        myAccount.classList.forEach(
+          function(value) {
+            if(value == 'li-active'){
+              myAccount.classList.remove('li-active');
+            }
+          }
+        );
+      }
+    </script>
     <!--  
     JavaScripts
     =============================================
