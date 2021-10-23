@@ -353,6 +353,11 @@
         $("#footer").load("./inc/footer.html");
       });
 
+      if(document.cookie){
+       alert('You are logged in!');
+       location.replace('../tabs_and_accordions.html');
+      }
+
       var loginForm = document.querySelector(".loginform");
       var forgotPassword = document.querySelector(".forgot-password");
       forgotPassword.style.display = "none";
