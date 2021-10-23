@@ -235,8 +235,6 @@
             if(data.status == 200){
               var usernamecookie = document.querySelector('input[name="username-login"]').value;
               // window.location="../index_shop.html";
-              document.cookie = data.data.access_token;
-              token = document.cookie;
               document.cookie = `token=${data.data.access_token}`;
               document.cookie = `username=${usernamecookie}`;
               
