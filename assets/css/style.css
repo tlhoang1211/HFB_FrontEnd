@@ -2972,3 +2972,8 @@ Google map
     width: 100%;
   }
 }
+
+/* hiennv */
+.d-none{
+  display: none !important;
+}

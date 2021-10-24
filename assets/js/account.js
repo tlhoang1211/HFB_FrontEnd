@@ -1,7 +1,6 @@
 "use strict";
 var cookie = document.cookie;
 console.log(document.cookie);
-
 // Validator register
 Validator({
   form: "#addneworder",
@@ -14,15 +13,10 @@ Validator({
     Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
     Validator.isRequired("#expirationDate", "Expiration Date is required!"),
     Validator.isRequired("#description", "Description is required!"),
-  ],
-  // onSubmit: function(data){
-  //     // Call API
-  //     console.log(data);
-  // }
+  ]
 });
 
 document.getElementById("newFood").addEventListener("click", function(){
-    console.log(document.getElementById("nameFood").value)
     var nameFood = document.getElementById("nameFood").value;
     var category = document.getElementById("category").value;
     var manufactureDate = document.getElementById("manufactureDate").value;
@@ -82,7 +76,6 @@ var myWidget = cloudinary.createUploadWidget(
   },
   (error, result) => {
     if (!error && result && result.event === "success") {
-      console.log("Done! Here is the image info: ", result.info.url);
       var arrayThumnailInputs = document.querySelectorAll(
         'input[name="thumbnails[]"]'
       );
@@ -91,14 +84,11 @@ var myWidget = cloudinary.createUploadWidget(
           "data-cloudinary-public-id"
         );
       }
-      console.log(arrayThumnailInputs);
     }
   }
 );
 
-document.getElementById("upload_widget").addEventListener(
-  "click",
-  function () {
+document.getElementById("upload_widget").addEventListener("click", function () {
     myWidget.open();
   },
   false
@@ -112,8 +102,68 @@ $("body").on("click", ".cloudinary-delete", function () {
     splittedImg[splittedImg.length - 2] +
     "/" +
     splittedImg[splittedImg.length - 1];
-  console.log(imgName);
   var publicId = $(this).parent().attr("data-cloudinary");
   $(this).parent().remove();
   $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
 });
+
+// hiennv 24/10
+
+function onAddClassActive(e, className, parent){
+  var listAction = document.getElementsByClassName(className);
+  if (listAction && listAction.length > 0) {
+    for (let index = 0, len = listAction.length; index < len; index++) {
+      var element = listAction[index];
+      element.classList.remove('active');
+    }
+  }
+  if (parent) {
+    e.parentElement.classList.add("active");
+  } else {
+    e.classList.add("active");
+  }
+}
+function showTabPanel(e) {
+  var listAction = document.getElementsByClassName('tab-account');
+  if (listAction && listAction.length > 0) {
+    for (var index = 0, len = listAction.length; index < len; index++) {
+      var element = listAction[index];
+      element.classList.add('d-none');
+      element.classList.remove('active');
+    }
+  }
+  var listPanel = document.getElementsByClassName('tab-pane');
+  if (listPanel && listPanel.length > 0) {
+    for (var index = 0, len = listPanel.length; index < len; index++) {
+      var element = listPanel[index];
+      element.classList.remove('active');
+    }
+  }
+  switch (e){
+    case 'myaccount':
+      document.getElementsByClassName('profile')[0].classList.add('active');
+      document.getElementById('profile').classList.add('active');
+      document.getElementsByClassName('profile')[0].classList.remove('d-none');
+      break;
+    case 'myfood':
+      document.getElementsByClassName('addFood')[0].classList.add('active');
+      document.getElementById('addFood').classList.add('active');
+      document.getElementsByClassName('addFood')[0].classList.remove('d-none');
+      document.getElementsByClassName('listFood')[0].classList.remove('d-none');
+      break;
+    case 'myrequest':
+      document.getElementsByClassName('listRequest')[0].classList.add('active');
+      document.getElementById('listRequest').classList.add('active');
+      document.getElementsByClassName('listRequest')[0].classList.remove('d-none');
+      document.getElementsByClassName('detailRequest')[0].classList.remove('d-none');
+      break;
+    case 'myfeedback':
+      document.getElementsByClassName('feedback')[0].classList.add('active');
+      document.getElementById('feedback').classList.add('active');
+      document.getElementsByClassName('feedback')[0].classList.remove('d-none');
+      break;
+    default:
+      break;
+  }
+}
+
