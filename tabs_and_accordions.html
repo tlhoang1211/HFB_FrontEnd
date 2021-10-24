@@ -83,7 +83,7 @@
                       title="Avatar">
                       <img id="avatar_account"
                         src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-                        alt="" class="img-avatar" />
+                        alt="" class="img-avatar" style="min-height: 163px;"/>
                       <div class="gallery-caption">
                         <div class="gallery-icon">
                           <span class="icon-magnifying-glass"></span>
@@ -99,16 +99,20 @@
                 <h4 class="name-account">Name</h4>
                 <ul class="list-option">
                   <li class="list-action active">
-                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myaccount')"><i class="custom-i fa fa-user"></i> My account</a>
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myaccount')"><i
+                        class="custom-i fa fa-user"></i> My account</a>
                   </li>
                   <li class="list-action">
-                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfood')"><i class="custom-i fa fa-cutlery"></i> My food</a>
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfood')"><i
+                        class="custom-i fa fa-cutlery"></i> My food</a>
                   </li>
                   <li class="list-action">
-                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myrequest')"><i class="custom-i fa fa-file-text" aria-hidden="true"></i> My requests</a>
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myrequest')"><i
+                        class="custom-i fa fa-file-text" aria-hidden="true"></i> My requests</a>
                   </li>
                   <li class="list-action">
-                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfeedback')"><i class="custom-i fa fa-comments" aria-hidden="true"></i> My feedback</a>
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfeedback')"><i
+                        class="custom-i fa fa-comments" aria-hidden="true"></i> My feedback</a>
                   </li>
                 </ul>
                 <!-- end -->
@@ -141,23 +145,23 @@
                   <div class="tab-pane active" id="profile">
                     <form class="form registerform" role="form">
                       <div class="form-group">
-                        <label for="name" class="form-label">Name</label>
-                        <input class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
+                        <label class="form-label">Name</label>
+                        <input id="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
                         <span class="form-message"></span>
                       </div>
                       <div class="form-group">
-                        <label for="name" class="form-label">Phone</label>
-                        <input class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
+                        <label class="form-label">Phone</label>
+                        <input id="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
                         <span class="form-message"></span>
                       </div>
                       <div class="form-group">
-                        <label for="name" class="form-label">Email</label>
-                        <input class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
+                        <label for="account_email" class="form-label">Email</label>
+                        <input id="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
                         <span class="form-message"></span>
                       </div>
                       <div class="form-group">
-                        <label for="name" class="form-label">Address</label>
-                        <input class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
+                        <label for="account_address" class="form-label">Address</label>
+                        <input id="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                         <span class="form-message"></span>
                       </div>
                       <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
@@ -165,28 +169,15 @@
                       <div class="form-group">
                         <label for="name" class="form-label">Avatar</label>
                         <br />
-                        <!-- <button type="button" class="btn btn-round btn-info" id="upload_widget"><i
-                            class="fa fa-download"></i> Upload</button> -->
-                        <button type="button" id="upload_widget" class="upload-btn btn btn-b btn-round form-control">
+                        <button type="button" id="upload_widget" class="upload-btn btn btn-info btn-round">
                           <i class="fa fa-download"></i> Upload image
                         </button>
-                        <div class="thumbnails">
-                          <ul class="cloudinary-thumbnails">
-                            <li class="cloudinary-thumbnail" data-cloudinary="">
-                              <img src="" style="width: 300px; height: 300px" />
-                              <a href="#" class="cloudinary-delete">x</a>
-                            </li>
-                          </ul>
-                        </div>
-
+                        <input type="hidden" id="account_avatar">
                         <span class="form-message"></span>
                       </div>
-                      <!-- end -->
-                      <div>
-                        <button type="submit" class="btn btn-b btn-round btnSubmit">
-                          <i class="fa fa-save"></i> Save
-                        </button>
-                      </div>
+                      <button type="submit" class="btn btn-b btn-round btnSubmitProfile pull-right">
+                        <i class="fa fa-save"></i> Save
+                      </button>
                     </form>
                   </div>
                   <!-- Add new food -->
@@ -199,8 +190,19 @@
                       </div>
                       <div class="form-group">
                         <label for="name" class="form-label">Image Food</label>
-                        <input class="form-control" type="file" />
-                        <input type="hidden" id="imageFoods" />
+                        <br />
+                        <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
+                          <i class="fa fa-download"></i> Upload image
+                        </button>
+                        <div class="thumbnailsFood">
+                          <ul class="cloudinary-thumbnails">
+                            <li class="cloudinary-thumbnail" data-cloudinary="">
+                              <img src="" style="width: 300px; height: 300px" />
+                              <a href="#" class="cloudinary-delete">x</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <input type="hidden" id="imageFoods">
                         <span class="form-message"></span>
                       </div>
                       <div class="form-group">
@@ -244,7 +246,7 @@
                       </div>
                     </form>
                   </div>
-                  <!-- List order -->
+                  <!-- List of food -->
                   <div class="tab-pane" id="listFood">
                     <div class="card radius-10">
                       <div class="card-body">
@@ -252,53 +254,56 @@
                           <table class="table align-middle mb-0">
                             <thead class="table-light">
                               <tr>
-                                <th>Roll Number</th>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Created At</th>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Manufacture Date</th>
+                                <th>Expiration Date</th>
                                 <th>Status</th>
-                                <th>Edit</th>
+                                <th>Created At</th>
                                 <th></th>
                                 <th></th>
                               </tr>
                             </thead>
-                            <tbody id="list-student">
-                              <tr>
-                                <td>#897656</td>
-                                <td>
-                                  <div class="d-flex align-items-center">
-                                    <h6 class="mb-0 font-16" style="margin: 0">
-                                      Light Blue Chair
-                                    </h6>
-                                  </div>
-                                </td>
-                                <td>Brooklyn Zeo</td>
-                                <td>12 Jul 2020</td>
-                                <td>$64.00</td>
-                                <td>
-                                  <div class="d-flex align-items-center text-danger">
-                                    <span>Pending</span>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div class="d-flex order-actions">
-                                    <a onclick="" class="ms-4"><i class="fa fa-gavel"></i></a>
-                                  </div>
-                                </td>
-                                <td>
-                                  <a onclick="" class=""><i class="fa fa-trash-o"></i></a>
-                                </td>
-                              </tr>
+                            <tbody id="list-food">
                             </tbody>
                           </table>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <!-- list request -->
                   <div class="tab-pane" id="listRequest">
-
+                    <div class="card radius-10">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Manufacture Date</th>
+                                <th>Expiration Date</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th></th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody id="list-student">
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  <!-- detail request -->
                   <div class="tab-pane" id="detailRequest"></div>
+                  <!-- feedback -->
                   <div class="tab-pane" id="feedback"></div>
                 </div>
               </div>
@@ -334,84 +339,23 @@
 
   <!-- <script src="./assets/js/app.js"></script> -->
   <script>
-    // var myAccount = document.querySelector(".my-account");
-    // var myOrder = document.querySelector(".my-request");
-    // myAccount.classList.add("li-active");
-
-    // function myaccount() {
-    //   myAccount.classList.forEach(function (value) {
-    //     if (value !== "li-active") {
-    //       myAccount.classList.add("li-active");
-    //     }
-    //   });
-    //   myOrder.classList.forEach(function (value) {
-    //     if (value == "li-active") {
-    //       myOrder.classList.remove("li-active");
-    //     }
-    //   });
-    // }
-    // function myorder() {
-    //   myOrder.classList.forEach(function (value) {
-    //     if (value !== "li-active") {
-    //       myOrder.classList.add("li-active");
-    //     }
-    //   });
-    //   myAccount.classList.forEach(function (value) {
-    //     if (value == "li-active") {
-    //       myAccount.classList.remove("li-active");
-    //     }
-    //   });
-    //   listStudent.innerHTML = htmls.join("");
-    // }
-
-    // function guests(role) {
-    //   if (role == "guests") {
-    //     document.getElementById("addnew-food-donor").style.display = "none";
-    //   }
-    // }
-
-
-  </script>
-  <script>
-    function started() {
-      var tokenaccount = document.cookie;
-      if (tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === '') {
-        location.replace('../login_register.html');
-
+    function guests(role) {
+      if (role == "guests") {
+        document.getElementById("addnew-food-donor").style.display = "none";
       }
-
-      // Call Api
-      // var listStudent = document.querySelector('#list-student');
-      // var studentAPI = 'http://localhost:8080/api/v1/students';
-      // function start(){
-      //     getStudent(function(students){
-      //         renderStudent(students);
-      //     });
-    };
-      // start();
-      // GET
+    }
   </script>
-
-  //
   <!-- <script src="./assets/js/app.js"></script> -->
   <script>
     function started() {
       var tokenaccount = document.cookie;
-      if (
-        tokenaccount === null ||
-        tokenaccount === undefined ||
-        tokenaccount === NaN ||
-        tokenaccount === ""
-      ) {
-        location.replace("../login_register.html");
-      }
+      // if (tokenaccount) {
+      //   location.replace("../login_register.html");
+      // }
     }
     started();
 
-    $(function () {
-      $("#header").load("./inc/header.html");
-      $("#footer").load("./inc/footer.html");
-    });
+    
   </script>
 </body>
 
