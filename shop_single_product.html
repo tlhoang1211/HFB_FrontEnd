@@ -267,7 +267,7 @@
                               <h3 class="modal-heading">Send message</h3>
                           </div>
                           <div class="modal-body">
-                              <form action="" method="POST">
+                              <form id="formMessageRequest" action="" method="POST">
                                   <div>
                                       <div class="form-group">
                                           <label for="messageModal" class="form-label">Say something to Food Donor</label>
@@ -310,6 +310,7 @@
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="./assets/js/validator.js"></script>
 
     <!-- <script src="./assets/js/app.js"></script> -->
     <script>
@@ -318,14 +319,16 @@
         $("#footer").load("../inc/footer.html"); 
       });
 
-      
+      // lay id theo url
       let params = (new URL(document.URL)).searchParams;
       var id = params.get('id');
+
       var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
       var shopItem = document.querySelector('.view-image-product');
       var viewInfoProduct = document.querySelector('.view-info-product');
       var listFoodCategory;
       
+      // Get InfoFood
       function getInfoFood(){
 				fetch(getDetailFood,{
           method: 'GET',
@@ -500,7 +503,8 @@
 				.catch(error => console.log(error));
       }
 			getInfoFood()
-      console.log(listFoodCategory);
+
+      // Add To Cart
       var modal = document.querySelector('.modal');
       function addToCart(){
         var cookie = document.cookie;
@@ -511,10 +515,12 @@
         }
       }
 
+      // Close Modal Message
       function closeSendMail(){
 				modal.style.display = 'none';
 			}
 
+      // Send Request
       function sendRequest(){
         var pairs = document.cookie.split(";");
         var cookies = {};
@@ -528,8 +534,8 @@
         var message = document.querySelector('#messageModal').value;
         // get Id User
         var idAccount;
-        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
-        fetch(getDetailFood,{
+        var getUserByUsername = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        fetch(getUserByUsername,{
           method: 'GET',
           headers: {
             "Authorization":`Bearer ${token}`
@@ -543,9 +549,43 @@
         .catch(error => console.log(error));
 
         // post request
+        var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
+        
+        
         function postrequest(){
-          var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
-          fetch(postrequestAPI, {
+          fetch(getDetailFood,{
+            method: 'GET'
+          })
+          .then(response => response.json())
+          .then(itemFood => {
+            console.log(itemFood);
+            if(itemFood.data.createdBy == idAccount){
+              alert('ban khong the xin food cua chinh minh');
+            }else {
+              var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
+              fetch(getRequestById,{
+                method: 'GET',
+                headers: {
+                "Authorization":`Bearer ${token}`
+                }
+              })
+              .then(response => response.json())
+              .then(itemRequest => {
+                console.log(itemRequest.status);
+                console.log(getRequestById);
+                if(itemRequest.status == 200){
+                  alert('ban da xin do an nay, vui long cho nguoi ban xac nhan')
+                }else{
+                  createRequest();
+                };
+              })
+            }
+
+            
+          })
+
+          function createRequest(){
+            fetch(postrequestAPI, {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -565,9 +605,10 @@
 							console.log(error);
 						});
 					}
+          }
       }
 
-      
+      // Chuyen time tu string sang long
       function getTimeFromString2(strDate) {
           var arrDate = strDate.split('/');
           var year = parseInt(arrDate[2]);
@@ -575,6 +616,7 @@
           var date = parseInt(arrDate[0]);
           return new Date(year, month, date).getTime();
       }
+      
     </script>
     <script>
       // slides image
