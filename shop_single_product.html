@@ -54,6 +54,8 @@
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
 
     <link rel="stylesheet" href="./assets/css/repository.css">
+
+    <link rel="stylesheet" href="./assets/css/notify_alert.css">
     <style>
       .img-avatar{
         pointer-events: none;
@@ -147,11 +149,11 @@
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="description">
-                    <p>Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators. To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
-                    <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p>
+                    <!-- <p>Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators. To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
+                    <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p> -->
                   </div>
                   <div class="tab-pane" id="data-sheet">
-                    <table class="table table-striped ds-table table-responsive">
+                    <!-- <table class="table table-striped ds-table table-responsive">
                       <tbody>
                         <tr>
                           <th>Title</th>
@@ -174,7 +176,7 @@
                           <td>Somebrand</td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> -->
                   </div>
                 </div>
               </div>
@@ -197,7 +199,7 @@
           </div>
         </section>
         <hr class="divider-w">
-        <section class="module">
+        <!-- <section class="module">
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
@@ -252,10 +254,10 @@
               </div>
             </div>
           </div>
-        </section>
+        </section> -->
 
 
-        <!-- Modal layout -->
+        <!-- Modal send request layout -->
         <section class="modalLayout">
           <div class="modal">
               <div class="modal-overlay"></div>
@@ -267,7 +269,7 @@
                               <h3 class="modal-heading">Send message</h3>
                           </div>
                           <div class="modal-body">
-                              <form action="" method="POST">
+                              <form id="formMessageRequest" action="" method="POST">
                                   <div>
                                       <div class="form-group">
                                           <label for="messageModal" class="form-label">Say something to Food Donor</label>
@@ -287,6 +289,9 @@
               </div>
           </div>
         </section>
+
+        <!-- notifycation alert -->
+        <div id="toasts"></div>
         <div id="footer">
 
         </div>
@@ -310,22 +315,36 @@
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="./assets/js/validator.js"></script>
 
+    <script src="./assets/js/notify-alert.js"></script>
     <!-- <script src="./assets/js/app.js"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="./assets/js/notification.js"></script>
+
     <script>
       $(function(){
         $("#header").load("../inc/header.html"); 
-        $("#footer").load("../inc/footer.html"); 
+        $("#footer").load("../inc/footer.html");
+        
       });
-
-      
+      $(document).ready(function () {
+        Notification.config();})
+      // lay id theo url
       let params = (new URL(document.URL)).searchParams;
       var id = params.get('id');
+      if(id == null){
+        location.replace('../shop_product_col_4.html');
+      }
+
       var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
       var shopItem = document.querySelector('.view-image-product');
       var viewInfoProduct = document.querySelector('.view-info-product');
       var listFoodCategory;
       
+      // Get InfoFood
       function getInfoFood(){
 				fetch(getDetailFood,{
           method: 'GET',
@@ -345,21 +364,21 @@
                     </div>
                   
                     <div class="slider-info-food">
-                      <img src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100% ; max-height: 450px">
+                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100% ; max-height: 450px">
                     </div>
                   
                     <div class="slider-info-food">
-                      <img src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%; max-height: 450px">
+                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
                     </div>
                     <div>
                       <div class="column-img-info-food">
                         <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(1)" alt="The Woods">
                       </div>
                       <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633967084/hanoi_food_bank_project/uploaded_food/Rice/t1-1200x676_z9pfrm.jpg" style="width:100%" onclick="showSlides(2)" alt="Cinque Terre">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(2)" alt="Cinque Terre">
                       </div>
                       <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg" style="width:100%" onclick="showSlides(3)" alt="Mountains and fjords">
+                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(3)" alt="Mountains and fjords">
                       </div>
                     </div>
                   </div>
@@ -394,7 +413,7 @@
                 </div>
                 <div class="row mb-20">
                   <div class="col-sm-12">
-                    <div class="product_meta">Categories:<a href="#"> ${listItems.data.category}, </a><a href="#">Clothing, </a><a href="#">T-shirts</a>
+                    <div class="product_meta">Categories:<a href="#"> ${listItems.data.category}</a>
                     </div>
                   </div>
                 </div>
@@ -439,68 +458,69 @@
           
           // tai day
           var relatedProducts = document.querySelector('.related-products');
-      console.log(listFoodCategory);
-      fetch(listFoodCategory)
-				.then(response => response.json())
-				.then(listFood => {
-          let myPromise = new Promise(function(myResolve) {
-            // console.log(listFood.data.content);
-					  var htmlsItem = listFood.data.content.map(function(item){
-              return `
-                <div class="col-sm-6 col-md-3 col-lg-3" id="shop-item-${item.id}">
-                  <div class="shop-item">
-                    <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                    <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+          console.log(listFoodCategory);
+          fetch(listFoodCategory)
+            .then(response => response.json())
+            .then(listFood => {
+              let myPromise = new Promise(function(myResolve) {
+                // console.log(listFood.data.content);
+                var htmlsItem = listFood.data.content.map(function(item){
+                  return `
+                    <div class="col-sm-6 col-md-3 col-lg-3" id="shop-item-${item.id}">
+                      <div class="shop-item">
+                        <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                        <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+                        </div>
+                        <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
+                        <p id="countdown-${item.id}"></p>
+                      </div>
                     </div>
-                    <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                    <p id="countdown-${item.id}"></p>
-                  </div>
-                </div>
-                `
-              })
-              relatedProducts.innerHTML = htmlsItem.join('');
-              myResolve(); // when successful
-            });
+                    `
+                  })
+                  relatedProducts.innerHTML = htmlsItem.join('');
+                  myResolve(); // when successful
+                });
 
-            myPromise.then(
-              function() { 
-                listFood.data.content.map(function(item2){
-                  var tet = getTimeFromString2(item2.expirationDate);
-                  run();
-                  
-                  // Tổng số giây 
-                  var countDown = setInterval(run,1000);
-                  function run(){
-                      var p = document.querySelector(`#countdown-${item2.id}`);
-                      var now = new Date().getTime();
-                      //Số s đến thời gian hiện tại
-                      var timeRest = tet - now;
-                      //Số s còn lại để đến tết;
-                      var day = Math.floor(timeRest/(1000*60*60*24));
-                      //Số ngày còn lại
-                      var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
-                      // Số giờ còn lại
-                      var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
-                      // Số phút còn lại
-                      var sec = Math.floor(timeRest%(1000*60)/(1000));
-                      // Số giây còn lại
-                      if(timeRest <= 0){
-                        clearInterval(countDown);
-                        document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
+                myPromise.then(
+                  function() { 
+                    listFood.data.content.map(function(item2){
+                      var tet = getTimeFromString2(item2.expirationDate);
+                      run();
+                      
+                      // Tổng số giây 
+                      var countDown = setInterval(run,1000);
+                      function run(){
+                          var p = document.querySelector(`#countdown-${item2.id}`);
+                          var now = new Date().getTime();
+                          //Số s đến thời gian hiện tại
+                          var timeRest = tet - now;
+                          //Số s còn lại để đến tết;
+                          var day = Math.floor(timeRest/(1000*60*60*24));
+                          //Số ngày còn lại
+                          var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
+                          // Số giờ còn lại
+                          var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
+                          // Số phút còn lại
+                          var sec = Math.floor(timeRest%(1000*60)/(1000));
+                          // Số giây còn lại
+                          if(timeRest <= 0){
+                            clearInterval(countDown);
+                            document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
+                          }
+                          p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
                       }
-                      p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
+                    })
                   }
-                })
-              }
-            );
-          
-        })
-        .catch(error => console.log(error));
-				})
-				.catch(error => console.log(error));
-      }
+                );
+              
+            })
+            .catch(error => console.log(error));
+            })
+            .catch(error => console.log(error));
+          }
 			getInfoFood()
-      console.log(listFoodCategory);
+
+      // Add To Cart
       var modal = document.querySelector('.modal');
       function addToCart(){
         var cookie = document.cookie;
@@ -511,10 +531,12 @@
         }
       }
 
+      // Close Modal Message
       function closeSendMail(){
 				modal.style.display = 'none';
 			}
 
+      // Send Request
       function sendRequest(){
         var pairs = document.cookie.split(";");
         var cookies = {};
@@ -528,8 +550,8 @@
         var message = document.querySelector('#messageModal').value;
         // get Id User
         var idAccount;
-        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
-        fetch(getDetailFood,{
+        var getUserByUsername = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        fetch(getUserByUsername,{
           method: 'GET',
           headers: {
             "Authorization":`Bearer ${token}`
@@ -543,31 +565,82 @@
         .catch(error => console.log(error));
 
         // post request
+        var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
+
         function postrequest(){
-          var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
-          fetch(postrequestAPI, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-              "Authorization":`Bearer ${token}`
-						},
-						body: JSON.stringify({
-              'userId': idAccount,
-						  'foodId': id,
-						  'message': message
-            })})
-						.then(response => response.json())
-						.then(data => {
-							console.log(data);
-							alert('Success!');
-						})
-						.catch(function(error){
-							console.log(error);
-						});
-					}
+          fetch(getDetailFood,{
+            method: 'GET'
+          })
+          .then(response => response.json())
+          .then(itemFood => {
+            console.log(itemFood);
+
+            if(itemFood.data.createdBy == idAccount){
+              // alert('ban khong the xin food cua chinh minh');
+              createNotification('ban khong the xin food cua chinh minh', 'error')
+            }else {
+              var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
+              fetch(getRequestById,{
+                method: 'GET',
+                headers: {
+                "Authorization":`Bearer ${token}`
+                }
+              })
+              .then(response => response.json())
+              .then(itemRequest => {
+                console.log(itemRequest.status);
+                console.log(getRequestById);
+                if(itemRequest.status == 200){
+                  // alert('ban da xin do an nay, vui long cho nguoi ban xac nhan')
+                  createNotification('ban da xin do an nay, vui long cho nguoi ban xac nhan', 'error');
+                }else{
+                  fetch(postrequestAPI, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      "Authorization":`Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                      'userId': idAccount,
+                      'foodId': id,
+                      'message': message
+                    })})
+                    .then(response => response.json())
+                    .then(data => {
+                      console.log(data);
+                      var today = new Date();
+                      var time = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear() +" "+ today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                      // alert('Success!');
+                      modal.style.display = 'none';
+                      createNotification('Success!', 'success')
+                      
+                      
+                      Notification.send(itemFood.data.createdBy, {
+                        "foodid": id,
+                        "avatar": itemFood.data.avatar,
+                        "title": "Someone is asking you about food",
+                        "message":"Time request: " + time,
+                        "status": 0
+                      })
+                      console.log("foodid: "+ id+
+                        "iduser:" + itemFood.data.createdBy+
+                        "avatar: "+ itemFood.data.avatar+
+                        "title: "+ "Someone is asking you about food"+
+                        "message: "+"Time request: " + time);
+                    })
+                    .catch(function(error){
+                      console.log(error);
+                    });
+                };
+              })
+            }
+
+            
+          })
+          }
       }
 
-      
+      // Chuyen time tu string sang long
       function getTimeFromString2(strDate) {
           var arrDate = strDate.split('/');
           var year = parseInt(arrDate[2]);
@@ -575,6 +648,9 @@
           var date = parseInt(arrDate[0]);
           return new Date(year, month, date).getTime();
       }
+      
+
+        
     </script>
     <script>
       // slides image
