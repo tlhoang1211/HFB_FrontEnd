@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../assets/css/notify.css">
+<link rel="stylesheet" href="./assets/css/notify.css">
 <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation"  style="background-color: black; padding: 0;">
     <div class="container">
       <div class="navbar-header">
@@ -35,9 +35,9 @@
             <a class="icon-bell" href=""><i style="font-size: 16px;" class="fa fa-bell-o"></i></a>
             <div class="notification-box">
               <div class="header__notify">
-                <header class="header__notify-header">
+                <!-- <header class="header__notify-header">
                   <h6>Notifycation</h6>
-                </header>
+                </header> -->
                 <ul class="header__notify-list" id="notifycation">
                   
                 </ul>
@@ -50,4 +50,122 @@
         </ul>
       </div>
     </div>
-</nav>
+  </nav>
+
+  <script>
+    $(document).ready(function () {
+        Notification.config();})
+
+    document.getElementById ("logout").addEventListener ("click", logoutAccount);
+    var loginregister = document.querySelector('#login-register');
+    var useraccount = document.querySelector('#user-account');
+    var notifycation = document.querySelector('.navbar__item--has-notify');
+
+    var token = null;
+    var usernameAccount = null;
+    
+    // logout
+    function logoutAccount(){
+      document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+      document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+      token = null;
+      usernameAccount = null;
+      start();
+      if(location.href == 'http://127.0.0.1:5500/tabs_and_accordions.html'){
+        location.replace('../index_shop.html');
+      }else{
+        location.reload();
+      }
+    }
+    useraccount.style.display = 'none';
+    notifycation.style.display = 'none';
+    
+    start();
+    function start(){
+      if(document.cookie != null && document.cookie != ''){
+        var pairs = document.cookie.split(";");
+        var cookies = {};
+        for (var i=0; i<pairs.length; i++){
+          var pair = pairs[i].split("=");
+          cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
+        }
+        token = cookies.token;
+        usernameAccount = cookies.username;
+      }
+      if(token ===null || token === undefined || token === NaN || token === ''){
+        
+        loginregister.style.display = 'block';
+        useraccount.style.display = 'none';
+        notifycation.style.display = 'none';
+      }else {
+        loginregister.style.display = 'none';
+        useraccount.style.display = 'block';
+        notifycation.style.display = 'block';
+
+        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        var viewAccount = document.querySelector('.navbar__user');
+        fetch(getDetailFood,{
+          method: 'GET',
+          headers: {
+            "Authorization":`Bearer ${token}`
+          }
+        })
+        .then(response => response.json())
+        .then(account => {
+          var htmlsItem = `
+                <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+                    src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
+                <span>${account.data.name}</span>
+                `
+          viewAccount.innerHTML = htmlsItem;
+          var li= '';
+          Notification.show(account.data.id, function (listNotify) {
+            if(listNotify==[] || listNotify == null || listNotify == undefined){
+              // li  += `
+              //   <li >
+                  
+              //   </li>
+              // `;
+            }else{
+                  listNotify.forEach(function (child) {
+                    console.log(child.val().status);
+                      li  += `
+                      <li onclick="clickview()" class="header__notify-item header__notify-item--viewed" data-id="${child.key}">
+                          <a href="" class="header__notify-link">
+                            <img src="https://res.cloudinary.com/vernom/image/upload/${child.val().avatar}" alt="" class="header__notify-img">
+                            <div class="header__notify-info">
+                              <span class="header__notify-name">${child.val().title}</span>
+                              <span class="header__notify-des">${child.val().message}</span>
+                            </div>
+                          </a>
+                        </li>
+                      `;
+                  })
+                  $('#notifycation').html(li)
+                  
+          }
+          
+
+          function clickview(){
+            var id = $(this).data("id");
+            Notification.update(5, id, {
+                "status" : 1
+            })
+            this.classList.remove('header__notify-item--viewed');
+          }
+          // $(document).on('click', '.header__notify-item', function () {
+          //   var id = $(this).data("id");
+          //   Notification.update(5, id, {
+          //       "status" : 1
+          //   })
+          //   this.classList.remove('header__notify-item--viewed');
+          // });     
+        })
+
+        })
+        .catch(error => console.log(error));
+      }
+    }
+
+    
+  </script>

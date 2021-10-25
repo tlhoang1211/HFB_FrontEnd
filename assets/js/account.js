@@ -21,39 +21,25 @@ Validator({
 document.getElementById("newFood").addEventListener("click", function(){
     var nameFood = document.getElementById("nameFood").value;
     var category = document.getElementById("category").value;
-    var manufactureDate = document.getElementById("manufactureDate").value;
     
     var expirationDate = document.getElementById("expirationDate").value;
-    // if (manufactureDate){
-    //     manufactureDate = getTimeFromString(manufactureDate);
-    // }
-    // if (expirationDate){
-    //     expirationDate = getTimeFromString(manufactureDate);
-    // } else {
-    //     $('.alert-danger').alert();
-    //     return false;
-    // }
-    // if (expirationDate && manufactureDate) {
-    //     if (manufactureDate > expirationDate) {
-    //         $('.alert-danger').alert();
-    //         return false;
-    //     }
-    // }
-    // if (listImageFood.length == 0) {
-    //     $('.alert-danger').alert();
-    //     return false;
-    // }
+    if (!expirationDate){
+      $('.alert-danger').alert();
+      return false;
+    }
+    if (listImageFood.length == 0) {
+        $('.alert-danger').alert();
+        return false;
+    }
     var description = document.getElementById("description").value;
     var dataPost = {
         name: nameFood || '',
         avatar: listImageFood[0],
         images: listImageFood.join(","),
-        manufactureDate: "25-10-2021 16:00",
-        expirationDate: "26-10-2021 16:00",
-        createdBy: 2,
+        expirationDate: document.getElementById("expirationDate").value,
+        createdBy: objAccount.id,
         categoryId: parseInt(category),
         description: description
-        // document.getElementById("manufactureDate").value
     }
         fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
             method: 'POST',
@@ -65,10 +51,10 @@ document.getElementById("newFood").addEventListener("click", function(){
         })
         .then(response => response.json())
         .then(function(data){
-            console.log(data)
+            
         })
         .catch(function(error){
-            console.log(error);
+            
         });
 }, false);
 
@@ -108,7 +94,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
   },
   (error, result) => {
     if (!error && result && result.event === "success") {
-      
+      listImageFood.push(result.info.path);
       var arrayThumnailInputs = document.querySelectorAll(
         'input[name="thumbnailsFood[]"]'
       );
@@ -116,7 +102,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
         arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
           "data-cloudinary-public-id"
         );
-        listImageFood.push(arrayThumnailInputs[i].value);
+        
       }
     }
   }
@@ -255,7 +241,6 @@ function updateAccount(){
 
 // get data food
 function getListFood(){
-  console.log(1111)
   fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1',{
     method: 'GET',
     headers: {
@@ -272,15 +257,13 @@ function getListFood(){
 }
 
 function renderListFood(data){
-  console.log(data)
   var count = 0;
   var html = data.map(function (e){
-    console.log(e)
     count++;
     return `<tr>
     <td>${count}</td>
     <td>${e.name || ''}</td>
-    <td><img src="${e.avatar || ''}" style="width: 30px;height: 30px;"/></td>
+    <td><img src="https://res.cloudinary.com/vernom/image/upload/${e.avatar || ''}" style="width: 30px;height: 30px;"/></td>
     <td>${e.categoryId || ''}</td>
     <td>${e.updatedAt}</td>
     <td>${e.expirationDate}</td>
@@ -292,3 +275,7 @@ function renderListFood(data){
   })
   return html;
 }
+// setTimeout(function(){
+//   $('#addFood #manufactureDate').datetimepicker();
+//   $('#addFood #expirationDate').datetimepicker();
+// }, 0)
