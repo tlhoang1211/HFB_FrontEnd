@@ -36,51 +36,35 @@
             <div class="notification-box">
               <div class="header__notify">
                 <header class="header__notify-header">
-                  <h6>Thong bao moi nhan</h6>
+                  <h6>Notifycation</h6>
                 </header>
-                <ul class="header__notify-list">
-                  <li class="header__notify-item header__notify-item--viewed">
-                    <a href="" class="header__notify-link">
-                      <img src="https://binhduongconstruction.com/wp-content/uploads/2020/04/icon-like.png" alt="" class="header__notify-img">
-                      <div class="header__notify-info">
-                        <span class="header__notify-name">aaaaaaabbbbbbbbbbbbbbbbbbb</span>
-                        <span class="header__notify-des">bbbbbbbbbbbbbaaaaaaaaaaaaa</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li class="header__notify-item">
-                    <a href="" class="header__notify-link">
-                      <img src="https://binhduongconstruction.com/wp-content/uploads/2020/04/icon-like.png" alt="" class="header__notify-img">
-                      <div class="header__notify-info">
-                        <span class="header__notify-name">aaaaaaa</span>
-                        <span class="header__notify-des">bbbbbbbbbbbbb</span>
-                      </div>
-                    </a>
-                  </li>
+                <ul class="header__notify-list" id="notifycation">
+                  
                 </ul>
                 <footer class="header__notify-footer">
-                  <a href="" class="header__notify-footer-btn">Xem tat ca</a>
+                  <a href=""  class="header__notify-footer-btn">View All</a>
                 </footer>
               </div>
             </div>
           </li>
-          
-          
         </ul>
       </div>
     </div>
   </nav>
 
   <script>
+    $(document).ready(function () {
+        Notification.config();})
+
     document.getElementById ("logout").addEventListener ("click", logoutAccount);
     var loginregister = document.querySelector('#login-register');
     var useraccount = document.querySelector('#user-account');
     var notifycation = document.querySelector('.navbar__item--has-notify');
 
-
     var token = null;
     var usernameAccount = null;
     
+    // logout
     function logoutAccount(){
       document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
       document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
@@ -134,6 +118,50 @@
                 <span>${account.data.name}</span>
                 `
           viewAccount.innerHTML = htmlsItem;
+          var li= '';
+          Notification.show(account.data.id, function (listNotify) {
+            if(listNotify==[] || listNotify == null || listNotify == undefined){
+              // li  += `
+              //   <li >
+                  
+              //   </li>
+              // `;
+            }else{
+                  listNotify.forEach(function (child) {
+                    console.log(child.val().status);
+                      li  += `
+                      <li onclick="clickview()" class="header__notify-item header__notify-item--viewed" data-id="${child.key}">
+                          <a href="" class="header__notify-link">
+                            <img src="https://res.cloudinary.com/vernom/image/upload/${child.val().avatar}" alt="" class="header__notify-img">
+                            <div class="header__notify-info">
+                              <span class="header__notify-name">${child.val().title}</span>
+                              <span class="header__notify-des">${child.val().message}</span>
+                            </div>
+                          </a>
+                        </li>
+                      `;
+                  })
+                  $('#notifycation').html(li)
+                  
+          }
+          
+
+          function clickview(){
+            var id = $(this).data("id");
+            Notification.update(5, id, {
+                "status" : 1
+            })
+            this.classList.remove('header__notify-item--viewed');
+          }
+          // $(document).on('click', '.header__notify-item', function () {
+          //   var id = $(this).data("id");
+          //   Notification.update(5, id, {
+          //       "status" : 1
+          //   })
+          //   this.classList.remove('header__notify-item--viewed');
+          // });     
+        })
+
         })
         .catch(error => console.log(error));
       }

@@ -144,6 +144,8 @@
     />
     <link rel="stylesheet" href="./assets/css/validator.css" />
     <link rel="stylesheet" href="./assets/css/repository.css" />
+
+    <link rel="stylesheet" href="./assets/css/notify_alert.css">
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -319,6 +321,8 @@
             </div>
           </div>
         </section>
+        
+        <div id="toasts"></div>
         <div id="footer"></div>
       </div>
       <div class="scroll-up">
@@ -344,8 +348,12 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/main.js"></script>
 
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="./assets/js/notification.js"></script>
     <!-- <script src="./assets/js/app.js"></script> -->
     <script src="./assets/js/validator.js"></script>
+    <script src="./assets/js/notify-alert.js"></script>
 
     <script>
       $(function () {
@@ -355,6 +363,7 @@
 
       if(document.cookie){
        alert('You are logged in!');
+      //  createNotification('You are logged in!', 'warning')
        location.replace('../tabs_and_accordions.html');
       }
 
@@ -410,7 +419,8 @@
               window.history.back();
               // location.replace('../index_shop.html');
             } else {
-              alert("Incorrect account or password");
+              // alert("Incorrect account or password");
+              createNotification('Incorrect account or password', 'error');
             }
           })
           .catch(function (error) {
