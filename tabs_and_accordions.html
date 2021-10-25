@@ -1,1064 +1,362 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hanoi Food Bank</title>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link
-      rel="apple-touch-icon"
-      sizes="57x57"
-      href="assets/images/favicons/apple-icon-57x57.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="60x60"
-      href="assets/images/favicons/apple-icon-60x60.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="72x72"
-      href="assets/images/favicons/apple-icon-72x72.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="assets/images/favicons/apple-icon-76x76.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="114x114"
-      href="assets/images/favicons/apple-icon-114x114.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="120x120"
-      href="assets/images/favicons/apple-icon-120x120.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="144x144"
-      href="assets/images/favicons/apple-icon-144x144.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="152x152"
-      href="assets/images/favicons/apple-icon-152x152.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/images/favicons/apple-icon-180x180.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="192x192"
-      href="assets/images/favicons/android-icon-192x192.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/images/favicons/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="96x96"
-      href="assets/images/favicons/favicon-96x96.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/images/favicons/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
-    <meta
-      name="msapplication-TileImage"
-      content="assets/images/favicons/ms-icon-144x144.png"
-    />
-    <meta name="theme-color" content="#ffffff" />
+  <title>Hanoi Food Bank</title>
 
-    <!-- Default stylesheets-->
-    <link
-      href="assets/lib/bootstrap/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Template specific stylesheets-->
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Volkhov:400i"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"
-      rel="stylesheet"
-    />
-    <link href="assets/lib/animate.css/animate.css" rel="stylesheet" />
-    <link
-      href="assets/lib/components-font-awesome/css/font-awesome.min.css"
-      rel="stylesheet"
-    />
-    <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet" />
-    <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet" />
-    <link
-      href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/lib/magnific-popup/dist/magnific-popup.css"
-      rel="stylesheet"
-    />
-    <link
-      href="assets/lib/simple-text-rotator/simpletextrotator.css"
-      rel="stylesheet"
-    />
-    <!-- Main stylesheet and color file-->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link
-      id="color-scheme"
-      href="assets/css/colors/default.css"
-      rel="stylesheet"
-    />
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/images/favicons/apple-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/images/favicons/apple-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicons/apple-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/images/favicons/apple-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/images/favicons/apple-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/images/favicons/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicons/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicons/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="assets/images/favicons/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#ffffff" />
 
-    <link rel="stylesheet" href="assets/css/account-custom.css" />
+  <!-- Default stylesheets-->
+  <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Template specific stylesheets-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Volkhov:400i" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+  <link href="assets/lib/animate.css/animate.css" rel="stylesheet" />
+  <link href="assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="assets/lib/et-line-font/et-line-font.css" rel="stylesheet" />
+  <link href="assets/lib/flexslider/flexslider.css" rel="stylesheet" />
+  <link href="assets/lib/owl.carousel/dist/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="assets/lib/owl.carousel/dist/assets/owl.theme.default.min.css" rel="stylesheet" />
+  <link href="assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet" />
+  <link href="assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet" />
+  <!-- Main stylesheet and color file-->
+  <link href="assets/css/style.css" rel="stylesheet" />
+  <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="./assets/css/repository.css" />
-  </head>
+  <link rel="stylesheet" href="assets/css/account-custom.css" />
 
-  <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
-    <main>
-      <div class="page-loader">
-        <div class="loader">Loading...</div>
-      </div>
+  <link rel="stylesheet" href="./assets/css/repository.css" />
+</head>
 
-      <header id="header"></header>
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
+  <main>
+    <div class="page-loader">
+      <div class="loader">Loading...</div>
+    </div>
 
-      <div class="main">
-        <section
-          class="custom-header-img module bg-dark-30 about-page-header"
-          data-background="assets/images/about_bg.jpg"
-        >
-          <div class="container">
+    <header id="header"></header>
+
+    <div class="main">
+      <section class="custom-header-img module bg-dark-30 about-page-header"
+        data-background="assets/images/about_bg.jpg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+              <h1 class="module-title font-alt mb-0">
+                Tabs &amp; Accordions
+              </h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="module">
+        <div class="container">
+          <div>
             <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <h1 class="module-title font-alt mb-0">
-                  Tabs &amp; Accordions
-                </h1>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="module">
-          <div class="container">
-            <div>
-              <div class="row">
-                <div class="col-sm-2 col-md-2">
-                  <div class="gallery-item">
-                    <div class="gallery-image gallery-avatar">
-                      <a
-                        class="gallery"
-                        href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-                        title="Avatar"
-                      >
-                        <img
-                          id="avatar_account"
-                          src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-                          alt=""
-                          class="img-avatar"
-                        />
-                        <div class="gallery-caption">
-                          <div class="gallery-icon">
-                            <span class="icon-magnifying-glass"></span>
-                          </div>
+              <!-- sidebar left -->
+              <div class="col-sm-2 col-md-2">
+                <div class="gallery-item">
+                  <div class="gallery-image gallery-avatar">
+                    <a class="gallery"
+                      href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
+                      title="Avatar">
+                      <img id="avatar_account"
+                        src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
+                        alt="" class="img-avatar" style="min-height: 163px;"/>
+                      <div class="gallery-caption">
+                        <div class="gallery-icon">
+                          <span class="icon-magnifying-glass"></span>
                         </div>
-                      </a>
-                    </div>
+                      </div>
+                    </a>
                   </div>
-
-                  <!-- hoangtl2 _ 23/10/2021 _ edit view -->
-                  <!-- // start -->
-                  <h4 class="name-account">Name</h4>
-                  <ul class="list-option">
-                    <li class="list-action">
-                      <a onclick="myaccount()"
-                        ><i class="custom-i fa fa-user"></i> My account</a
-                      >
-                    </li>
-                    <li class="list-action">
-                      <a onclick="myorder()"
-                        ><i class="custom-i fa fa-cutlery"></i> My food</a
-                      >
-                    </li>
-                    <li class="list-action">
-                      <a href="#"
-                        ><i
-                          class="custom-i fa fa-file-text"
-                          aria-hidden="true"
-                        ></i>
-                        My requests</a
-                      >
-                    </li>
-                    <li class="list-action">
-                      <a href="#"
-                        ><i
-                          class="custom-i fa fa-comments"
-                          aria-hidden="true"
-                        ></i>
-                        My feedback</a
-                      >
-                    </li>
-                  </ul>
-                  <!-- end -->
                 </div>
 
-                <div class="col-sm-10 col-md-10">
-                  <div role="tabpanel" class="my-account">
-                    <ul class="nav nav-tabs font-alt" role="tablist">
-                      <li class="active">
-                        <a href="#acount-information" data-toggle="tab">
-                          <span class="icon-tools-2"></span>Account information
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="tab-content content-des">
-                      <div class="tab-pane active" id="acount-information">
-                        <form class="form registerform" role="form">
-                          <div class="form-group">
-                            <label for="name" class="form-label">Name</label>
-                            <input
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter name"
-                              autocomplete="off"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label">Phone</label>
-                            <input
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter phone"
-                              autocomplete="off"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label">Email</label>
-                            <input
-                              class="form-control"
-                              type="email"
-                              placeholder="Enter email"
-                              autocomplete="off"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label">Address</label>
-                            <input
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter address"
-                              autocomplete="off"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
-                          <!-- start -->
-                          <div class="form-group">
-                            <label for="name" class="form-label">Avatar</label>
-                            <br />
-                            <!-- <button type="button" class="btn btn-round btn-info" id="upload_widget"><i
-                              class="fa fa-download"></i> Upload</button> -->
-                            <button
-                              type="button"
-                              id="upload_widget"
-                              class="upload-btn btn btn-b btn-round form-control"
-                            >
-                              <i class="fa fa-download"></i> Upload image
-                            </button>
-                            <div class="thumbnails">
-                              <ul class="cloudinary-thumbnails">
-                                <li
-                                  class="cloudinary-thumbnail"
-                                  data-cloudinary=""
-                                >
-                                  <img
-                                    src=""
-                                    style="width: 300px; height: 300px"
-                                  />
-                                  <a href="#" class="cloudinary-delete">x</a>
-                                </li>
-                              </ul>
-                            </div>
+                <!-- hoangtl2 _ 23/10/2021 _ edit view -->
+                <!-- // start -->
+                <!-- hiennv 24/10 update -->
+                <h4 class="name-account">Name</h4>
+                <ul class="list-option">
+                  <li class="list-action active">
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myaccount')"><i
+                        class="custom-i fa fa-user"></i> My account</a>
+                  </li>
+                  <li class="list-action">
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfood')"><i
+                        class="custom-i fa fa-cutlery"></i> My food</a>
+                  </li>
+                  <li class="list-action">
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myrequest')"><i
+                        class="custom-i fa fa-file-text" aria-hidden="true"></i> My requests</a>
+                  </li>
+                  <li class="list-action">
+                    <a onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfeedback')"><i
+                        class="custom-i fa fa-comments" aria-hidden="true"></i> My feedback</a>
+                  </li>
+                </ul>
+                <!-- end -->
+              </div>
+              <!-- tabpanel right -->
+              <div class="col-sm-10 col-md-10">
+                <ul class="nav nav-tabs font-alt">
+                  <li class="tab-account profile active">
+                    <a href="#profile" data-toggle="tab"> Information</a>
+                  </li>
+                  <li class="tab-account addFood d-none">
+                    <a href="#addFood" data-toggle="tab"> New food</a>
+                  </li>
+                  <li class="tab-account listFood d-none">
+                    <a href="#listFood" data-toggle="tab"> List of food</a>
+                  </li>
+                  <li class="tab-account listRequest d-none">
+                    <a href="#listRequest" data-toggle="tab"> Requests</a>
+                  </li>
+                  <li class="tab-account detailRequest d-none">
+                    <a href="#detailRequest" data-toggle="tab"> Details request</a>
+                  </li>
+                  <li class="tab-account feedback d-none">
+                    <a href="#feedback" data-toggle="tab"> Feedbacks</a>
+                  </li>
+                </ul>
 
-                            <span class="form-message"></span>
-                          </div>
-                          <!-- end -->
-                          <div>
-                            <button
-                              type="submit"
-                              class="btn btn-b btn-round btnSubmit"
-                            >
-                              <i class="fa fa-save"></i> Save
-                            </button>
-                          </div>
-                        </form>
+                <div class="tab-content">
+                  <!-- profile -->
+                  <div class="tab-pane active" id="profile">
+                    <form class="form registerform" role="form">
+                      <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input id="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
+                        <span class="form-message"></span>
                       </div>
-                      <div class="tab-pane" id="sales">
-                        To achieve this, it would be necessary to have uniform
-                        grammar, pronunciation and more common words.
+                      <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input id="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
+                        <span class="form-message"></span>
                       </div>
-                    </div>
+                      <div class="form-group">
+                        <label for="account_email" class="form-label">Email</label>
+                        <input id="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
+                        <span class="form-message"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="account_address" class="form-label">Address</label>
+                        <input id="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
+                        <span class="form-message"></span>
+                      </div>
+                      <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
+                      <!-- start -->
+                      <div class="form-group">
+                        <label for="name" class="form-label">Avatar</label>
+                        <br />
+                        <button type="button" id="upload_widget" class="upload-btn btn btn-info btn-round">
+                          <i class="fa fa-download"></i> Upload image
+                        </button>
+                        <input type="hidden" id="account_avatar">
+                        <span class="form-message"></span>
+                      </div>
+                      <button type="submit" class="btn btn-b btn-round btnSubmitProfile pull-right">
+                        <i class="fa fa-save"></i> Save
+                      </button>
+                    </form>
                   </div>
-                  <div role="tabpanel" class="my-food">
-                    <ul class="nav nav-tabs font-alt" role="tablist">
-                      <li class="active" id="addnew-food-donor">
-                        <a href="#addneworder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>Add new</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#listorder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Requests</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#support3" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Uploaded
-                          Food</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#sales2" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List of
-                          applicants</a
-                        >
-                      </li>
-                    </ul>
-
-                    <div class="tab-content content-des">
-                      <!-- Add new order -->
-                      <div class="tab-pane active" id="addneworder">
-                        <form class="form addform" role="form">
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Food Name</label
-                            >
-                            <input
-                              id="nameFood"
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter Food Name"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Image Food</label
-                            >
-                            <input class="form-control" type="file" />
-                            <input type="hidden" id="imageFoods" />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Category</label
-                            >
-                            <select
-                              name="category"
-                              id="category"
-                              class="form-control required"
-                            >
-                              <option selected disabled>Select</option>
-                              <option value="1">Drinks</option>
-                              <option value="2">Noodle</option>
-                              <option value="3">Bread</option>
-                              <option value="4">Rice</option>
-                              <option value="5">Meat</option>
-                              <option value="6">Seafood</option>
-                              <option value="7">Vegetables</option>
-                              <option value="8">Vegetarian Food</option>
-                              <option value="9">Fruit</option>
-                              <option value="10">Fast Food</option>
-                              <option value="11">Snacks</option>
-                              <option value="12">Others</option>
-                            </select>
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Manufacture Date</label
-                            >
-                            <input
-                              id="manufactureDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Expiration Date</label
-                            >
-                            <input
-                              id="expirationDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Description</label
-                            >
-                            <textarea
-                              id="description"
-                              class="form-control"
-                              rows="4"
-                              style="resize: vertical"
-                              placeholder="Enter Description"
-                            ></textarea>
-                            <span class="form-message"></span>
-                          </div>
-                          <div>
-                            <button
-                              id="newFood"
-                              type="button"
-                              class="btn btn-success btn-round btnSubmit"
-                            >
-                              <i class="fa fa-plus"></i> Add
-                            </button>
-                          </div>
-                        </form>
+                  <!-- Add new food -->
+                  <div class="tab-pane" id="addFood">
+                    <form class="form addform" role="form">
+                      <div class="form-group">
+                        <label for="name" class="form-label">Food Name</label>
+                        <input id="nameFood" class="form-control" type="text" placeholder="Enter Food Name" />
+                        <span class="form-message"></span>
                       </div>
-                      <!-- List order -->
-                      <div
-                        class="tab-pane"
-                        id="listorder"
-                        style="padding: 20px"
-                      >
-                        <div class="card radius-10">
-                          <div class="card-body">
-                            <div class="table-responsive">
-                              <table class="table align-middle mb-0">
-                                <thead class="table-light">
-                                  <tr>
-                                    <th>Roll Number</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Created At</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                    <th></th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody id="list-student">
-                                  <tr>
-                                    <td>#897656</td>
-                                    <td>
-                                      <div class="d-flex align-items-center">
-                                        <h6
-                                          class="mb-0 font-16"
-                                          style="margin: 0"
-                                        >
-                                          Light Blue Chair
-                                        </h6>
-                                      </div>
-                                    </td>
-                                    <td>Brooklyn Zeo</td>
-                                    <td>12 Jul 2020</td>
-                                    <td>$64.00</td>
-                                    <td>
-                                      <div
-                                        class="d-flex align-items-center text-danger"
-                                      >
-                                        <span>Pending</span>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="d-flex order-actions">
-                                        <a onclick="" class="ms-4"
-                                          ><i class="fa fa-gavel"></i
-                                        ></a>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <a onclick="" class=""
-                                        ><i class="fa fa-trash-o"></i
-                                      ></a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
+                      <div class="form-group">
+                        <label for="name" class="form-label">Image Food</label>
+                        <br />
+                        <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
+                          <i class="fa fa-download"></i> Upload image
+                        </button>
+                        <div class="thumbnailsFood">
+                          <ul class="cloudinary-thumbnails">
+                            <li class="cloudinary-thumbnail" data-cloudinary="">
+                              <img src="" style="width: 300px; height: 300px" />
+                              <a href="#" class="cloudinary-delete">x</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <input type="hidden" id="imageFoods">
+                        <span class="form-message"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="name" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-control required">
+                          <option selected disabled>Select</option>
+                          <option value="1">Drinks</option>
+                          <option value="2">Noodle</option>
+                          <option value="3">Bread</option>
+                          <option value="4">Rice</option>
+                          <option value="5">Meat</option>
+                          <option value="6">Seafood</option>
+                          <option value="7">Vegetables</option>
+                          <option value="8">Vegetarian Food</option>
+                          <option value="9">Fruit</option>
+                          <option value="10">Fast Food</option>
+                          <option value="11">Snacks</option>
+                          <option value="12">Others</option>
+                        </select>
+                        <span class="form-message"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="name" class="form-label">Manufacture Date</label>
+                        <input id="manufactureDate" class="form-control" type="datetime-local" />
+                        <span class="form-message"></span>
+                      </div>
+                      <div class="form-group">
+                        <label for="name" class="form-label">Expiration Date</label>
+                        <input id="expirationDate" class="form-control" type="datetime-local" />
+                      </div>
+                      <div class="form-group">
+                        <label for="name" class="form-label">Description</label>
+                        <textarea id="description" class="form-control" rows="4" style="resize: vertical"
+                          placeholder="Enter Description"></textarea>
+                        <span class="form-message"></span>
+                      </div>
+                      <div>
+                        <button id="newFood" type="button" class="btn btn-success btn-round btnSubmit">
+                          <i class="fa fa-plus"></i> Add
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- List of food -->
+                  <div class="tab-pane" id="listFood">
+                    <div class="card radius-10">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Manufacture Date</th>
+                                <th>Expiration Date</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th></th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody id="list-food">
+                            </tbody>
+                          </table>
                         </div>
                       </div>
-                      <div class="tab-pane" id="support3">
-                        The European languages are members of the same family.
-                        Their separate existence is a myth.
-                      </div>
-                      <div class="tab-pane" id="sales2">
-                        To achieve this, it would be necessary to have uniform
-                        grammar, pronunciation and more common words.
-                      </div>
                     </div>
                   </div>
-                  <div role="tabpanel" class="my-request">
-                    <ul class="nav nav-tabs font-alt" role="tablist">
-                      <li class="active" id="addnew-food-donor">
-                        <a href="#addneworder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>Add new</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#listorder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Requests</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#support3" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Uploaded
-                          Food</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#sales2" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List of
-                          applicants</a
-                        >
-                      </li>
-                    </ul>
-
-                    <div class="tab-content content-des">
-                      <!-- Add new order -->
-                      <div class="tab-pane active" id="addneworder">
-                        <form class="form addform" role="form">
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Food Name</label
-                            >
-                            <input
-                              id="nameFood"
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter Food Name"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Image Food</label
-                            >
-                            <input class="form-control" type="file" />
-                            <input type="hidden" id="imageFoods" />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Category</label
-                            >
-                            <select
-                              name="category"
-                              id="category"
-                              class="form-control required"
-                            >
-                              <option selected disabled>Select</option>
-                              <option value="1">Drinks</option>
-                              <option value="2">Noodle</option>
-                              <option value="3">Bread</option>
-                              <option value="4">Rice</option>
-                              <option value="5">Meat</option>
-                              <option value="6">Seafood</option>
-                              <option value="7">Vegetables</option>
-                              <option value="8">Vegetarian Food</option>
-                              <option value="9">Fruit</option>
-                              <option value="10">Fast Food</option>
-                              <option value="11">Snacks</option>
-                              <option value="12">Others</option>
-                            </select>
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Manufacture Date</label
-                            >
-                            <input
-                              id="manufactureDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Expiration Date</label
-                            >
-                            <input
-                              id="expirationDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Description</label
-                            >
-                            <textarea
-                              id="description"
-                              class="form-control"
-                              rows="4"
-                              style="resize: vertical"
-                              placeholder="Enter Description"
-                            ></textarea>
-                            <span class="form-message"></span>
-                          </div>
-                          <div>
-                            <button
-                              id="newFood"
-                              type="button"
-                              class="btn btn-success btn-round btnSubmit"
-                            >
-                              <i class="fa fa-plus"></i> Add
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- List order -->
-                      <div
-                        class="tab-pane"
-                        id="listorder"
-                        style="padding: 20px"
-                      >
-                        <div class="card radius-10">
-                          <div class="card-body">
-                            <div class="table-responsive">
-                              <table class="table align-middle mb-0">
-                                <thead class="table-light">
-                                  <tr>
-                                    <th>Roll Number</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Created At</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                    <th></th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody id="list-student">
-                                  <tr>
-                                    <td>#897656</td>
-                                    <td>
-                                      <div class="d-flex align-items-center">
-                                        <h6
-                                          class="mb-0 font-16"
-                                          style="margin: 0"
-                                        >
-                                          Light Blue Chair
-                                        </h6>
-                                      </div>
-                                    </td>
-                                    <td>Brooklyn Zeo</td>
-                                    <td>12 Jul 2020</td>
-                                    <td>$64.00</td>
-                                    <td>
-                                      <div
-                                        class="d-flex align-items-center text-danger"
-                                      >
-                                        <span>Pending</span>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="d-flex order-actions">
-                                        <a onclick="" class="ms-4"
-                                          ><i class="fa fa-gavel"></i
-                                        ></a>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <a onclick="" class=""
-                                        ><i class="fa fa-trash-o"></i
-                                      ></a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
+                  <!-- list request -->
+                  <div class="tab-pane" id="listRequest">
+                    <div class="card radius-10">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                              <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Category</th>
+                                <th>Manufacture Date</th>
+                                <th>Expiration Date</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th></th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody id="list-student">
+                              
+                            </tbody>
+                          </table>
                         </div>
                       </div>
-                      <div class="tab-pane" id="support3">
-                        The European languages are members of the same family.
-                        Their separate existence is a myth.
-                      </div>
-                      <div class="tab-pane" id="sales2">
-                        To achieve this, it would be necessary to have uniform
-                        grammar, pronunciation and more common words.
-                      </div>
                     </div>
                   </div>
-                  <div role="tabpanel" class="my-feedback">
-                    <ul class="nav nav-tabs font-alt" role="tablist">
-                      <li class="active" id="addnew-food-donor">
-                        <a href="#addneworder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>Add new</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#listorder" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Requests</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#support3" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List Uploaded
-                          Food</a
-                        >
-                      </li>
-                      <li>
-                        <a href="#sales2" data-toggle="tab"
-                          ><span class="icon-tools-2"></span>List of
-                          applicants</a
-                        >
-                      </li>
-                    </ul>
-
-                    <div class="tab-content content-des">
-                      <!-- Add new order -->
-                      <div class="tab-pane active" id="addneworder">
-                        <form class="form addform" role="form">
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Food Name</label
-                            >
-                            <input
-                              id="nameFood"
-                              class="form-control"
-                              type="text"
-                              placeholder="Enter Food Name"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Image Food</label
-                            >
-                            <input class="form-control" type="file" />
-                            <input type="hidden" id="imageFoods" />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Category</label
-                            >
-                            <select
-                              name="category"
-                              id="category"
-                              class="form-control required"
-                            >
-                              <option selected disabled>Select</option>
-                              <option value="1">Drinks</option>
-                              <option value="2">Noodle</option>
-                              <option value="3">Bread</option>
-                              <option value="4">Rice</option>
-                              <option value="5">Meat</option>
-                              <option value="6">Seafood</option>
-                              <option value="7">Vegetables</option>
-                              <option value="8">Vegetarian Food</option>
-                              <option value="9">Fruit</option>
-                              <option value="10">Fast Food</option>
-                              <option value="11">Snacks</option>
-                              <option value="12">Others</option>
-                            </select>
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Manufacture Date</label
-                            >
-                            <input
-                              id="manufactureDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                            <span class="form-message"></span>
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Expiration Date</label
-                            >
-                            <input
-                              id="expirationDate"
-                              class="form-control"
-                              type="datetime-local"
-                            />
-                          </div>
-                          <div class="form-group">
-                            <label for="name" class="form-label"
-                              >Description</label
-                            >
-                            <textarea
-                              id="description"
-                              class="form-control"
-                              rows="4"
-                              style="resize: vertical"
-                              placeholder="Enter Description"
-                            ></textarea>
-                            <span class="form-message"></span>
-                          </div>
-                          <div>
-                            <button
-                              id="newFood"
-                              type="button"
-                              class="btn btn-success btn-round btnSubmit"
-                            >
-                              <i class="fa fa-plus"></i> Add
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- List order -->
-                      <div
-                        class="tab-pane"
-                        id="listorder"
-                        style="padding: 20px"
-                      >
-                        <div class="card radius-10">
-                          <div class="card-body">
-                            <div class="table-responsive">
-                              <table class="table align-middle mb-0">
-                                <thead class="table-light">
-                                  <tr>
-                                    <th>Roll Number</th>
-                                    <th>Full Name</th>
-                                    <th>Email</th>
-                                    <th>Created At</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                    <th></th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody id="list-student">
-                                  <tr>
-                                    <td>#897656</td>
-                                    <td>
-                                      <div class="d-flex align-items-center">
-                                        <h6
-                                          class="mb-0 font-16"
-                                          style="margin: 0"
-                                        >
-                                          Light Blue Chair
-                                        </h6>
-                                      </div>
-                                    </td>
-                                    <td>Brooklyn Zeo</td>
-                                    <td>12 Jul 2020</td>
-                                    <td>$64.00</td>
-                                    <td>
-                                      <div
-                                        class="d-flex align-items-center text-danger"
-                                      >
-                                        <span>Pending</span>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div class="d-flex order-actions">
-                                        <a onclick="" class="ms-4"
-                                          ><i class="fa fa-gavel"></i
-                                        ></a>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <a onclick="" class=""
-                                        ><i class="fa fa-trash-o"></i
-                                      ></a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="tab-pane" id="support3">
-                        The European languages are members of the same family.
-                        Their separate existence is a myth.
-                      </div>
-                      <div class="tab-pane" id="sales2">
-                        To achieve this, it would be necessary to have uniform
-                        grammar, pronunciation and more common words.
-                      </div>
-                    </div>
-                  </div>
+                  <!-- detail request -->
+                  <div class="tab-pane" id="detailRequest"></div>
+                  <!-- feedback -->
+                  <div class="tab-pane" id="feedback"></div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-        <div id="footer"></div>
-      </div>
-      <div class="scroll-up">
-        <a href="#totop"><i class="fa fa-angle-double-up"></i></a>
-      </div>
-    </main>
-    <script>
-      var myAccount = document.querySelector('.my-account');
-      var myOrder = document.querySelector('.my-order');
-      myAccount.classList.add('li-active');
+        </div>
+      </section>
+      <div id="footer"></div>
+    </div>
+    <div class="scroll-up">
+      <a href="#totop"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+  </main>
 
-      function myaccount(){
-        myAccount.classList.forEach(
-          function(value) {
-            if(value !== 'li-active'){
-              myAccount.classList.add('li-active');
-            }
-          }
-        );
-        myOrder.classList.forEach(
-                function(value) {
-                  if(value == 'li-active'){
-                    myOrder.classList.remove('li-active');
-                  }
-                }
-              );
-      }
-      function myorder(){
-        myOrder.classList.forEach(
-          function(value) {
-            if(value !== 'li-active'){
-              myOrder.classList.add('li-active');
-            }
-          }
-        );
-        myAccount.classList.forEach(
-          function(value) {
-            if(value == 'li-active'){
-              myAccount.classList.remove('li-active');
-            }
-          }
-        );
-      }
-    </script>
-    <!--  
-    JavaScripts
-    =============================================
-    -->
-    <script src="assets/lib/jquery/dist/jquery.js"></script>
-    <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="assets/lib/wow/dist/wow.js"></script>
-    <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
-    <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
-    <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
-    <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
-    <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="assets/lib/smoothscroll.js"></script>
-    <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
-    <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="./assets/js/validator.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/account.js"></script>
-    <script
-      src="https://upload-widget.cloudinary.com/global/all.js"
-      type="text/javascript"
-    ></script>
+  <!-- dat lai vi tri script -->
+  <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+  <script src="assets/lib/jquery/dist/jquery.js"></script>
+  <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="assets/lib/wow/dist/wow.js"></script>
+  <script src="assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
+  <script src="assets/lib/isotope/dist/isotope.pkgd.js"></script>
+  <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
+  <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
+  <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
+  <script src="assets/lib/smoothscroll.js"></script>
+  <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
+  <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
+  <script src="assets/js/plugins.js"></script>
+  <script src="assets/js/user/common.js"></script>
+  <script src="./assets/js/validator.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/account.js"></script>
 
-    <script src="assets/js/account.js"></script>
-
-    <!-- <script src="./assets/js/app.js"></script> -->
-    <script>
-      var myAccount = document.querySelector(".my-account");
-      var myOrder = document.querySelector(".my-request");
-      myAccount.classList.add("li-active");
-
-      function myaccount() {
-        myAccount.classList.forEach(function (value) {
-          if (value !== "li-active") {
-            myAccount.classList.add("li-active");
-          }
-        });
-        myOrder.classList.forEach(function (value) {
-          if (value == "li-active") {
-            myOrder.classList.remove("li-active");
-          }
-        });
+  <!-- <script src="./assets/js/app.js"></script> -->
+  <script>
+    function guests(role) {
+      if (role == "guests") {
+        document.getElementById("addnew-food-donor").style.display = "none";
       }
-      function myorder() {
-        myOrder.classList.forEach(function (value) {
-          if (value !== "li-active") {
-            myOrder.classList.add("li-active");
-          }
-        });
-        myAccount.classList.forEach(function (value) {
-          if (value == "li-active") {
-            myAccount.classList.remove("li-active");
-          }
-        });
-        listStudent.innerHTML = htmls.join("");
-      }
-
-      function guests(role) {
-        if (role == "guests") {
-          document.getElementById("addnew-food-donor").style.display = "none";
-        }
-      }
+    }
   </script>
+  <!-- <script src="./assets/js/app.js"></script> -->
   <script>
     function started() {
       var tokenaccount = document.cookie;
-      if (tokenaccount === null || tokenaccount === undefined || tokenaccount === NaN || tokenaccount === '') {
-        location.replace('../login_register.html');
-
-      }
-
-      // Call Api
-      // var listStudent = document.querySelector('#list-student');
-      // var studentAPI = 'http://localhost:8080/api/v1/students';
-      // function start(){
-      //     getStudent(function(students){
-      //         renderStudent(students);
-      //     });
-      // };
-      // start();
-      // GET
-    </script>
-
-  //  <script src="./assets/js/app.js"></script>
-    <script>
-      function started() {
-        var tokenaccount = document.cookie;
-        if (
-          tokenaccount === null ||
-          tokenaccount === undefined ||
-          tokenaccount === NaN ||
-          tokenaccount === ""
-        ) {
-          location.replace("../login_register.html");
-        }
-      }
-      started();
-
-      $(function () {
-        $("#header").load("../inc/header.html");
-        $("#footer").load("../inc/footer.html");
-      });
+      // if (tokenaccount) {
+      //   location.replace("../login_register.html");
+      // }
     }
-    </script>
-  </body>
+    started();
+
+    
+  </script>
+</body>
+
 </html>
