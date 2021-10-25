@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../assets/css/notify.css">
 <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation"  style="background-color: black; padding: 0;">
     <div class="container">
       <div class="navbar-header">
@@ -30,7 +31,24 @@
               <li><a id="logout">Logout</a></li>
             </ul>
           </li>
+          <li class="dropdown navbar__item--has-notify">
+            <a class="icon-bell" href=""><i style="font-size: 16px;" class="fa fa-bell-o"></i></a>
+            <div class="notification-box">
+              <div class="header__notify">
+                <header class="header__notify-header">
+                  <h6>Notifycation</h6>
+                </header>
+                <ul class="header__notify-list" id="notifycation">
+                  
+                </ul>
+                <footer class="header__notify-footer">
+                  <a href=""  class="header__notify-footer-btn">View All</a>
+                </footer>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
+
   </nav>
