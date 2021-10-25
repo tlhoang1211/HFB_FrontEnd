@@ -280,7 +280,7 @@ function renderListFood(data){
     return `<tr>
     <td>${count}</td>
     <td>${e.name || ''}</td>
-    <td><img src="${e.avatar || ''}" style="width: 30px;height: 30px;"/></td>
+    <td><img src="https://res.cloudinary.com/vernom/image/upload/${e.avatar || ''}" style="width: 30px;height: 30px;"/></td>
     <td>${e.categoryId || ''}</td>
     <td>${e.updatedAt}</td>
     <td>${e.expirationDate}</td>

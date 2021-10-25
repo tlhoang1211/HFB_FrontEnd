@@ -259,7 +259,7 @@
 
         <!-- Modal send request layout -->
         <section class="modalLayout">
-          <div class="modal">
+          <div class="modal modal-single-food">
               <div class="modal-overlay"></div>
 
               <div class="modal-dialog">
@@ -521,7 +521,7 @@
 			getInfoFood()
 
       // Add To Cart
-      var modal = document.querySelector('.modal');
+      var modal = document.querySelector('.modal-single-food');
       function addToCart(){
         var cookie = document.cookie;
         if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
@@ -620,7 +620,7 @@
                         "avatar": itemFood.data.avatar,
                         "title": "Someone is asking you about food",
                         "message":"Time request: " + time,
-                        "status": 0
+                        "status": 1
                       })
                       console.log("foodid: "+ id+
                         "iduser:" + itemFood.data.createdBy+
