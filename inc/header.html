@@ -1,4 +1,26 @@
-<link rel="stylesheet" href="./assets/css/notify.css">
+<link rel="stylesheet" href="../assets/css/notify.css">
+<link rel="stylesheet" href="../assets/css/repository.css">
+<style>
+  .header__cart-notice{
+    position: absolute;
+    padding: 1px 6px;
+    top: 6px;
+    right: -11px;
+    font-size: 12px;
+    line-height:12px;
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    border: 2px solid #000;
+    font-weight: 400;
+}
+.header__cart-icon{
+    font-size: 20px;
+    color: #fff;
+    margin-top: 14px;
+}
+</style>
+
 <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation"  style="background-color: black; padding: 0;">
     <div class="container">
       <div class="navbar-header">
@@ -18,21 +40,13 @@
           </li>
           <li class="dropdown"><a href="./login_register.html">Donate</a>
           </li>
+          <li class="dropdown"><a onclick="addNewFood()">Add Food</a>
+          </li>
           <li class="dropdown" id="login-register"><a href="./login_register.html">Login/Register</a>
           </li>
-          <li class="dropdown" id="user-account">
-            <a class="dropdown-toggle" href="./tabs_and_accordions.html" data-toggle="dropdown">
-              <div class="navbar__user">
-                
-              </div>
-            </a>
-            <ul class="dropdown-menu" id="dropavatar">
-              <li><a href="./tabs_and_accordions.html">Account information</a></li>
-              <li><a id="logout">Logout</a></li>
-            </ul>
-          </li>
           <li class="dropdown navbar__item--has-notify">
-            <a class="icon-bell" href=""><i style="font-size: 16px;" class="fa fa-bell-o"></i></a>
+            <span class="header__cart-notice"></span>
+            <i class="header__cart-icon icon-bell fa fa-bell-o"></i>
             <div class="notification-box">
               <div class="header__notify">
                 <header class="header__notify-header">
@@ -47,10 +61,110 @@
               </div>
             </div>
           </li>
+          <li class="dropdown" id="user-account">
+            <a class="dropdown-toggle" href="./tabs_and_accordions.html" data-toggle="dropdown">
+              <div class="navbar__user">
+                
+              </div>
+            </a>
+            <ul class="dropdown-menu" id="dropavatar">
+              <li><a href="./tabs_and_accordions.html">Account information</a></li>
+              <li><a id="logout">Logout</a></li>
+            </ul>
+          </li>
+          
         </ul>
       </div>
     </div>
   </nav>
+  <!-- Modal send request layout -->
+  <section class="modalLayout">
+    <div class="modal modal-header-add-food">
+        <div class="modal-overlay"></div>
+
+        <div class="modal-dialog">
+            <div class="modal-main">
+                <div class="modal-container">
+                    <div class="modal-body">
+                        <!-- Add new food -->
+                        <div class="tab-pane" id="addFood">
+                          <h4 style="font-weight: 400;">Add New Food</h4>
+                          <form class="form addform" role="form">
+                            <div class="form-group">
+                              <label for="nameFood" class="form-label">Food Name</label>
+                              <input id="nameFood" class="form-control" type="text" placeholder="Enter Food Name" />
+                              <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                              <label for="upload_image_food" class="form-label">Image Food</label>
+                              <br />
+                              <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
+                                <i class="fa fa-download"></i> Upload image
+                              </button>
+                              <div class="thumbnailsFood">
+                                <ul class="cloudinary-thumbnails">
+                                  <li class="cloudinary-thumbnail" data-cloudinary="">
+                                    <img src="" style="width: 300px; height: 300px" />
+                                    <a href="#" class="cloudinary-delete">x</a>
+                                  </li>
+                                </ul>
+                              </div>
+                              <input type="hidden" id="imageFoods">
+                              <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                              <label for="category" class="form-label">Category</label>
+                              <select name="category" id="category" class="form-control required">
+                                <option selected disabled>Select</option>
+                                <option value="1">Drinks</option>
+                                <option value="2">Noodle</option>
+                                <option value="3">Bread</option>
+                                <option value="4">Rice</option>
+                                <option value="5">Meat</option>
+                                <option value="6">Seafood</option>
+                                <option value="7">Vegetables</option>
+                                <option value="8">Vegetarian Food</option>
+                                <option value="9">Fruit</option>
+                                <option value="10">Fast Food</option>
+                                <option value="11">Snacks</option>
+                                <option value="12">Others</option>
+                              </select>
+                              <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                              <label for="manufactureDate" class="form-label">Manufacture Date</label>
+                              <input id="manufactureDate" class="form-control" type="datetime-local" />
+                              <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                              <label for="expirationDate" class="form-label">Expiration Date</label>
+                              <input id="expirationDate" class="form-control" type="datetime-local" />
+                            </div>
+                            <div class="form-group">
+                              <label for="description" class="form-label">Description</label>
+                              <textarea id="description" class="form-control" rows="3" style="resize: vertical"
+                                placeholder="Enter Description"></textarea>
+                              <span class="form-message"></span>
+                            </div>
+                            <div>
+                              <a onclick="closeAddFood()" style="float: left; color: red; cursor: pointer;">Close</a>
+                              <button id="newFood" type="button" class="btn btn-success btn-round btnSubmit" style="margin-bottom:10px">
+                                <i class="fa fa-plus"></i> Add
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
+                    <!-- <div class="modal-footer"> -->
+                        <!-- <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
+                        <button onclick="sendRequest()" class="btn btn-b btn-round btnSubmit" type="button">Submit</button> -->
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
 
   <script>
     $(document).ready(function () {
@@ -64,13 +178,14 @@
     var token = null;
     var usernameAccount = null;
     
+    
     // logout
     function logoutAccount(){
       document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
       document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
       token = null;
       usernameAccount = null;
-      start();
+      
       if(location.href == 'http://127.0.0.1:5500/tabs_and_accordions.html'){
         location.replace('../index_shop.html');
       }else{
@@ -80,8 +195,7 @@
     useraccount.style.display = 'none';
     notifycation.style.display = 'none';
     
-    start();
-    function start(){
+    
       if(document.cookie != null && document.cookie != ''){
         var pairs = document.cookie.split(";");
         var cookies = {};
@@ -92,6 +206,7 @@
         token = cookies.token;
         usernameAccount = cookies.username;
       }
+      var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
       if(token ===null || token === undefined || token === NaN || token === ''){
         
         loginregister.style.display = 'block';
@@ -102,7 +217,7 @@
         useraccount.style.display = 'block';
         notifycation.style.display = 'block';
 
-        var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+        
         var viewAccount = document.querySelector('.navbar__user');
         fetch(getDetailFood,{
           method: 'GET',
@@ -118,8 +233,11 @@
                 <span>${account.data.name}</span>
                 `
           viewAccount.innerHTML = htmlsItem;
-          var li= '';
+
+          
           Notification.show(account.data.id, function (listNotify) {
+            var li= '';
+            var quantityNotify = 0;
             if(listNotify==[] || listNotify == null || listNotify == undefined){
               // li  += `
               //   <li >
@@ -127,11 +245,14 @@
               //   </li>
               // `;
             }else{
-                  listNotify.forEach(function (child) {
-                    console.log(child.val().status);
-                      li  += `
-                      <li onclick="clickview()" class="header__notify-item header__notify-item--viewed" data-id="${child.key}">
-                          <a href="" class="header__notify-link">
+              console.log(111);
+              listNotify.forEach(function (child) {
+                if(child.val().status ==1){
+                  quantityNotify++;
+                }
+                li  += `
+                      <li class="header__notify-item header__notify-item--status-${child.val().status}" data-id="${child.key}">
+                          <a href="#" class="header__notify-link">
                             <img src="https://res.cloudinary.com/vernom/image/upload/${child.val().avatar}" alt="" class="header__notify-img">
                             <div class="header__notify-info">
                               <span class="header__notify-name">${child.val().title}</span>
@@ -141,31 +262,66 @@
                         </li>
                       `;
                   })
-                  $('#notifycation').html(li)
-                  
-          }
+              $('#notifycation').html(li)
+              
+              console.log(111);
+              if(quantityNotify == 0){
+                document.querySelector('.header__cart-notice').style.display = 'none'
+              }else if(quantityNotify > 9){
+                document.querySelector('.header__cart-notice').innerHTML = '9+';
+              }else{
+                document.querySelector('.header__cart-notice').innerHTML = quantityNotify;
+              }}   
+            })
+          idAccount = account.data.id;
+          
+          })
+          .catch(error => console.log(error));
+      }
+    
+    // status 0-deactive 1-active
+    $(document).on('click', '.header__notify-item', function () {
+            var id111 = $(this).data("id");
+            console.log(id111);
+            console.log(Notification.update(idAccount, id111, {
+              "status" : 0
+            }));
+            
+          });
+    
           
 
-          function clickview(){
-            var id = $(this).data("id");
-            Notification.update(5, id, {
-                "status" : 1
-            })
-            this.classList.remove('header__notify-item--viewed');
-          }
-          // $(document).on('click', '.header__notify-item', function () {
-          //   var id = $(this).data("id");
-          //   Notification.update(5, id, {
-          //       "status" : 1
-          //   })
-          //   this.classList.remove('header__notify-item--viewed');
-          // });     
-        })
-
-        })
-        .catch(error => console.log(error));
-      }
+    var modal = document.querySelector('.modal-header-add-food');
+    function addNewFood(){
+      var cookie = document.cookie;
+        if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
+          location.replace('../login_register.html');
+        }else{
+          modal.style.display = 'flex';
+        }
     }
 
-    
+    // Close Modal Add New Food
+    function closeAddFood(){
+				modal.style.display = 'none';
+			}
+
+      var myWidget = cloudinary.createUploadWidget(
+      {
+        cloudName: "vernom",
+        uploadPreset: "fn5rpymu",
+        form: "#edit-account-form",
+        folder: "hanoi_food_bank_project/users_avatar",
+        fieldName: "thumbnails[]",
+        thumbnails: ".thumbnails",
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          if (result.info) {
+            document.querySelector('#avatar_account').src = result.info.url;
+            document.querySelector('#account_avatar').value = result.info.url;
+          }
+        }
+      }
+    );
   </script>
