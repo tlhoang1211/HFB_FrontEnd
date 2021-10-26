@@ -86,7 +86,7 @@
 }
 .header__notify-img{
   width: 48px;
-  object-fit: contain;
+  height: 38px;
 }
 .header__notify-info{
   margin-left: 12px;
