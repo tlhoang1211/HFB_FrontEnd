@@ -21,39 +21,25 @@ Validator({
 document.getElementById("newFood").addEventListener("click", function(){
     var nameFood = document.getElementById("nameFood").value;
     var category = document.getElementById("category").value;
-    var manufactureDate = document.getElementById("manufactureDate").value;
     
     var expirationDate = document.getElementById("expirationDate").value;
-    // if (manufactureDate){
-    //     manufactureDate = getTimeFromString(manufactureDate);
-    // }
-    // if (expirationDate){
-    //     expirationDate = getTimeFromString(manufactureDate);
-    // } else {
-    //     $('.alert-danger').alert();
-    //     return false;
-    // }
-    // if (expirationDate && manufactureDate) {
-    //     if (manufactureDate > expirationDate) {
-    //         $('.alert-danger').alert();
-    //         return false;
-    //     }
-    // }
-    // if (listImageFood.length == 0) {
-    //     $('.alert-danger').alert();
-    //     return false;
-    // }
+    if (!expirationDate){
+      $('.alert-danger').alert();
+      return false;
+    }
+    if (listImageFood.length == 0) {
+        $('.alert-danger').alert();
+        return false;
+    }
     var description = document.getElementById("description").value;
     var dataPost = {
         name: nameFood || '',
         avatar: listImageFood[0],
         images: listImageFood.join(","),
-        manufactureDate: "25-10-2021 16:00",
-        expirationDate: "26-10-2021 16:00",
-        createdBy: 2,
+        expirationDate: document.getElementById("expirationDate").value,
+        createdBy: objAccount.id,
         categoryId: parseInt(category),
         description: description
-        // document.getElementById("manufactureDate").value
     }
         fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', {
             method: 'POST',
@@ -65,10 +51,10 @@ document.getElementById("newFood").addEventListener("click", function(){
         })
         .then(response => response.json())
         .then(function(data){
-            console.log(data)
+            
         })
         .catch(function(error){
-            console.log(error);
+            
         });
 }, false);
 
@@ -108,7 +94,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
   },
   (error, result) => {
     if (!error && result && result.event === "success") {
-      
+      listImageFood.push(result.info.path);
       var arrayThumnailInputs = document.querySelectorAll(
         'input[name="thumbnailsFood[]"]'
       );
@@ -116,7 +102,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
         arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
           "data-cloudinary-public-id"
         );
-        listImageFood.push(arrayThumnailInputs[i].value);
+        
       }
     }
   }
@@ -192,6 +178,7 @@ function showTabPanel(e) {
       document.getElementById('listRequest').classList.add('active');
       document.getElementsByClassName('listRequest')[0].classList.remove('d-none');
       document.getElementsByClassName('detailRequest')[0].classList.remove('d-none');
+      getListRequest();
       break;
     case 'myfeedback':
       document.getElementsByClassName('feedback')[0].classList.add('active');
@@ -255,7 +242,6 @@ function updateAccount(){
 
 // get data food
 function getListFood(){
-  console.log(1111)
   fetch('https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1',{
     method: 'GET',
     headers: {
@@ -272,23 +258,125 @@ function getListFood(){
 }
 
 function renderListFood(data){
-  console.log(data)
   var count = 0;
   var html = data.map(function (e){
-    console.log(e)
     count++;
     return `<tr>
     <td>${count}</td>
     <td>${e.name || ''}</td>
-    <td><img src="${e.avatar || ''}" style="width: 30px;height: 30px;"/></td>
-    <td>${e.categoryId || ''}</td>
-    <td>${e.updatedAt}</td>
+    <td><img src="https://res.cloudinary.com/vernom/image/upload/${e.avatar}" style="width: 30px;height: 30px;"/></td>
+    <td>${formatCategory(e.categoryId)}</td>
     <td>${e.expirationDate}</td>
     <td>${e.status}</td>
     <td>${e.createdAt}</td>
-    <td onclick="formUpdateFood(${e})"><i class="fa fa-pencil-square-o"></i></td>
-    <td onclick="deleteFood(${e})"><i class="fa fa-trash-o"></i></td>
-  </tr>`;
+    <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>
+    <td onclick="deleteFood(this, ${e.id}, ${e.name}, ${e.categoryId})"><i class="fa fa-trash-o"></i></td>
+    </tr>`;
   })
-  return html;
+  return html.join('');
 }
+function deleteFood(e, id, name, cateID){
+  // console.log(e)
+  // var dataPost = {
+  //   "name": name,
+  //   "updatedBy": objAccount.id,
+  //   "categoryId": cateID,
+  //   "status": 0
+  // }
+  // fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`,{
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //       "Authorization": `Bearer ${isToken}`
+  //   },
+  //   body: JSON.stringify(dataPost)
+  // })
+  // .then(response => response.json())
+  // .then(food => {
+    
+  // })
+  // .catch(error => console.log(error));
+  
+}
+function formatCategory(id){
+  var text = '';
+  switch(id) {
+    case 1:
+      text = 'Drinks';
+      break;
+    case 2:
+      text = 'Noodle';
+      break;
+    case 3:
+      text = 'Bread';
+      break;
+    case 4:
+      text = 'Rice';
+      break;
+    case 5:
+      text = 'Meat';
+      break;
+    case 6:
+      text = 'Seafood';
+      break;
+    case 7:
+      text = 'Vegetables';
+      break;
+    case 8:
+      text = 'Vegetarian Food';
+      break;
+    case 9:
+      text = 'Fruit';
+      break;
+    case 10:
+      text = 'Fast Food';
+      break;
+    case 11:
+      text = 'Snacks';
+      break;
+    case 12:
+      text = 'Others';
+      break;
+  }
+  return text;
+}
+// get data request
+function getListRequest(){
+  fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,{
+    method: 'GET',
+    headers: {
+      "Authorization":`Bearer ${isToken}`
+    }
+  })
+  .then(response => response.json())
+  .then(food => {
+    console.log(food)
+    if (food && food.data && food.data.content && food.data.content.length > 0) {
+      document.querySelector('#list-request').innerHTML = renderListRequest(food.data.content);
+    }
+  })
+  .catch(error => console.log(error));
+}
+
+function renderListRequest(data){
+  var count = 0;
+  var html = data.map(function (e){
+    count++;
+    return `<tr>
+    <td>${count}</td>
+    <td>${e.foodName || ''}</td>
+    <td>${e.message}</td>
+    <td>${e.supplierName}</td>
+    <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>
+    <td onclick="deleteFood(this, ${e.id}, ${e.name}, ${e.categoryId})"><i class="fa fa-trash-o"></i></td>
+    </tr>`;
+  })
+  return html.join('');
+}
+// request
+
+
+// setTimeout(function(){
+//   $('#addFood #manufactureDate').datetimepicker();
+//   $('#addFood #expirationDate').datetimepicker();
+// }, 0)

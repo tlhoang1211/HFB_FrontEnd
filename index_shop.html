@@ -320,6 +320,8 @@
     JavaScripts
     =============================================
     -->
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="assets/lib/jquery/dist/jquery.js"></script>
     <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="assets/lib/wow/dist/wow.js"></script>
@@ -332,19 +334,11 @@
     <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/user/common.js"></script>
     <script src="assets/js/main.js"></script>
-
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="./assets/js/notification.js"></script>
     <!-- <script src="./assets/js/app.js"></script> -->
     <script>
-      $(function(){
-        $("#header").load("./inc/header.html"); 
-        $("#footer").load("./inc/footer.html"); 
-      });
-
-
       var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search';
 			var shopItem = document.querySelector('.list-food');
       function getListItem(){
