@@ -9,8 +9,9 @@
     display: none;
     width: 400px; 
     max-height: 300px;
-    position: fixed; 
-    right: 85px; 
+    position: absolute; 
+    top: 52px;
+    right: -20px;
     background-color: #fff;
     animation: headerNotiGrowth ease-in 0.25s;
     will-change: opacity, transform;
@@ -65,9 +66,14 @@
     background-color: rgba(0, 0, 0, 0.02);
   }
 
-  .header__notify-item--viewed{
+  .header__notify-item--status-1{
     background-color: rgba(0, 0, 0, 0.08);
   }
+
+  .header__notify-item--status-0{
+    background-color: #fff;
+  }
+
 .header__notify-list{
   display: block;
   padding-left: 0;
