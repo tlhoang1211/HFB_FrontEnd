@@ -36,6 +36,7 @@
     
     -->
     <!-- Default stylesheets-->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <link href="assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template specific stylesheets-->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
@@ -302,6 +303,7 @@
     JavaScripts
     =============================================
     -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="assets/lib/jquery/dist/jquery.js"></script>
@@ -341,14 +343,24 @@
       var shopItem = document.querySelector('.view-image-product');
       var viewInfoProduct = document.querySelector('.view-info-product');
       var listFoodCategory;
+
+      // get token
+      var pairs = document.cookie.split(";");
+      var cookies = {};
+      for (var i=0; i<pairs.length; i++){
+        var pair = pairs[i].split("=");
+        cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
+      }
+      var token = cookies.token;
+      var usernameAccount = cookies.username;
       
       // Get InfoFood
       function getInfoFood(){
 				fetch(getDetailFood,{
           method: 'GET',
-          // headers: {
-          //   "Authorization":`Bearer ${token}`
-          // }
+          headers: {
+            "Authorization":`Bearer ${token}`
+          }
         })
 				.then(response => response.json())
 				.then(listItems => {
@@ -519,32 +531,23 @@
 			getInfoFood()
 
       // Add To Cart
-      var modal = document.querySelector('.modal-single-food');
+      var modalsinglefood = document.querySelector('.modal-single-food');
       function addToCart(){
         var cookie = document.cookie;
         if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
           location.replace('../login_register.html');
         }else{
-          modal.style.display = 'flex';
+          modalsinglefood.style.display = 'flex';
         }
       }
 
       // Close Modal Message
       function closeSendMail(){
-				modal.style.display = 'none';
+				modalsinglefood.style.display = 'none';
 			}
 
       // Send Request
       function sendRequest(){
-        var pairs = document.cookie.split(";");
-        var cookies = {};
-        for (var i=0; i<pairs.length; i++){
-          var pair = pairs[i].split("=");
-          cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
-        }
-        var token = cookies.token;
-        var usernameAccount = cookies.username;
-
         var message = document.querySelector('#messageModal').value;
         // get Id User
         var idAccount;
@@ -566,15 +569,20 @@
         var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
 
         function postrequest(){
-          fetch(getDetailFood,{
-            method: 'GET'
+          fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`,{
+            method: 'GET',
+            headers: {
+            "Authorization":`Bearer ${token}`
+          }
           })
           .then(response => response.json())
           .then(itemFood => {
             console.log(itemFood);
+            console.log(getDetailFood);
 
             if(itemFood.data.createdBy == idAccount){
               // alert('ban khong the xin food cua chinh minh');
+              modalsinglefood.style.display = 'none';
               createNotification('ban khong the xin food cua chinh minh', 'error')
             }else {
               var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
@@ -590,6 +598,7 @@
                 console.log(getRequestById);
                 if(itemRequest.status == 200){
                   // alert('ban da xin do an nay, vui long cho nguoi ban xac nhan')
+                  modalsinglefood.style.display = 'none';
                   createNotification('ban da xin do an nay, vui long cho nguoi ban xac nhan', 'error');
                 }else{
                   fetch(postrequestAPI, {
@@ -609,7 +618,7 @@
                       var today = new Date();
                       var time = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear() +" "+ today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                       // alert('Success!');
-                      modal.style.display = 'none';
+                      modalsinglefood.style.display = 'none';
                       createNotification('Success!', 'success')
                       
                       
@@ -620,11 +629,6 @@
                         "message":"Time request: " + time,
                         "status": 1
                       })
-                      console.log("foodid: "+ id+
-                        "iduser:" + itemFood.data.createdBy+
-                        "avatar: "+ itemFood.data.avatar+
-                        "title: "+ "Someone is asking you about food"+
-                        "message: "+"Time request: " + time);
                     })
                     .catch(function(error){
                       console.log(error);

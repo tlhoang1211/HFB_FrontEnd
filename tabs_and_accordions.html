@@ -353,9 +353,9 @@
   <script>
     function started() {
       var tokenaccount = document.cookie;
-      // if (tokenaccount) {
-      //   location.replace("../login_register.html");
-      // }
+      if (!tokenaccount) {
+        location.replace("../login_register.html");
+      }
     }
     started();
 
