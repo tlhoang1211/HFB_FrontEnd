@@ -596,14 +596,15 @@
           postrequest();
         })
         .catch(error => console.log(error));
-
-        // post request
       }
+
         var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
-      
         function postrequest(){
             var message = document.querySelector('#messageModal').value;
-            fetch(postrequestAPI, {
+            if(message== '' || message == null || message == undefined){
+              swal("Warning!", "Please say something to the giver!", "warning");
+            }else{
+              fetch(postrequestAPI, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -634,6 +635,8 @@
                     .catch(function(error){
                       console.log(error);
                     });
+            }
+            
         }
 
       // Chuyen time tu string sang long

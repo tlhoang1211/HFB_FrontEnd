@@ -144,8 +144,7 @@
     />
     <link rel="stylesheet" href="./assets/css/validator.css" />
     <link rel="stylesheet" href="./assets/css/repository.css" />
-
-    <link rel="stylesheet" href="./assets/css/notify_alert.css">
+    
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -351,15 +350,17 @@
     <script src="assets/js/main.js"></script>
     <script src="assets/js/user/common.js"></script>
     <script src="./assets/js/notification.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- <script src="./assets/js/app.js"></script> -->
     <script src="./assets/js/validator.js"></script>
-    <script src="./assets/js/notify-alert.js"></script>
 
     <script>
       if(document.cookie){
-       alert('You are logged in!');
-      //  createNotification('You are logged in!', 'warning')
-       location.replace('../tabs_and_accordions.html');
+       swal("Warning!", `You are logged in! \n We will redirect you to the account page after 5s`, "warning");
+       setTimeout(function(){
+         location.replace('../tabs_and_accordions.html'); 
+        }, 3000);
+       
       }
 
       var loginForm = document.querySelector(".loginform");
@@ -407,8 +408,7 @@
               window.history.back();
               // location.replace('../index_shop.html');
             } else {
-              // alert("Incorrect account or password");
-              createNotification('Incorrect account or password', 'error');
+              swal("Error!", "Incorrect account or password!", "error");
             }
           })
           .catch(function (error) {
