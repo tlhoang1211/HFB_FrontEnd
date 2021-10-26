@@ -385,7 +385,7 @@ function bindDataDetailRequest(data){
 	document.querySelectorAll('#image_food_detail_request').src = data.avatar || 'https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg';
 	document.querySelectorAll('#detailRequest .product-title').item(0).innerHTML = data.foodDTO.name;
 	document.querySelectorAll('#detailRequest .description p').item(0).innerHTML = data.message;
-	document.querySelectorAll('#detailRequest .product_meta a').item(0).innerHTML = data.status;
+	document.querySelectorAll('#detailRequest .product_meta a').item(0).innerHTML = convertStatus(data.status);
 	document.querySelectorAll('#detailRequest .row-btn').item(0).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
 	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
 	
@@ -416,7 +416,6 @@ function deleteRequest(e, id, message, supplierId, supplierName) {
 	.catch(error => console.log(error));
 }
 function convertStatus (status){
-	0-deactive; 1-pending; 2-confirmed; 3-done
 	switch (status) {
 		case 0:
 			status = 'Deactive';
@@ -429,6 +428,9 @@ function convertStatus (status){
 			break;
 		case 3:
 			status = 'Done';
+			break;
+		case 4:
+			status = 'Cancel';
 			break;
 	}
 	return status;
