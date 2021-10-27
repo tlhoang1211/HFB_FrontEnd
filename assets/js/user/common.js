@@ -38,6 +38,7 @@ function getTimeFromString(strDate) {
 	}
 	return new Date(year, month, date, hours, minutes, 0, 0).getTime();
 }
+
 function timeFromString(strDate) {
 	var arrDate = strDate.split('/');
 	var year = parseInt(arrDate[2]);
@@ -45,3 +46,4 @@ function timeFromString(strDate) {
 	var date = parseInt(arrDate[0]);
 	return new Date(year, month, date).getTime();
 }
+

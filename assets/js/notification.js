@@ -10,7 +10,12 @@ var Notification = {
             messagingSenderId: "16196139174",
             appId: "1:16196139174:web:c852e2fbfcd905a2db5c67"
         };
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+         }else {
+            firebase.app(); // if already initialized, use that one
+         }
+        // firebase.initializeApp(firebaseConfig);
     },
     send: function (userId, notify) {
         firebase.database().ref(`notification/${userId}`).push().set(notify);
