@@ -1,34 +1,69 @@
-// function createElement(element){
-//   return document.createElement(element);
-// }
-// var loadScript = function(url){
-//   return new Promise((resolve, reject) => {
-//     const script = createElement('script');
-//     script.type = 'text/javascript'
-//     script.onload = resolve
-//     script.onerror = reject
-//     script.src = src
-//     document.body.append(script)
-//   })
-// }
-// // var header = document.createElement('header');
-// // document.querySelector("header").outerHTML = ;
-// // console.log()
-// function initHeader(url){
-//   fetch(url)
-//     .then(function(response){
-//       console.log(response)
-//       return response.text()
-//     })
-//     .then(function (html){
-//       console.log(html)
-//       // var header = document.createElement('header');
-//       // console.log(header)
-//       document.body.innerHTML = html;
-//     })
-//     .catch(error => console.log(console.log(error)));
-// }
-// $(function (){
-//   initHeader('../../../inc/layout/admin/head.html');
-// })
-
+$(document).ready(function() {
+    // get token
+    var token;
+    function startLoad(cookie){
+        token = cookie || '';
+    }
+    startLoad(document.cookie);
+    function getToken (){
+        
+    }
+    function creaElement(ele, className, id, position, position1){
+        var positionElement = document.querySelectorAll(position);
+        var eleFirst = document.createElement(ele);
+        if (className) {
+            eleFirst.className = className;
+        }
+        if (id) {
+            eleFirst.id = id;
+        }
+        if (position1) {
+            positionElement.item(0).insertAdjacentElement(position1, eleFirst);
+        } else {
+            positionElement.item(0).appendChild();
+        }
+    }
+    function insertHtml(startPoint, text, position){
+        var positionElement = document.querySelectorAll(startPoint);
+        positionElement.item(0).insertAdjacentHTML(position, text);
+    }
+    // load html
+    function loadHtml(url, startPoint, createEle, className, id, position, src){
+        fetch(url)
+        .then(function(response){
+            return response.text()
+        })
+        .then(function (html){
+            var getEle = document.querySelectorAll(startPoint);
+            var createElement = document.createElement(createEle);
+            if (className) {
+                createElement.className = className;
+            }
+            if (id) {
+                createElement.id = id;
+            }
+            createElement.innerHTML = html;
+            getEle.item(0).insertAdjacentElement(position, createElement);
+            if (src) {
+                var newSrc = document.createElement('script');
+                newSrc.src = src;
+                document.body.appendChild(newSrc);
+            }
+        })
+        .catch(error => console.log(console.log(error)));
+        
+    }
+    
+    if (token) {
+        creaElement('div', 'container', '', 'body', 'afterbegin');
+        creaElement('div', 'wrapper', 'root', '.container', 'afterbegin');
+        insertHtml('#root', '<a href="javaScript:;" class="back-to-top"><i class="bx bxs-up-arrow-alt"></i></a>', 'afterbegin');
+        insertHtml('#root', '<div class="overlay toggle-icon"></div>', 'afterbegin');
+        loadHtml('head.html', '#root', 'header', '', '', 'afterbegin', '../../../assets/js/admin/header.js');
+        loadHtml('sidebar.html', '#root', 'div', 'sidebar-wrapper', '', 'afterbegin', '../../../assets/js/admin/sidebar.js');
+        loadHtml('setBg.html', '.container', 'div', 'switcher-wrapper', '', 'afterend', '../../../assets/js/admin/setBg.js');
+    } else {
+        loadHtml('login.html', 'body', 'div', 'wrapper', '', 'afterbegin', '../../../assets/js/admin/login.js');
+    }
+    
+});

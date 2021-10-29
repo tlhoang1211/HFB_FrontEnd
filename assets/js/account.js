@@ -168,7 +168,7 @@ function showTabPanel(e) {
 			break;
 		case 'myfood':
 			document.getElementsByClassName('addFood')[0].classList.add('active');
-			document.getElementById('addFood').classList.add('active');
+			document.getElementById('formAddFood').classList.add('active');
 			document.getElementsByClassName('addFood')[0].classList.remove('d-none');
 			document.getElementsByClassName('listFood')[0].classList.remove('d-none');
 			getListFood();
