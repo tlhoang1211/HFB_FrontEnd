@@ -115,3 +115,22 @@
   font-weight: 400;
   text-align: center;
 }
+.header__notify-notice{
+  position: absolute;
+  padding: 0px 4px;
+  top: 6px;
+  text-align: center;
+  right: -7px;
+  font-size: 12px;
+  line-height:16px;
+  background: #fff;
+  color: #000;
+  border-radius: 10px;
+  border: 2px solid #000;
+  font-weight: 400;
+}
+.header__notify-icon{
+  font-size: 20px;
+  color: #fff;
+  margin-top: 14px;
+}

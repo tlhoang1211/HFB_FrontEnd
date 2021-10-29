@@ -47,3 +47,4 @@ function timeFromString(strDate) {
 	return new Date(year, month, date).getTime();
 }
 
+

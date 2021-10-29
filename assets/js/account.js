@@ -168,7 +168,7 @@ function showTabPanel(e) {
 			break;
 		case 'myfood':
 			document.getElementsByClassName('addFood')[0].classList.add('active');
-			document.getElementById('addFood').classList.add('active');
+			document.getElementById('formAddFood').classList.add('active');
 			document.getElementsByClassName('addFood')[0].classList.remove('d-none');
 			document.getElementsByClassName('listFood')[0].classList.remove('d-none');
 			getListFood();
@@ -386,7 +386,8 @@ function bindDataDetailRequest(data){
 	document.querySelectorAll('#detailRequest .product-title').item(0).innerHTML = data.foodDTO.name;
 	document.querySelectorAll('#detailRequest .description p').item(0).innerHTML = data.message;
 	document.querySelectorAll('#detailRequest .product_meta a').item(0).innerHTML = convertStatus(data.status);
-	document.querySelectorAll('#detailRequest .row-btn').item(0).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
+	document.querySelectorAll('#detailRequest .row-btn').item(0).innerHTML = 
+	`<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
 	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
 	
 }
