@@ -213,20 +213,20 @@ $(document).ready(function () {
 
     
 
-  var modal = document.querySelector('.modal-header-add-food');
-  function addNewFood(){
-    var cookie = document.cookie;
-    if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
-    location.replace('../login_register.html');
-    }else{
-    modal.style.display = 'flex';
-    }
-  }
+  // var modal = document.querySelector('.modal-header-add-food');
+  // function addNewFood(){
+  //   var cookie = document.cookie;
+  //   if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
+  //   location.replace('../login_register.html');
+  //   }else{
+  //   modal.style.display = 'flex';
+  //   }
+  // }
 
-  // Close Modal Add New Food
-  function closeAddFood(){
-    modal.style.display = 'none';
-  }
+  // // Close Modal Add New Food
+  // function closeAddFood(){
+  //   modal.style.display = 'none';
+  // }
 
 
 
@@ -443,3 +443,53 @@ function formatCategory(id) {
 	}
 	return text;
 }
+
+var modal1 = document.querySelector(".modal-header-add-food");
+function addNewFood() {
+  var cookie = document.cookie;
+  if (
+    cookie === null ||
+    cookie === undefined ||
+    cookie === NaN ||
+    cookie === "" ||
+    cookie === []
+  ) {
+    location.replace("../login_register.html");
+  } else {
+    modal1.style.display = "flex";
+  }
+}
+
+var modal2 = document.querySelector(".modal-header-donate");
+function donate() {
+  modal2.style.display = "flex";
+}
+
+// Close Modal
+function closeModal() {
+  modal1.style.display = "none";
+  modal2.style.display = "none";
+}
+
+$(document).keydown(function (event) {
+  if (event.keyCode == 27) {
+    modal1.style.display = "none";
+    modal2.style.display = "none";
+    event.preventDefault();
+  }
+});
+
+$(document).ready(function () {
+  $("select#category").change(function () {
+    $(this)
+      .find(":selected")
+      .addClass("selected")
+      .siblings("option")
+      .removeClass("selected");
+    var selectedCategory = $(this).children("option:selected").text();
+    console.log(selectedCategory);
+    myWidgetFood.update({
+      folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
+    });
+  });
+});
