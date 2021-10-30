@@ -625,12 +625,14 @@
                       swal("Success!", "Successful request for food!", "success");
                       modalsinglefood.style.display = 'none';
                       
-                      
                       Notification.send(idUserFood, {
+                        "idNotify":"",
+                        "usernameaccount": usernameAccount,
                         "foodid": id,
                         "avatar": avatarFood,
                         "title": "Someone is asking you about food",
                         "message":"Time request: " + time,
+                        "category": "request",
                         "status": 1
                       })
                     })

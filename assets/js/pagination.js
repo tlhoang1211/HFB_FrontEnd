@@ -2,7 +2,7 @@ function paginationFood(listFood){
     let container = $('.pagination');
     container.pagination({
         dataSource: listFood,
-        pageSize: 4,
+        pageSize: 8,
         showGoInput: true,
         showGoButton: true,
         formatGoInput: 'go to <%= input %>',
@@ -12,7 +12,7 @@ function paginationFood(listFood){
 
                 $.each(data, function (index, item) {
                     dataHtml +=
-                    `<div class="col-sm-6 col-md-3 col-lg-3" id="pg-shop-item-${item.id}">
+                    `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
                     <div class="shop-item">
                         <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
                         <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>

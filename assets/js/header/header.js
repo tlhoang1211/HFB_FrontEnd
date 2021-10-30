@@ -77,7 +77,6 @@ $(document).ready(function () {
         //   </li>
         // `;
       }else{
-        console.log(111);
         listNotify.forEach(function (child) {
         if(child.val().status ==1){
           quantityNotify++;
@@ -113,11 +112,103 @@ $(document).ready(function () {
 
   // status 0-deactive 1-active
   $(document).on('click', '.header__notify-item', function () {
-    var id111 = $(this).data("id");
-    console.log(id111);
-    console.log(Notification.update(idAccount, id111, {
-    "status" : 0
-    }));
+    var idNoti = $(this).data("id");
+    var categoryNoti;
+    var foodIdNoti;
+    var usernameAccount
+    
+    let notificationPromise = new Promise(function(myResolve) {
+      Notification.update(idAccount, idNoti, {
+        "idNotify" : idNoti
+      });
+      Notification.show(idAccount, function (listNotify) {
+        listNotify.forEach(function (child) {
+          if(child.val().idNotify == idNoti){
+            categoryNoti= child.val().category;
+            foodIdNoti = child.val().foodid;
+            usernameAccount = child.val().usernameaccount;
+          }
+        })
+      })
+      myResolve();
+    })
+    
+    notificationPromise.then(
+      function() {
+        console.log('start notification');
+        if(categoryNoti == "request"){
+          console.log('start notification');
+          Notification.update(idAccount, idNoti, {
+            "status" : 0
+          });
+        }
+        if(categoryNoti == "food"){
+          fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/roles?username=${usernameAccount}`, {
+            method: 'GET',
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
+            .then(response => response.json())
+            .then(listRole => {
+              var listRoles;
+              let notificationPromise2 = new Promise(function(myResolve) {
+                listRoles = listRole.data;
+                myResolve();
+              })
+
+              notificationPromise2.then(
+                function() {
+                  listRoles.map(function(role){
+                    if(role.name == 'ROLE_ADMIN'){
+                      fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`, {
+                        method: 'GET',
+                        headers: {
+                          "Authorization": `Bearer ${token}`
+                        }
+                      })
+                      .then(response => response.json())
+                      .then(listAdmin => {
+                        var listAdmins;
+                        let notificationPromise3 = new Promise(function(myResolve) {
+                          listAdmins = listAdmin.data;
+                          myResolve();
+                        })
+
+                        notificationPromise3.then(
+                          function() {
+                            listAdmins.map(function(admin){
+                              Notification.show(admin.id, function (listNotifyAdmin) {
+                                if(listNotifyAdmin==[] || listNotifyAdmin == null || listNotifyAdmin == undefined){
+                                  
+                                }else{
+                                  listNotifyAdmin.forEach(function (child) {
+                                    if(child.val().foodid == foodIdNoti){
+                                      var idNotiAdmin = child.val().idNotify;
+                                      Notification.update(admin.id, idNotiAdmin, {
+                                        "status" : 0
+                                      });
+                                    }
+                                  })
+                                }
+                              })
+                            })
+                          })
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                    }
+                  })
+                })
+              
+              // swal("Success!", "Add Food success!", "success");
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      })
   });
 
     
@@ -183,6 +274,7 @@ $("#addformModal").validate({
 var listImageFood = [];
 
 function newFoodModal() {
+
 	var nameFood = document.getElementById("nameFoodModal").value;
 	var category = document.getElementById("categoryModal").value;
 	var expirationDate = document.getElementById("expirationDateModal").value;
@@ -211,9 +303,50 @@ function newFoodModal() {
       	body: JSON.stringify(dataPost)
       })
       	.then(response => response.json())
-      	.then(function (data) {
-          console.log(data);
-          swal("Success!", "Add Food success!", "success");
+      	.then(function (data1) {
+          console.log(data1.data);
+          fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`, {
+                method: 'GET',
+                headers: {
+                  "Authorization": `Bearer ${token}`
+                }
+              })
+              .then(response => response.json())
+              .then(listAdmin => {
+                var listAdmin2;
+                var idFood;
+                var avatarFood;
+                var time;
+                let notifyFoodPromise = new Promise(function(myResolve) {
+                  listAdmin2 = listAdmin.data;
+                  idFood = data1.data.id;
+                  avatarFood = data1.data.avatar;
+                  var today = new Date();
+                  time = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear() +" "+ today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                  console.log(time);
+                  myResolve();
+                })
+
+                notifyFoodPromise.then(
+                  function() {
+                    listAdmin2.map(function(admin){
+                      Notification.send(admin.id, {
+                        "idNotify":"",
+                        "usernameaccount": admin.username,
+                        "foodid": idFood,
+                        "avatar": avatarFood,
+                        "title": "User add new food",
+                        "message":"Time request: " + time,
+                        "category": "food",
+                        "status": 1
+                      })
+                    })
+                  })
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+              swal("Success!", "Add Food success!", "success");
         })
         .catch(function (error) {
           console.log(error);
