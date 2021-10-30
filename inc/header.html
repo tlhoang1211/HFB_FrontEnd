@@ -1,327 +1,520 @@
-<link rel="stylesheet" href="./assets/css/notify.css">
-<link rel="stylesheet" href="./assets/css/repository.css">
-<style>
-  .header__cart-notice{
-    position: absolute;
-    padding: 1px 6px;
-    top: 6px;
-    right: -11px;
-    font-size: 12px;
-    line-height:12px;
-    background: #fff;
-    color: #000;
-    border-radius: 10px;
-    border: 2px solid #000;
-    font-weight: 400;
-}
-.header__cart-icon{
-    font-size: 20px;
-    color: #fff;
-    margin-top: 14px;
-}
-</style>
+<link rel="stylesheet" href="../assets/css/notify.css" />
+<link rel="stylesheet" href="../assets/css/repository.css" />
+<link rel="stylesheet" href="assets/css/header_custom.css" />
 
-<nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation"  style="background-color: black; padding: 0;">
-    <div class="container">
-      <div class="navbar-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a class="navbar-brand" href="./index_shop.html">Hanoi Food Bank</a>
-      </div>
-      <div class="collapse navbar-collapse" id="custom-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown"><a  href="./index_shop.html">Home</a>
-          </li>
-          <li class="dropdown"><a  href="./about4.html">About</a>
-          </li>
-          <li class="dropdown"><a  href="./contact2.html" >Contact</a>
-          </li>
-          <li class="dropdown"><a  href="./gallery_col_3.html" >Gallery</a>
-          </li>
-          <li class="dropdown"><a href="./shop_product_col_4.html">Product</a>
-          </li>
-          <li class="dropdown"><a href="./login_register.html">Donate</a>
-          </li>
-          <li class="dropdown"><a onclick="addNewFood()">Add Food</a>
-          </li>
-          <li class="dropdown" id="login-register"><a href="./login_register.html">Login/Register</a>
-          </li>
-          <li class="dropdown navbar__item--has-notify">
-            <span class="header__cart-notice"></span>
-            <i class="header__cart-icon icon-bell fa fa-bell-o"></i>
-            <div class="notification-box">
-              <div class="header__notify">
-                <header class="header__notify-header">
-                  <h6>Notifycation</h6>
-                </header>
-                <ul class="header__notify-list" id="notifycation">
-                  
-                </ul>
-                <footer class="header__notify-footer">
-                  <a href=""  class="header__notify-footer-btn">View All</a>
-                </footer>
-              </div>
-            </div>
-          </li>
-          <li class="dropdown" id="user-account">
-            <a class="dropdown-toggle" href="./tabs_and_accordions.html" data-toggle="dropdown">
-              <div class="navbar__user">
-                
-              </div>
-            </a>
-            <ul class="dropdown-menu" id="dropavatar">
-              <li><a href="./tabs_and_accordions.html">Account information</a></li>
-              <li><a id="logout">Logout</a></li>
-            </ul>
-          </li>
-          
-        </ul>
-      </div>
+<nav
+  class="navbar-expand-xl navbar navbar-custom navbar-fixed-top"
+  role="navigation"
+  style="background-color: black; padding: 0"
+>
+  <div class="container">
+    <div class="navbar-header">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#custom-collapse"
+      >
+      <span class="navbar-toggle-icon">
+        <i class="fa fa-bars"></i>  
+      </span>
+      </button
+      ><a class="navbar-brand" href="./index_shop.html">Hanoi Food Bank</a>
     </div>
-  </nav>
-  <!-- Modal send request layout -->
-  <section class="modalLayout">
-    <div class="modal modal-header-add-food">
-        <div class="modal-overlay"></div>
+    <div class="collapse navbar-collapse" id="custom-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown"><a href="./about4.html">About</a></li>
+        <li class="dropdown"><a href="./contact2.html">Contact</a></li>
+        <li class="dropdown"><a href="./gallery_col_3.html">Gallery</a></li>
+        <li class="dropdown">
+          <a href="./shop_product_col_4.html">Food</a>
+        </li>
+        <li class="dropdown"><a onclick="addNewFood()">Add Food</a></li>
+        <li class="dropdown donate">
+          <a class="donate_button_custom" onclick="donate()">Donate</a>
+        </li>
+        <li class="dropdown" id="login-register">
+          <a href="./login_register.html">Login/Register</a>
+        </li>
+        <li class="dropdown navbar__item--has-notify">
+          <span class="header__cart-notice"></span>
+          <i class="header__cart-icon icon-bell fa fa-bell-o"></i>
+          <div class="notification-box">
+            <div class="header__notify">
+              <header class="header__notify-header">
+                <h6>Notification</h6>
+              </header>
+              <ul class="header__notify-list" id="notification"></ul>
+              <footer class="header__notify-footer">
+                <a href="" class="header__notify-footer-btn">View All</a>
+              </footer>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown" id="user-account">
+          <a
+            class="dropdown-toggle"
+            href="./tabs_and_accordions.html"
+            data-toggle="dropdown"
+            style="padding-top: 8px"
+          >
+            <div class="navbar__user"></div>
+          </a>
+          <ul class="dropdown-menu" id="dropavatar">
+            <li>
+              <a href="./tabs_and_accordions.html">Account information</a>
+            </li>
+            <li><a id="logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-        <div class="modal-dialog">
-            <div class="modal-main">
-                <div class="modal-container">
-                    <div class="modal-body">
-                        <!-- Add new food -->
-                        <div class="tab-pane" id="addFood">
-                          <h4 style="font-weight: 400;">Add New Food</h4>
-                          <form class="form addform" role="form">
-                            <div class="form-group">
-                              <label for="nameFood" class="form-label">Food Name</label>
-                              <input id="nameFood" class="form-control" type="text" placeholder="Enter Food Name" />
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="form-group">
-                              <label for="upload_image_food" class="form-label">Image Food</label>
-                              <br />
-                              <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
-                                <i class="fa fa-download"></i> Upload image
-                              </button>
-                              <div class="thumbnailsFood">
-                                <ul class="cloudinary-thumbnails">
-                                  <li class="cloudinary-thumbnail" data-cloudinary="">
-                                    <img src="" style="width: 300px; height: 300px" />
-                                    <a href="#" class="cloudinary-delete">x</a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <input type="hidden" id="imageFoods">
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="form-group">
-                              <label for="category" class="form-label">Category</label>
-                              <select name="category" id="category" class="form-control required">
-                                <option selected disabled>Select</option>
-                                <option value="1">Drinks</option>
-                                <option value="2">Noodle</option>
-                                <option value="3">Bread</option>
-                                <option value="4">Rice</option>
-                                <option value="5">Meat</option>
-                                <option value="6">Seafood</option>
-                                <option value="7">Vegetables</option>
-                                <option value="8">Vegetarian Food</option>
-                                <option value="9">Fruit</option>
-                                <option value="10">Fast Food</option>
-                                <option value="11">Snacks</option>
-                                <option value="12">Others</option>
-                              </select>
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="form-group">
-                              <label for="manufactureDate" class="form-label">Manufacture Date</label>
-                              <input id="manufactureDate" class="form-control" type="datetime-local" />
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="form-group">
-                              <label for="expirationDate" class="form-label">Expiration Date</label>
-                              <input id="expirationDate" class="form-control" type="datetime-local" />
-                            </div>
-                            <div class="form-group">
-                              <label for="description" class="form-label">Description</label>
-                              <textarea id="description" class="form-control" rows="3" style="resize: vertical"
-                                placeholder="Enter Description"></textarea>
-                              <span class="form-message"></span>
-                            </div>
-                            <div>
-                              <a onclick="closeAddFood()" style="float: left; color: red; cursor: pointer;">Close</a>
-                              <button id="newFood" type="button" class="btn btn-success btn-round btnSubmit" style="margin-bottom:10px">
-                                <i class="fa fa-plus"></i> Add
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
+<!-- Modal Donate layout -->
+<section class="modalDonate" id="modal-donate">
+  <div class="modal modal-header-donate">
+    <div class="modal-overlay"></div>
 
-                    <!-- <div class="modal-footer"> -->
-                        <!-- <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
-                        <button onclick="sendRequest()" class="btn btn-b btn-round btnSubmit" type="button">Submit</button> -->
-                    <!-- </div> -->
+    <div class="modal-dialog">
+      <div class="modal-main">
+        <div class="modal-container">
+          <div class="modal-body">
+            <!-- Donate-->
+            <div class="tab-pane" id="donate">
+              <h4 style="font-weight: 400">Charity Application</h4>
+              <form class="form new-food-form" role="form">
+                <div class="form-group">
+                  <label for="donatorName" class="form-label">Your Name</label>
+                  <input
+                    id="donatorName"
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter your name"
+                  />
+                  <span class="form-message"></span>
                 </div>
+                <div class="form-group">
+                  <label for="donatorName" class="form-label"
+                    >Your Phone Number</label
+                  >
+                  <input
+                    id="donatorPhoneNumber"
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter your phone number"
+                  />
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="donatorName" class="form-label"
+                    >Amount Of Money</label
+                  >
+                  <input
+                    id="amount"
+                    class="form-control"
+                    type="number"
+                    placeholder="Enter the amount you want to donate"
+                  />
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="content" class="form-label">Content</label>
+                  <textarea
+                    id="content"
+                    class="form-control"
+                    rows="5"
+                    style="resize: vertical"
+                    placeholder="Enter content"
+                  ></textarea>
+                  <span class="form-message"></span>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-round btnSubmit"
+                    onclick="closeModal()"
+                    style="float: left; cursor: pointer"
+                    >Close</a
+                  >
+                  <button
+                    id="newFood"
+                    type="button"
+                    class="btn btn-success btn-round btnSubmit"
+                    style="margin-bottom: 10px"
+                  >
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+              </form>
             </div>
+          </div>
+
+          <!-- <div class="modal-footer"> -->
+          <!-- <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
+                        <button onclick="sendRequest()" class="btn btn-b btn-round btnSubmit" type="button">Submit</button> -->
+          <!-- </div> -->
         </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <script>
-    $(document).ready(function () {
-        Notification.config();})
+<!-- Modal upload new food layout -->
+<section class="modalAddNewFood">
+  <div class="modal modal-header-add-food">
+    <div class="modal-overlay"></div>
+    <div class="modal-dialog">
+      <div class="modal-main">
+        <div class="modal-container">
+          <div class="modal-body">
+            <!-- Add new food -->
+            <div class="tab-pane" id="addFood">
+              <h4 style="font-weight: 400">Add New Food</h4>
+              <form class="form new-food-form" role="form">
+                <div class="form-group">
+                  <label for="nameFood" class="form-label">Food Name</label>
+                  <input
+                    id="nameFood"
+                    class="form-control"
+                    type="text"
+                    placeholder="Enter Food Name"
+                  />
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="category" class="form-label">Category</label>
+                  <select
+                    name="category"
+                    id="category"
+                    class="form-control required"
+                  >
+                    <option selected disabled>Select</option>
+                    <option value="1">Drinks</option>
+                    <option value="2">Noodle</option>
+                    <option value="3">Bread</option>
+                    <option value="4">Rice</option>
+                    <option value="5">Meat</option>
+                    <option value="6">Seafood</option>
+                    <option value="7">Vegetables</option>
+                    <option value="8">Vegetarian Food</option>
+                    <option value="9">Fruit</option>
+                    <option value="10">Fast Food</option>
+                    <option value="11">Snacks</option>
+                    <option value="12">Others</option>
+                  </select>
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="upload_image_food" class="form-label"
+                    >Image Food</label
+                  >
+                  <br />
+                  <button
+                    type="button"
+                    id="upload_image_food"
+                    class="upload-btn btn btn-round"
+                  >
+                    <i class="fa fa-download"></i> Upload image
+                  </button>
+                  <div class="thumbnails"></div>
+                  <input type="hidden" id="imageFoods" />
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="manufactureDate" class="form-label"
+                    >Manufacture Date</label
+                  >
+                  <input
+                    id="manufactureDate"
+                    class="form-control"
+                    type="datetime-local"
+                  />
+                  <span class="form-message"></span>
+                </div>
+                <div class="form-group">
+                  <label for="expirationDate" class="form-label"
+                    >Expiration Date</label
+                  >
+                  <input
+                    id="expirationDate"
+                    class="form-control"
+                    type="datetime-local"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="description" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    id="description"
+                    class="form-control"
+                    rows="3"
+                    style="resize: vertical"
+                    placeholder="Enter Description"
+                  ></textarea>
+                  <span class="form-message"></span>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-round btnSubmit"
+                    onclick="closeModal()"
+                    style="float: left; cursor: pointer"
+                    >Close</a
+                  >
+                  <button
+                    id="newFood"
+                    type="button"
+                    class="btn btn-success btn-round btnSubmit"
+                    style="margin-bottom: 10px"
+                  >
+                    <i class="fa fa-plus"></i> Add
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
 
-    document.getElementById ("logout").addEventListener ("click", logoutAccount);
-    var loginregister = document.querySelector('#login-register');
-    var useraccount = document.querySelector('#user-account');
-    var notifycation = document.querySelector('.navbar__item--has-notify');
+          <!-- <div class="modal-footer"> -->
+          <!-- <a onclick="closeSendMail()" style="float: left; color: red; cursor: pointer;">Close</a>
+                        <button onclick="sendRequest()" class="btn btn-b btn-round btnSubmit" type="button">Submit</button> -->
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    var token = null;
-    var usernameAccount = null;
-    
-    
-    // logout
-    function logoutAccount(){
-      document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
-      document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
-      token = null;
-      usernameAccount = null;
-      
-      if(location.href == 'http://127.0.0.1:5500/tabs_and_accordions.html'){
-        location.replace('../index_shop.html');
-      }else{
-        location.reload();
-      }
+<script>
+  $(document).ready(function () {
+    Notification.config();
+  });
+
+  document.getElementById("logout").addEventListener("click", logoutAccount);
+  var loginregister = document.querySelector("#login-register");
+  var useraccount = document.querySelector("#user-account");
+  var notification = document.querySelector(".navbar__item--has-notify");
+
+  var token = null;
+  var usernameAccount = null;
+
+  // logout
+  function logoutAccount() {
+    document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    document.cookie = `username=${usernameAccount}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    token = null;
+    usernameAccount = null;
+
+    if (location.href == "http://127.0.0.1:5500/tabs_and_accordions.html") {
+      location.replace("../index_shop.html");
+    } else {
+      location.reload();
     }
-    useraccount.style.display = 'none';
-    notifycation.style.display = 'none';
-    
-    
-      if(document.cookie != null && document.cookie != ''){
-        var pairs = document.cookie.split(";");
-        var cookies = {};
-        for (var i=0; i<pairs.length; i++){
-          var pair = pairs[i].split("=");
-          cookies[(pair[0]+'').trim()] = unescape(pair.slice(1).join('='));
-        }
-        token = cookies.token;
-        usernameAccount = cookies.username;
-      }
-      var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
-      if(token ===null || token === undefined || token === NaN || token === ''){
-        
-        loginregister.style.display = 'block';
-        useraccount.style.display = 'none';
-        notifycation.style.display = 'none';
-      }else {
-        loginregister.style.display = 'none';
-        useraccount.style.display = 'block';
-        notifycation.style.display = 'block';
+  }
+  useraccount.style.display = "none";
+  notification.style.display = "none";
 
-        
-        var viewAccount = document.querySelector('.navbar__user');
-        fetch(getDetailFood,{
-          method: 'GET',
-          headers: {
-            "Authorization":`Bearer ${token}`
-          }
-        })
-        .then(response => response.json())
-        .then(account => {
-          var htmlsItem = `
-                <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+  if (document.cookie != null && document.cookie != "") {
+    var pairs = document.cookie.split(";");
+    var cookies = {};
+    for (var i = 0; i < pairs.length; i++) {
+      var pair = pairs[i].split("=");
+      cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
+    }
+    token = cookies.token;
+    usernameAccount = cookies.username;
+  }
+  var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+  if (token === null || token === undefined || token === NaN || token === "") {
+    loginregister.style.display = "block";
+    useraccount.style.display = "none";
+    notification.style.display = "none";
+  } else {
+    loginregister.style.display = "none";
+    useraccount.style.display = "block";
+    notification.style.display = "block";
+
+    var viewAccount = document.querySelector(".navbar__user");
+    fetch(getDetailFood, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((account) => {
+        var htmlsItem = `
+                <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
                     src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
                 <span>${account.data.name}</span>
-                `
-          viewAccount.innerHTML = htmlsItem;
+                `;
+        viewAccount.innerHTML = htmlsItem;
 
-          
-          Notification.show(account.data.id, function (listNotify) {
-            var li= '';
-            var quantityNotify = 0;
-            if(listNotify==[] || listNotify == null || listNotify == undefined){
-              // li  += `
-              //   <li >
-                  
-              //   </li>
-              // `;
-            }else{
-              console.log(111);
-              listNotify.forEach(function (child) {
-                if(child.val().status ==1){
-                  quantityNotify++;
-                }
-                li  += `
-                      <li class="header__notify-item header__notify-item--status-${child.val().status}" data-id="${child.key}">
+        Notification.show(account.data.id, function (listNotify) {
+          var li = "";
+          var quantityNotify = 0;
+          if (
+            listNotify == [] ||
+            listNotify == null ||
+            listNotify == undefined
+          ) {
+            // li  += `
+            //   <li >
+            //   </li>
+            // `;
+          } else {
+            console.log(111);
+            listNotify.forEach(function (child) {
+              if (child.val().status == 1) {
+                quantityNotify++;
+              }
+              li += `
+                      <li class="header__notify-item header__notify-item--status-${
+                        child.val().status
+                      }" data-id="${child.key}">
                           <a href="#" class="header__notify-link">
-                            <img src="https://res.cloudinary.com/vernom/image/upload/${child.val().avatar}" alt="" class="header__notify-img">
+                            <img src="https://res.cloudinary.com/vernom/image/upload/${
+                              child.val().avatar
+                            }" alt="" class="header__notify-img">
                             <div class="header__notify-info">
-                              <span class="header__notify-name">${child.val().title}</span>
-                              <span class="header__notify-des">${child.val().message}</span>
+                              <span class="header__notify-name">${
+                                child.val().title
+                              }</span>
+                              <span class="header__notify-des">${
+                                child.val().message
+                              }</span>
                             </div>
                           </a>
                         </li>
                       `;
-                  })
-              $('#notifycation').html(li)
-              
-              console.log(111);
-              if(quantityNotify == 0){
-                document.querySelector('.header__cart-notice').style.display = 'none'
-              }else if(quantityNotify > 9){
-                document.querySelector('.header__cart-notice').innerHTML = '9+';
-              }else{
-                document.querySelector('.header__cart-notice').innerHTML = quantityNotify;
-              }}   
-            })
-          idAccount = account.data.id;
-          
-          })
-          .catch(error => console.log(error));
-      }
-    
-    // status 0-deactive 1-active
-    $(document).on('click', '.header__notify-item', function () {
-            var id111 = $(this).data("id");
-            console.log(id111);
-            console.log(Notification.update(idAccount, id111, {
-              "status" : 0
-            }));
-            
-          });
-    
-          
+            });
+            $("#notification").html(li);
 
-    var modal = document.querySelector('.modal-header-add-food');
-    function addNewFood(){
-      var cookie = document.cookie;
-        if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
-          location.replace('../login_register.html');
-        }else{
-          modal.style.display = 'flex';
-        }
-    }
-
-    // Close Modal Add New Food
-    function closeAddFood(){
-				modal.style.display = 'none';
-			}
-
-      var myWidget = cloudinary.createUploadWidget(
-      {
-        cloudName: "vernom",
-        uploadPreset: "fn5rpymu",
-        form: "#edit-account-form",
-        folder: "hanoi_food_bank_project/users_avatar",
-        fieldName: "thumbnails[]",
-        thumbnails: ".thumbnails",
-      },
-      (error, result) => {
-        if (!error && result && result.event === "success") {
-          if (result.info) {
-            document.querySelector('#avatar_account').src = result.info.url;
-            document.querySelector('#account_avatar').value = result.info.url;
+            console.log(111);
+            if (quantityNotify == 0) {
+              document.querySelector(".header__cart-notice").style.display =
+                "none";
+            } else if (quantityNotify > 9) {
+              document.querySelector(".header__cart-notice").innerHTML = "9+";
+            } else {
+              document.querySelector(
+                ".header__cart-notice"
+              ).innerHTML = quantityNotify;
+            }
           }
+        });
+        idAccount = account.data.id;
+      })
+      .catch((error) => console.log(error));
+  }
+
+  // status 0-deactive 1-active
+  $(document).on("click", ".header__notify-item", function () {
+    var id111 = $(this).data("id");
+    console.log(id111);
+    console.log(
+      Notification.update(idAccount, id111, {
+        status: 0,
+      })
+    );
+  });
+
+  var modal1 = document.querySelector(".modal-header-add-food");
+  function addNewFood() {
+    var cookie = document.cookie;
+    if (
+      cookie === null ||
+      cookie === undefined ||
+      cookie === NaN ||
+      cookie === "" ||
+      cookie === []
+    ) {
+      location.replace("../login_register.html");
+    } else {
+      modal1.style.display = "flex";
+    }
+  }
+
+  var modal2 = document.querySelector(".modal-header-donate");
+  function donate() {
+    modal2.style.display = "flex";
+  }
+
+  // Close Modal
+  function closeModal() {
+    modal1.style.display = "none";
+    modal2.style.display = "none";
+  }
+
+  $(document).keydown(function (event) {
+    if (event.keyCode == 27) {
+      modal1.style.display = "none";
+      modal2.style.display = "none";
+      event.preventDefault();
+    }
+  });
+
+  $(document).ready(function () {
+    $("select#category").change(function () {
+      $(this)
+        .find(":selected")
+        .addClass("selected")
+        .siblings("option")
+        .removeClass("selected");
+      var selectedCategory = $(this).children("option:selected").text();
+      console.log(selectedCategory);
+      myWidgetFood.update({
+        folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
+      });
+    });
+  });
+
+  var myWidgetFood = cloudinary.createUploadWidget(
+    {
+      cloudName: "vernom",
+      uploadPreset: "fn5rpymu",
+      form: "#new-food-form",
+      // multiple: true,
+      folder: "hanoi_food_bank_project/uploaded_food",
+      fieldName: "thumbnails[]",
+      thumbnails: ".thumbnails",
+    },
+    (error, result) => {
+      if (!error && result && result.event === "success") {
+        listImageFood.push(result.info.path);
+        var arrayThumnailInputs = document.querySelectorAll(
+          'input[name="thumbnails[]"]'
+        );
+        for (let i = 0; i < arrayThumnailInputs.length; i++) {
+          arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
+            "data-cloudinary-public-id"
+          );
         }
       }
-    );
-  </script>
+    }
+  );
+
+  document.getElementById("upload_image_food").addEventListener(
+    "click",
+    function () {
+      myWidgetFood.open();
+    },
+    false
+  );
+
+  // delete image
+  $("body").on("click", ".cloudinary-delete", function () {
+    var splittedImg = $(this).parent().find("img").attr("src").split("/");
+    var imgName =
+      splittedImg[splittedImg.length - 3] +
+      "/" +
+      splittedImg[splittedImg.length - 2] +
+      "/" +
+      splittedImg[splittedImg.length - 1];
+    var publicId = $(this).parent().attr("data-cloudinary");
+    $(this).parent().remove();
+    $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
+  });
+</script>
