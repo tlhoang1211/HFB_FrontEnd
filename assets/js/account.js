@@ -77,51 +77,49 @@ function onAddClassActive(e, className, parent) {
 }
 
 function showTabPanel(e) {
-  var listAction = document.getElementsByClassName("tab-account");
-  if (listAction && listAction.length > 0) {
-    for (var index = 0, len = listAction.length; index < len; index++) {
-      var element = listAction[index];
-      element.classList.add("d-none");
-      element.classList.remove("active");
-    }
-  }
-  var listPanel = document.getElementsByClassName("tab-pane");
-  if (listPanel && listPanel.length > 0) {
-    for (var index = 0, len = listPanel.length; index < len; index++) {
-      var element = listPanel[index];
-      element.classList.remove("active");
-    }
-  }
-  switch (e) {
-    case "myaccount":
-      document.getElementsByClassName("profile")[0].classList.add("active");
-      document.getElementById("profile").classList.add("active");
-      document.getElementsByClassName("profile")[0].classList.remove("d-none");
-      getAccount();
-      break;
-    case "myfood":
-      document.getElementsByClassName("addFood")[0].classList.add("active");
-      document.getElementById("formAddFood").classList.add("active");
-      document.getElementsByClassName("addFood")[0].classList.remove("d-none");
-      document.getElementsByClassName("listFood")[0].classList.remove("d-none");
-      getListFood();
-      break;
-    case "myrequest":
-      document.getElementsByClassName("listRequest")[0].classList.add("active");
-      document.getElementById("listRequest").classList.add("active");
-      document
-        .getElementsByClassName("listRequest")[0]
-        .classList.remove("d-none");
-      getListRequest();
-      break;
-    case "myfeedback":
-      document.getElementsByClassName("feedback")[0].classList.add("active");
-      document.getElementById("feedback").classList.add("active");
-      document.getElementsByClassName("feedback")[0].classList.remove("d-none");
-      break;
-    default:
-      break;
-  }
+	var listAction = document.getElementsByClassName('tab-account');
+	if (listAction && listAction.length > 0) {
+		for (var index = 0, len = listAction.length; index < len; index++) {
+			var element = listAction[index];
+			element.classList.add('d-none');
+			element.classList.remove('active');
+		}
+	}
+	var listPanel = document.getElementsByClassName('tab-pane');
+	if (listPanel && listPanel.length > 0) {
+		for (var index = 0, len = listPanel.length; index < len; index++) {
+			var element = listPanel[index];
+			element.classList.remove('active');
+		}
+	}
+	switch (e) {
+		case 'myaccount':
+			document.getElementsByClassName('profile')[0].classList.add('active');
+			document.getElementById('profile').classList.add('active');
+			document.getElementsByClassName('profile')[0].classList.remove('d-none');
+			getAccount();
+			break;
+		case 'myfood':
+			document.getElementsByClassName('addFood')[0].classList.add('active');
+			document.getElementById('formAddFood').classList.add('active');
+			document.getElementsByClassName('addFood')[0].classList.remove('d-none');
+			document.getElementsByClassName('listFood')[0].classList.remove('d-none');
+			getListFood();
+			break;
+		case 'myrequest':
+			document.getElementsByClassName('listRequest')[0].classList.add('active');
+			document.getElementById('listRequest').classList.add('active');
+			document.getElementsByClassName('listRequest')[0].classList.remove('d-none');
+			getListRequest();
+			break;
+		case 'myfeedback':
+			document.getElementsByClassName('feedback')[0].classList.add('active');
+			document.getElementById('feedback').classList.add('active');
+			document.getElementsByClassName('feedback')[0].classList.remove('d-none');
+			break;
+		default:
+			break;
+	}
 }
 
 // get data user
@@ -380,22 +378,13 @@ function formDetailRequest(id) {
     .catch((error) => console.log(error));
 }
 // bind data detail request
-function bindDataDetailRequest(data) {
-  document.querySelectorAll("#image_food_detail_request").src =
-    data.avatar ||
-    "https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg";
-  document.querySelectorAll("#detailRequest .product-title").item(0).innerHTML =
-    data.foodDTO.name;
-  document.querySelectorAll("#detailRequest .description p").item(0).innerHTML =
-    data.message;
-  document
-    .querySelectorAll("#detailRequest .product_meta a")
-    .item(0).innerHTML = convertStatus(data.status);
-  document
-    .querySelectorAll("#detailRequest .row-btn")
-    .item(
-      0
-    ).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
+function bindDataDetailRequest(data){
+	document.querySelectorAll('#image_food_detail_request').src = data.avatar || 'https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg';
+	document.querySelectorAll('#detailRequest .product-title').item(0).innerHTML = data.foodDTO.name;
+	document.querySelectorAll('#detailRequest .description p').item(0).innerHTML = data.message;
+	document.querySelectorAll('#detailRequest .product_meta a').item(0).innerHTML = convertStatus(data.status);
+	document.querySelectorAll('#detailRequest .row-btn').item(0).innerHTML = 
+	`<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
 	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
 }
 // delete request
