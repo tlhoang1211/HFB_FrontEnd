@@ -18,7 +18,7 @@ function paginationFood(listFood){
                         <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
                         </div>
                         <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                        <p id="pg-countdown-${item.id}"></p>
+                        <p>Expiration Date: ${item.expirationDate}</p>
                     </div>
                     </div>`
                 });
@@ -38,25 +38,13 @@ function paginationFood(listFood){
                     // Tổng số giây 
                     var countDown = setInterval(run,1000);
                     function run(){
-                        var p = document.querySelector(`#pg-countdown-${item2.id}`);
                         var now = new Date().getTime();
-                        //Số s đến thời gian hiện tại
                         var timeRest = tet - now;
-                        //Số s còn lại để đến tết;
-                        var day = Math.floor(timeRest/(1000*60*60*24));
-                        //Số ngày còn lại
-                        var hours = Math.floor(timeRest%(1000*60*60*24)/(1000*60*60));
-                        // Số giờ còn lại
-                        var minute = Math.floor(timeRest%(1000*60*60)/(1000*60));
-                        // Số phút còn lại
-                        var sec = Math.floor(timeRest%(1000*60)/(1000));
-                        // Số giây còn lại
                         if(timeRest <= 0){
                           clearInterval(countDown);
                           document.querySelector(`#pg-shop-item-${item2.id}`).style.display = 'none';
                         }
-                        p.innerHTML = 'TIME REMAINING: ' + day+' DAY '+hours+' : ' + minute + ' : ' + sec +"  ";
-                    }
+                        }
                   })
                 }
             );

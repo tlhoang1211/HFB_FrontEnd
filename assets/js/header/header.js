@@ -215,29 +215,6 @@ $(document).on("click", ".header__notify-item", function () {
             });
           });
 
-          // swal("Success!", "Add Food success!", "success");
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
-  });
-});
-
-// var modal = document.querySelector('.modal-header-add-food');
-// function addNewFood(){
-//   var cookie = document.cookie;
-//   if(cookie === null || cookie === undefined || cookie === NaN || cookie === '' || cookie === []){
-//   location.replace('../login_register.html');
-//   }else{
-//   modal.style.display = 'flex';
-//   }
-// }
-
-// // Close Modal Add New Food
-// function closeAddFood(){
-//   modal.style.display = 'none';
-// }
 
 // validate form
 $("#addformModal").validate({
@@ -470,6 +447,22 @@ function formatCategory(id) {
       break;
   }
   return text;
+}
+
+var modal1 = document.querySelector(".modal-header-add-food");
+function addNewFood() {
+  var cookie = document.cookie;
+  if (
+    cookie === null ||
+    cookie === undefined ||
+    cookie === NaN ||
+    cookie === "" ||
+    cookie === []
+  ) {
+    location.replace("../login_register.html");
+  } else {
+    modal1.style.display = "flex";
+  }
 }
 
 var modal1 = document.querySelector(".modal-header-add-food");

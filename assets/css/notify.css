@@ -123,14 +123,17 @@
   right: -7px;
   font-size: 12px;
   line-height:16px;
-  background: #fff;
+  background:pink;
   color: #000;
   border-radius: 10px;
   border: 2px solid #000;
-  font-weight: 400;
+  font-weight: 600;
 }
 .header__notify-icon{
   font-size: 20px;
   color: #fff;
   margin-top: 14px;
+
+  padding: 0 15px;
+  margin-left: 15px;
 }

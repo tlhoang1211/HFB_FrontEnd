@@ -506,7 +506,7 @@
                     <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
                     </div>
                     <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                    <p id="countdown-${item.id}"></p>
+                    <p>Expiration Date: ${item.expirationDate}</p>
                   </div>
                 </div>
                 `;
@@ -514,76 +514,48 @@
               shopItem.innerHTML = htmlsItem.join("");
               myResolve(); // when successful
             });
-            myPromise.then(function () {
-              listItems.data.content.map(function (item2) {
-                var tet = getTimeFromString2(item2.expirationDate);
-                run();
+            myPromise.then(
+              function() { 
+                listItems.data.content.map(function(item2){
+                  var tet = getTimeFromString2(item2.expirationDate);
+                  run();
+                  
+                  // Tổng số giây 
+                  var countDown = setInterval(run,1000);
+                  function run(){
+                      var now = new Date().getTime();
+                      var timeRest = tet - now;
+                      if(timeRest <= 0){
+                        clearInterval(countDown);
+                        document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
 
-                // Tổng số giây
-                var countDown = setInterval(run, 1000);
-                function run() {
-                  var p = document.querySelector(`#countdown-${item2.id}`);
-                  var now = new Date().getTime();
-                  //Số s đến thời gian hiện tại
-                  var timeRest = tet - now;
-                  //Số s còn lại để đến tết;
-                  var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
-                  //Số ngày còn lại
-                  var hours = Math.floor(
-                    (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                  );
-                  // Số giờ còn lại
-                  var minute = Math.floor(
-                    (timeRest % (1000 * 60 * 60)) / (1000 * 60)
-                  );
-                  // Số phút còn lại
-                  var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
-                  // Số giây còn lại
-                  if (timeRest <= 0) {
-                    clearInterval(countDown);
-                    document.querySelector(
-                      `#shop-item-${item2.id}`
-                    ).style.display = "none";
-
-                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${item2.id}`;
-                    fetch(urlUpdateStatus, {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                      },
-                      body: JSON.stringify({
-                        name: item2.name,
-                        avatar: item2.avatar,
-                        images: item2.images,
-                        description: item2.description,
-                        content: "",
-                        quantity: item2.quantity,
-                        expirationDate: item2.expirationDate,
-                        status: 0,
-                        updatedBy: item2.updatedBy,
-                        categoryId: item2.categoryId,
-                      }),
-                    })
-                      .then((response) => response.json())
-                      .then((data) => {
-                        getListItem();
-                      })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
-                  }
-
-                  p.innerHTML =
-                    "TIME REMAINING: " +
-                    day +
-                    " DAY " +
-                    hours +
-                    " : " +
-                    minute +
-                    " : " +
-                    sec +
-                    "  ";
+                        var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${item2.id}`
+                        fetch(urlUpdateStatus, {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          "Authorization":`Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                          'name': item2.name,
+                          'avatar':item2.avatar,
+                          'images':item2.images,
+                          'description': item2.description,
+                          'content':'',
+                          'quantity':item2.quantity,
+                          'expirationDate' :item2.expirationDate,
+                          'status': 0,
+                          'updatedBy': item2.updatedBy,
+                          'categoryId': item2.categoryId
+                        })})
+                        .then(response => response.json())
+                        .then(data => {
+                          getListItem()
+                        })
+                        .catch(function(error){
+                          console.log(error);
+                        });
+                      }
                 }
               });
             });
