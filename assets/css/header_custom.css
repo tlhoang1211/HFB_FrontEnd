@@ -69,3 +69,13 @@ ul.dropdown-menu {
 #dropavatar li a {
   color: #000;
 }
+
+.category_col {
+  padding-right: 15px !important;
+  padding-left: 0px !important;
+}
+
+.date_col {
+  padding-left: 15px !important;
+  padding-right: 0px !important;
+}
