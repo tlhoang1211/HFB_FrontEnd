@@ -91,25 +91,7 @@
                               <span class="form-message"></span>
                             </div>
                             <div class="form-group">
-                              <label for="name" class="form-label">Image Food</label>
-                              <br />
-                              <button type="button" id="upload_image_foodModal"
-                                class="upload-btn btn btn-info btn-round">
-                                <i class="fa fa-download"></i> Upload image
-                              </button>
-                              <div class="thumbnailsFoodModal">
-                                <ul class="cloudinary-thumbnails">
-                                  <li class="cloudinary-thumbnail" data-cloudinary="">
-                                    <img src="" style="width: 300px; height: 300px" />
-                                    <a href="#" class="cloudinary-delete">x</a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <input type="hidden" id="imageFoodsModal">
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-6">
+                              <div class="col-sm-6 category_col">
                                 <div class="form-group">
                                   <label for="categoryModal" class="form-label">Category</label>
                                   <select name="categoryModal" id="categoryModal" class="form-control required">
@@ -130,13 +112,31 @@
                                   <span class="form-message"></span>
                                 </div>
                               </div>
-                              <div class="col-sm-6">
+                              <div class="col-sm-6 date_col">
                                 <div class="form-group">
                                   <label for="expirationDateModal" class="form-label">Expiration Date</label>
                                   <input id="expirationDateModal" name="expirationDateModal" class="form-control" type="date" />
                                   <span class="form-message"></span>
                                 </div>
                               </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="name" class="form-label">Image Food</label>
+                              <br />
+                              <button type="button" id="upload_image_foodModal"
+                                class="upload-btn btn btn-info btn-round">
+                                <i class="fa fa-download"></i> Upload image
+                              </button>
+                              <div class="thumbnailsFoodModal">
+                                <ul class="cloudinary-thumbnails">
+                                  <li class="cloudinary-thumbnail" data-cloudinary="">
+                                    <img src="" style="width: 300px; height: 300px" />
+                                    <a href="#" class="cloudinary-delete">x</a>
+                                  </li>
+                                </ul>
+                              </div>
+                              <input type="hidden" id="imageFoodsModal">
+                              <span class="form-message"></span>
                             </div>
                             <div class="form-group">
                               <label for="descriptionModal" class="form-label">Description</label>
