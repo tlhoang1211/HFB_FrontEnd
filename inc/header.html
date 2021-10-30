@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../assets/css/notify.css" />
 <link rel="stylesheet" href="../assets/css/repository.css" />
-<link rel="stylesheet" href="assets/css/header_custom.css" />
+<link rel="stylesheet" href="../assets/css/header_custom.css" />
 <style>
   label.error{
     color: red;
@@ -78,7 +78,7 @@
   </div>
 </nav>
 
-        <section class="modalAddNewFood">
+<section class="modalAddNewFood">
   <div class="modal modal-header-add-food">
     <div class="modal-overlay"></div>
     <div class="modal-dialog">
@@ -95,25 +95,7 @@
                               <span class="form-message"></span>
                             </div>
                             <div class="form-group">
-                              <label for="name" class="form-label">Image Food</label>
-                              <br />
-                              <button type="button" id="upload_image_foodModal"
-                                class="upload-btn btn btn-info btn-round">
-                                <i class="fa fa-download"></i> Upload image
-                              </button>
-                              <div class="thumbnailsFoodModal">
-                                <ul class="cloudinary-thumbnails">
-                                  <li class="cloudinary-thumbnail" data-cloudinary="">
-                                    <img src="" style="width: 300px; height: 300px" />
-                                    <a href="#" class="cloudinary-delete">x</a>
-                                  </li>
-                                </ul>
-                              </div>
-                              <input type="hidden" id="imageFoodsModal">
-                              <span class="form-message"></span>
-                            </div>
-                            <div class="row">
-                              <div class="col-sm-6">
+                              <div class="col-sm-6 category_col">
                                 <div class="form-group">
                                   <label for="categoryModal" class="form-label">Category</label>
                                   <select name="categoryModal" id="categoryModal" class="form-control required">
@@ -134,13 +116,31 @@
                                   <span class="form-message"></span>
                                 </div>
                               </div>
-                              <div class="col-sm-6">
+                              <div class="col-sm-6 date_col">
                                 <div class="form-group">
                                   <label for="expirationDateModal" class="form-label">Expiration Date</label>
                                   <input id="expirationDateModal" name="expirationDateModal" class="form-control" type="date" />
                                   <span class="form-message"></span>
                                 </div>
                               </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="name" class="form-label">Image Food</label>
+                              <br />
+                              <button type="button" id="upload_image_foodModal"
+                                class="upload-btn btn btn-info btn-round">
+                                <i class="fa fa-download"></i> Upload image
+                              </button>
+                              <div class="thumbnailsFoodModal">
+                                <ul class="cloudinary-thumbnails">
+                                  <li class="cloudinary-thumbnail" data-cloudinary="">
+                                    <img src="" style="width: 300px; height: 300px" />
+                                    <a href="#" class="cloudinary-delete">x</a>
+                                  </li>
+                                </ul>
+                              </div>
+                              <input type="hidden" id="imageFoodsModal">
+                              <span class="form-message"></span>
                             </div>
                             <div class="form-group">
                               <label for="descriptionModal" class="form-label">Description</label>
@@ -260,107 +260,8 @@
   </div>
 </section>
 
-  </section>
-  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-  <script src="../assets/js/header/header.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+<script src="../assets/js/header/header.js"></script>
 
-<script>
-  var modal1 = document.querySelector(".modal-header-add-food");
-  function addNewFood() {
-    var cookie = document.cookie;
-    if (
-      cookie === null ||
-      cookie === undefined ||
-      cookie === NaN ||
-      cookie === "" ||
-      cookie === []
-    ) {
-      location.replace("../login_register.html");
-    } else {
-      modal1.style.display = "flex";
-    }
-  }
-
-  var modal2 = document.querySelector(".modal-header-donate");
-  function donate() {
-    modal2.style.display = "flex";
-  }
-
-  // Close Modal
-  function closeModal() {
-    modal1.style.display = "none";
-    modal2.style.display = "none";
-  }
-
-  $(document).keydown(function (event) {
-    if (event.keyCode == 27) {
-      modal1.style.display = "none";
-      modal2.style.display = "none";
-      event.preventDefault();
-    }
-  });
-
-  $(document).ready(function () {
-    $("select#category").change(function () {
-      $(this)
-        .find(":selected")
-        .addClass("selected")
-        .siblings("option")
-        .removeClass("selected");
-      var selectedCategory = $(this).children("option:selected").text();
-      console.log(selectedCategory);
-      myWidgetFood.update({
-        folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
-      });
-    });
-  });
-
-  var myWidgetFood = cloudinary.createUploadWidget(
-    {
-      cloudName: "vernom",
-      uploadPreset: "fn5rpymu",
-      form: "#new-food-form",
-      // multiple: true,
-      folder: "hanoi_food_bank_project/uploaded_food",
-      fieldName: "thumbnails[]",
-      thumbnails: ".thumbnails",
-    },
-    (error, result) => {
-      if (!error && result && result.event === "success") {
-        listImageFood.push(result.info.path);
-        var arrayThumnailInputs = document.querySelectorAll(
-          'input[name="thumbnails[]"]'
-        );
-        for (let i = 0; i < arrayThumnailInputs.length; i++) {
-          arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
-            "data-cloudinary-public-id"
-          );
-        }
-      }
-    }
-  );
-
-  document.getElementById("upload_image_food").addEventListener(
-    "click",
-    function () {
-      myWidgetFood.open();
-    },
-    false
-  );
-
-  // delete image
-  $("body").on("click", ".cloudinary-delete", function () {
-    var splittedImg = $(this).parent().find("img").attr("src").split("/");
-    var imgName =
-      splittedImg[splittedImg.length - 3] +
-      "/" +
-      splittedImg[splittedImg.length - 2] +
-      "/" +
-      splittedImg[splittedImg.length - 1];
-    var publicId = $(this).parent().attr("data-cloudinary");
-    $(this).parent().remove();
-    $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
-  });
-</script>
