@@ -144,7 +144,6 @@
     />
     <link rel="stylesheet" href="./assets/css/validator.css" />
     <link rel="stylesheet" href="./assets/css/repository.css" />
-    
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -320,7 +319,7 @@
             </div>
           </div>
         </section>
-        
+
         <div id="toasts"></div>
         <div id="footer"></div>
       </div>
@@ -332,9 +331,18 @@
     JavaScripts
     =============================================
     -->
-    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script
+      src="https://upload-widget.cloudinary.com/global/all.js"
+      type="text/javascript"
+    ></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"
+    ></script>
+    <script
+      defer
+      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"
+    ></script>
     <script src="assets/lib/jquery/dist/jquery.js"></script>
     <script src="assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="assets/lib/wow/dist/wow.js"></script>
@@ -361,7 +369,6 @@
        setTimeout(function(){
          location.replace('../tabs_and_accordions.html'); 
         }, 3000);
-       
       }
 
       var loginForm = document.querySelector(".loginform");
@@ -410,6 +417,7 @@
               // location.replace('../index_shop.html');
             } else {
               swal("Error!", "Incorrect account or password!", "error");
+
             }
           })
           .catch(function (error) {
