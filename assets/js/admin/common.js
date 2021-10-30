@@ -1,21 +1,32 @@
 // $(document).ready(function() {
     "use strict"
     // get token
-    var token, pageContent, currentUserName;
+    var token, pageContent, currentUserName, objAccount;
     function startLoad(cookie){
-        console.log(cookie)
+        var getbackround = document.getElementsByClassName('bg-theme');
         if (cookie) {
             token = getCookie('token', cookie);
             currentUserName = getCookie('username', cookie);
         }
+        if (localStorage.getItem('backround')) {
+            var backround = localStorage.getItem('backround');
+            getbackround.item(0).classList.add(backround);
+        } else {
+            getbackround.item(0).classList.add('bg-theme2');
+        }
         if (token) {
-            creaElement('div', 'container', '', 'body', 'afterbegin');
-            creaElement('div', 'wrapper', 'root', '.container', 'afterbegin');
+            creaElement('div', 'wrapper', 'root', 'body', 'afterbegin');
             insertHtml('#root', '<a href="javaScript:;" class="back-to-top"><i class="bx bxs-up-arrow-alt"></i></a>', 'afterbegin');
             insertHtml('#root', '<div class="overlay toggle-icon"></div>', 'afterbegin');
             loadHtml('head.html', '#root', 'header', '', '', 'afterbegin', '../../../assets/js/admin/header.js');
             loadHtml('sidebar.html', '#root', 'div', 'sidebar-wrapper', '', 'afterbegin', '../../../assets/js/admin/sidebar.js');
-            loadHtml('setBg.html', '.container', 'div', 'switcher-wrapper', '', 'afterend', '../../../assets/js/admin/setBg.js');
+            loadHtml('setBg.html', '.wrapper', 'div', 'switcher-wrapper', '', 'afterend', '../../../assets/js/admin/setBg.js');
+            creaElement('div', 'page-wrapper', '', '.wrapper', 'afterbegin');
+            loadHtml( '../../../inc/layout/admin/content/dashboard/dashboard.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/dashboard/dashboard.js');
+            // if (localStorage.getItem('backround')) {
+                
+            // }
+            getAccount();
         } else {
             loadHtml('login.html', 'body', 'div', 'wrapper', '', 'afterbegin', '../../../assets/js/admin/login.js');
         }
@@ -37,6 +48,15 @@
         } else {
             return '';
         }
+    }
+    function getAccount() {
+        getConnectAPI('GET', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentUserName}`, null, function(result){
+            if (result && result.data) {
+                objAccount = result.data;
+            }
+        },
+            function(errorThrown){}
+        );
     }
     function creaElement(ele, className, id, position, position1){
         var positionElement = document.querySelectorAll(position);
@@ -91,7 +111,7 @@
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: dataPost ? JSON.stringify(dataPost) : null,
+            body: dataPost || null
         })
         .then((response) => response.json())
         .then(function (data) {
