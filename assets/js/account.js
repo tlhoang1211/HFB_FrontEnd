@@ -214,14 +214,32 @@ function renderListFood(data) {
     <td>${e.expirationDate}</td>
     <td>${e.status}</td>
     <td>${e.createdAt}</td>
-    <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>
-    <td onclick="deleteFood(this, ${
-      e.id
-    }, ${e.name}, ${e.categoryId})"><i class="fa fa-trash-o"></i></td>
-    </tr>`;
-  });
-  return html.join("");
+    <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>` + '<td onclick="deleteFood(this, \'' + e.id + '\', \'' + e.name + '\', \'' + e.categoryId + '\')"><i class="fa fa-trash-o"></i></td></tr>';
+	})
+	return html.join('');
 }
+function deleteFood(e, id, name, cateID) {
+	var dataPost = {
+	  "name": name,
+	  "updatedBy": objAccount.id,
+	  "categoryId": cateID,
+	  "status": 0
+	}
+	fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`,{
+	  method: 'POST',
+	  headers: {
+	      'Content-Type': 'application/json',
+	      "Authorization": `Bearer ${isToken}`
+	  },
+	  body: JSON.stringify(dataPost)
+	})
+	.then(response => response.json())
+	.then(food => {
+		if (food) {
+			e.parentElement.remove();
+		}
+	})
+	.catch(error => console.log(error));
 
 function deleteFood(e, id, name, cateID) {
   var dataPost = {
