@@ -100,11 +100,13 @@ function showTabPanel(e) {
       getAccount();
       break;
     case "myfood":
-      document.getElementsByClassName("addFood")[0].classList.add("active");
-      document.getElementById("formAddFood").classList.add("active");
-      document.getElementsByClassName("addFood")[0].classList.remove("d-none");
+      // document.getElementsByClassName("addFood")[0].classList.add("active");
+      // document.getElementById("formAddFood").classList.add("active");
+      // document.getElementsByClassName("addFood")[0].classList.remove("d-none");
+      document.getElementsByClassName("listFood")[0].classList.add("active");
+      document.getElementById("listFood").classList.add("active");
       document.getElementsByClassName("listFood")[0].classList.remove("d-none");
-      getListFood();
+      // getListFood();
       break;
     case "myrequest":
       document.getElementsByClassName("listRequest")[0].classList.add("active");
@@ -176,14 +178,61 @@ function updateAccount() {
   // .catch(error => console.log(error));
 }
 
-// get data food
-function getListFood() {
-  fetch("https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${isToken}`,
-    },
-  })
+// format category
+function formatCategory(id) {
+  var text = "";
+  switch (id) {
+    case 1:
+      text = "Drinks";
+      break;
+    case 2:
+      text = "Noodle";
+      break;
+    case 3:
+      text = "Bread";
+      break;
+    case 4:
+      text = "Rice";
+      break;
+    case 5:
+      text = "Meat";
+      break;
+    case 6:
+      text = "Seafood";
+      break;
+    case 7:
+      text = "Vegetables";
+      break;
+    case 8:
+      text = "Vegetarian Food";
+      break;
+    case 9:
+      text = "Fruit";
+      break;
+    case 10:
+      text = "Fast Food";
+      break;
+    case 11:
+      text = "Snacks";
+      break;
+    case 12:
+      text = "Others";
+      break;
+  }
+  return text;
+}
+
+// get data request
+function getListRequest() {
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${isToken}`,
+      },
+    }
+  )
     .then((response) => response.json())
     .then((food) => {
       if (
@@ -192,7 +241,7 @@ function getListFood() {
         food.data.content &&
         food.data.content.length > 0
       ) {
-        document.querySelector("#list-food").innerHTML = renderListFood(
+        document.querySelector("#list-request").innerHTML = renderListRequest(
           food.data.content
         );
       }
@@ -200,50 +249,93 @@ function getListFood() {
     .catch((error) => console.log(error));
 }
 
-function renderListFood(data) {
+function renderListRequest(data) {
   var count = 0;
   var html = data.map(function (e) {
     count++;
     return (
-      `<tr>
-    <td>${count}</td>
-    <td>${e.name || ""}</td>
-    <td><img src="https://res.cloudinary.com/vernom/image/upload/${
-      e.avatar
-    }" style="width: 30px;height: 30px;"/></td>
-    <td>${formatCategory(e.categoryId)}</td>
-    <td>${e.expirationDate}</td>
-    <td>${
-      e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-    }</td>
-    <td>${e.createdAt}</td>
-    <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>` +
-      "<td onclick=\"deleteFood(this, '" +
-      e.id +
+      `<tr><td>${count}</td><td>${e.foodName || ""}</td><td>${
+        e.message
+      }</td><td>${e.supplierName}</td>` +
+      "<td onclick=\"formDetailRequest('" +
+      e.foodId +
+      '\')"><i class="fa fa-pencil-square-o"></i></td><td onclick="deleteRequest(this, \'' +
+      e.foodId +
       "', '" +
-      e.name +
+      e.message +
       "', '" +
-      e.categoryId +
+      e.supplierId +
+      "', '" +
+      e.supplierName +
       '\')"><i class="fa fa-trash-o"></i></td></tr>'
     );
   });
   return html.join("");
 }
-function deleteFood(e, id, name, cateID) {
+
+// detail request
+function formDetailRequest(id) {
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${isToken}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((food) => {
+      if (food) {
+        document
+          .getElementsByClassName("detailRequest")[0]
+          .classList.remove("d-none");
+        bindDataDetailRequest(food.data);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+// bind data detail request
+function bindDataDetailRequest(data) {
+  document.querySelectorAll("#image_food_detail_request").src =
+    data.avatar ||
+    "https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg";
+  document.querySelectorAll("#detailRequest .product-title").item(0).innerHTML =
+    data.foodDTO.name;
+  document.querySelectorAll("#detailRequest .description p").item(0).innerHTML =
+    data.message;
+  document
+    .querySelectorAll("#detailRequest .product_meta a")
+    .item(0).innerHTML = convertStatus(data.status);
+  document
+    .querySelectorAll("#detailRequest .row-btn")
+    .item(
+      0
+    ).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
+	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
+}
+
+// delete request
+function deleteRequest(e, id, message, supplierId, supplierName) {
   var dataPost = {
-    name: name,
-    updatedBy: objAccount.id,
-    categoryId: cateID,
+    message: message || "",
     status: 0,
+    supplierId: supplierId,
+    supplierName: supplierName,
+    updatedBy: objAccount.id,
   };
-  fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${isToken}`,
-    },
-    body: JSON.stringify(dataPost),
-  })
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${isToken}`,
+      },
+      body: JSON.stringify(dataPost),
+    }
+  )
     .then((response) => response.json())
     .then((food) => {
       if (food) {
@@ -251,212 +343,26 @@ function deleteFood(e, id, name, cateID) {
       }
     })
     .catch((error) => console.log(error));
+}
 
-  function deleteFood(e, id, name, cateID) {
-    var dataPost = {
-      name: name,
-      updatedBy: objAccount.id,
-      categoryId: cateID,
-      status: 0,
-    };
-    fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify(dataPost),
-    })
-      .then((response) => response.json())
-      .then((food) => {
-        if (food) {
-          e.parentElement.remove();
-        }
-      })
-      .catch((error) => console.log(error));
+// convert status
+function convertStatus(status) {
+  switch (status) {
+    case 0:
+      status = "Deactive";
+      break;
+    case 1:
+      status = "Pending";
+      break;
+    case 2:
+      status = "Confirmed";
+      break;
+    case 3:
+      status = "Done";
+      break;
+    case 4:
+      status = "Cancel";
+      break;
   }
-
-  function formatCategory(id) {
-    var text = "";
-    switch (id) {
-      case 1:
-        text = "Drinks";
-        break;
-      case 2:
-        text = "Noodle";
-        break;
-      case 3:
-        text = "Bread";
-        break;
-      case 4:
-        text = "Rice";
-        break;
-      case 5:
-        text = "Meat";
-        break;
-      case 6:
-        text = "Seafood";
-        break;
-      case 7:
-        text = "Vegetables";
-        break;
-      case 8:
-        text = "Vegetarian Food";
-        break;
-      case 9:
-        text = "Fruit";
-        break;
-      case 10:
-        text = "Fast Food";
-        break;
-      case 11:
-        text = "Snacks";
-        break;
-      case 12:
-        text = "Others";
-        break;
-    }
-    return text;
-  }
-  // get data request
-  function getListRequest() {
-    fetch(
-      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${isToken}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((food) => {
-        if (
-          food &&
-          food.data &&
-          food.data.content &&
-          food.data.content.length > 0
-        ) {
-          document.querySelector("#list-request").innerHTML = renderListRequest(
-            food.data.content
-          );
-        }
-      })
-      .catch((error) => console.log(error));
-  }
-
-  function renderListRequest(data) {
-    var count = 0;
-    var html = data.map(function (e) {
-      count++;
-      return (
-        `<tr><td>${count}</td><td>${e.foodName || ""}</td><td>${
-          e.message
-        }</td><td>${e.supplierName}</td>` +
-        "<td onclick=\"formDetailRequest('" +
-        e.foodId +
-        '\')"><i class="fa fa-pencil-square-o"></i></td><td onclick="deleteRequest(this, \'' +
-        e.foodId +
-        "', '" +
-        e.message +
-        "', '" +
-        e.supplierId +
-        "', '" +
-        e.supplierName +
-        '\')"><i class="fa fa-trash-o"></i></td></tr>'
-      );
-    });
-    return html.join("");
-  }
-
-  function formDetailRequest(id) {
-    fetch(
-      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${isToken}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((food) => {
-        if (food) {
-          document
-            .getElementsByClassName("detailRequest")[0]
-            .classList.remove("d-none");
-          bindDataDetailRequest(food.data);
-        }
-      })
-      .catch((error) => console.log(error));
-  }
-  // bind data detail request
-  function bindDataDetailRequest(data) {
-    document.querySelectorAll("#image_food_detail_request").src =
-      data.avatar ||
-      "https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg";
-    document
-      .querySelectorAll("#detailRequest .product-title")
-      .item(0).innerHTML = data.foodDTO.name;
-    document
-      .querySelectorAll("#detailRequest .description p")
-      .item(0).innerHTML = data.message;
-    document
-      .querySelectorAll("#detailRequest .product_meta a")
-      .item(0).innerHTML = convertStatus(data.status);
-    document
-      .querySelectorAll("#detailRequest .row-btn")
-      .item(
-        0
-      ).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
-	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
-  }
-  // delete request
-  function deleteRequest(e, id, message, supplierId, supplierName) {
-    var dataPost = {
-      message: message || "",
-      status: 0,
-      supplierId: supplierId,
-      supplierName: supplierName,
-      updatedBy: objAccount.id,
-    };
-    fetch(
-      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${isToken}`,
-        },
-        body: JSON.stringify(dataPost),
-      }
-    )
-      .then((response) => response.json())
-      .then((food) => {
-        if (food) {
-          e.parentElement.remove();
-        }
-      })
-      .catch((error) => console.log(error));
-  }
-  function convertStatus(status) {
-    switch (status) {
-      case 0:
-        status = "Deactive";
-        break;
-      case 1:
-        status = "Pending";
-        break;
-      case 2:
-        status = "Confirmed";
-        break;
-      case 3:
-        status = "Done";
-        break;
-      case 4:
-        status = "Cancel";
-        break;
-    }
-    return status;
-  }
+  return status;
 }

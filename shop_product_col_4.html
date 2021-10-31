@@ -216,10 +216,10 @@
         <hr class="divider-w" />
         <section class="module-small">
           <div class="container">
-            <div class="row multi-columns-row  list-shop-item">
+            <div class="row multi-columns-row list-shop-item">
               
             </div>
-            <div class="row multi-columns-row " id="data-container"></div>
+            <div class="row multi-columns-row" id="data-container"></div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="pagination font-alt">
@@ -270,7 +270,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
     <script src="./assets/js/pagination.js"></script>
     <script>
-      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1';
+      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2';
 			var shopItem = document.querySelector('.list-shop-item');
       function getListItem(){
 				fetch(shopitemAPI,{
