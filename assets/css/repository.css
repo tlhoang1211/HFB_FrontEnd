@@ -180,3 +180,21 @@
     bottom: 100%;
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination a {
+  padding: 0 !important;
+}
+
+.paginationjs-go-input,
+.paginationjs-page,
+.J-paginationjs-go-button,
+.paginationjs-prev,
+.paginationjs-next {
+  font-family: "Roboto Condensed", sans-serif;
+}

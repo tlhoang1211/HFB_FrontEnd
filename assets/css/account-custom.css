@@ -1,5 +1,6 @@
 .custom-header-img {
   padding-top: 100px;
+  min-height: 300px;
 }
 
 .upload-btn {

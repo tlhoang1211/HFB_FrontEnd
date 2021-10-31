@@ -50,7 +50,8 @@ if (token === null || token === undefined || token === NaN || token === "") {
   notifycation.style.display = "block";
 
   var viewAccount = document.querySelector(".navbar__user");
-  fetch(getDetailAccount, {
+  var userName = document.querySelector(".hi-name");
+  fetch(getDetailFood, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -59,10 +60,20 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .then((response) => response.json())
     .then((account) => {
       objAccount = account.data;
+      // if (objAccount.avatar == "") {
       var htmlsItem = `
         <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-          src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
+          src="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg" alt="" class="navbar__user-img">
         `;
+      // } else {
+      //   var htmlsItem = `
+      //   <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+      //     src="${objAccount.avatar}" alt="" class="navbar__user-img">
+      //   `;
+      // }
+      // var htmlHiName = `<span>Hi ${objAccount.name}</span>`;
+
+      // userName.innerHTML = htmlHiName;
       viewAccount.innerHTML = htmlsItem;
 
       Notification.show(account.data.id, function (listNotify) {
@@ -96,7 +107,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
           });
           $("#notification").html(li);
 
-          console.log(111);
+          // console.log(111);
           if (quantityNotify == 0) {
             document.querySelector(".header__notify-notice").style.display =
               "none";
@@ -459,6 +470,10 @@ function formatCategory(id) {
   return text;
 }
 
+// hoangtl2 - 29/10/2021
+// start
+
+// Display add food modal on click button
 var modal1 = document.querySelector(".modal-header-add-food");
 function addNewFood() {
   var cookie = document.cookie;
@@ -475,17 +490,19 @@ function addNewFood() {
   }
 }
 
+// Display donate modal on click button
 var modal2 = document.querySelector(".modal-header-donate");
 function donate() {
   modal2.style.display = "flex";
 }
 
-// Close Modal
+// Close Modal by clicking "close" button
 function closeModal() {
   modal1.style.display = "none";
   modal2.style.display = "none";
 }
 
+// Close Modal by clicking "esc" button
 $(document).keydown(function (event) {
   if (event.keyCode == 27) {
     modal1.style.display = "none";
@@ -494,6 +511,7 @@ $(document).keydown(function (event) {
   }
 });
 
+// add Category as folder name for saving images to Cloudinary
 $(document).ready(function () {
   $("select#category").change(function () {
     $(this)
@@ -509,9 +527,12 @@ $(document).ready(function () {
   });
 });
 
+// Change navbar bg color on scroll
 $(function () {
   $(document).scroll(function () {
     var $nav = $(".navbar-fixed-top");
     $nav.toggleClass("scrolled", $(this).scrollTop() > 2 * $nav.height());
   });
 });
+
+//end
