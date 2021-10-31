@@ -1,18 +1,13 @@
 <div class="group-filter clearfix pb-4">
     <div class="btn-group float-start pe-2">
-        <button type="button" class="btn btn-light">Settings</button>
-        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">	<span class="visually-hidden">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end" style="margin: 0px;">	<a class="dropdown-item" href="javascript:;">Action</a>
-            <a class="dropdown-item" href="javascript:;">Another action</a>
-            <a class="dropdown-item" href="javascript:;">Something else here</a>
-            <div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+        <button class="btn btn-light dropdown-toggle show" type="button" data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end" style="margin: 0px;">
+            <a class="dropdown-item" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
+            <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
         </div>
     </div>
     <div class="btn-group float-start pe-2">
-        <button type="button" class="btn btn-light">Settings</button>
-        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">	<span class="visually-hidden">Toggle Dropdown</span>
-        </button>
+        <button class="btn btn-light dropdown-toggle show" type="button" data-bs-toggle="dropdown" aria-expanded="true">Secondary</button>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end" style="margin: 0px;">	<a class="dropdown-item" href="javascript:;">Action</a>
             <a class="dropdown-item" href="javascript:;">Another action</a>
             <a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -20,9 +15,7 @@
         </div>
     </div>
     <div class="btn-group float-start">
-        <button type="button" class="btn btn-light">Settings</button>
-        <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">	<span class="visually-hidden">Toggle Dropdown</span>
-        </button>
+        <button class="btn btn-light dropdown-toggle show" type="button" data-bs-toggle="dropdown" aria-expanded="true">Secondary</button>
         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end" style="margin: 0px;">	<a class="dropdown-item" href="javascript:;">Action</a>
             <a class="dropdown-item" href="javascript:;">Another action</a>
             <a class="dropdown-item" href="javascript:;">Something else here</a>
@@ -50,30 +43,24 @@
                             </div>
                             <div class="modal-body">
                                 <form class="form addform" role="form">
-                                    <div class="form-group">
+                                    <div class="form-group pt-1">
                                         <label for="name" class="form-label">Food Name</label>
                                         <input id="nameFood" class="form-control" type="text" placeholder="Enter Food Name" />
                                         <span class="form-message"></span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group pt-1">
                                         <label for="name" class="form-label">Image Food</label>
                                         <br />
                                         <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
                                             <i class="fa fa-download"></i>
                                             Upload image
                                         </button>
-                                        <div class="thumbnailsFood">
-                                            <ul class="cloudinary-thumbnails">
-                                                <li class="cloudinary-thumbnail" data-cloudinary="">
-                                                    <img src="" style="width: 300px; height: 300px" />
-                                                    <a href="#" class="cloudinary-delete">x</a>
-                                                </li>
-                                            </ul>
+                                        <div class="thumbnails" id="food_thumbnails">
                                         </div>
                                         <input type="hidden" id="imageFoods">
                                         <span class="form-message"></span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group pt-1">
                                         <label for="name" class="form-label">Category</label>
                                         <select name="category" id="category" class="form-control required">
                                             <option selected disabled>
@@ -120,23 +107,16 @@
                                         </select>
                                         <span class="form-message"></span>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="name" class="form-label">Expiration
-                                            Date</label>
+                                    <div class="form-group pt-1">
+                                        <label for="name" class="form-label">Expiration Date</label>
                                         <input id="expirationDate" class="form-control" type="date" />
                                         <span class="form-message"></span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group pt-1">
                                         <label for="name" class="form-label">Description</label>
                                         <textarea id="description" class="form-control" rows="4"
                                             style="resize: vertical" placeholder="Enter Description"></textarea>
                                         <span class="form-message"></span>
-                                    </div>
-                                    <div>
-                                        <button id="newFood" type="button" class="btn btn-success btn-round btnSubmit">
-                                            <i class="fa fa-plus"></i>
-                                            Add
-                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -187,6 +167,24 @@
             <div class="modal-footer" style="border-top: none;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" onclick="onDeleteFood()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="approvalFood" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header" style="border-bottom: none;">
+                <h5 class="modal-title">Browse</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to browse this dish?</p>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="onBrowseFood()">Browse</button>
             </div>
         </div>
     </div>
