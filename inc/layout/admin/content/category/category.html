@@ -1,0 +1,42 @@
+<div class="card radius-10">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div>
+                <h5 class="mb-0">List of category</h5>
+            </div>
+            <div class="font-22 ms-auto">
+                <button type="button" class="btn btn-sm btn-outline-success px-5"><i class='bx bx-plus' ></i> Create</button>
+            </div>
+        </div>
+        <hr/>
+        <div class="table-responsive" id="table-category">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Date created</th>
+                        <th>Creator</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>name</td>
+                        <td>11/10/2021</td>
+                        <td>laphuong</td>
+                        <td>active</td>
+                        <td>
+                            <div class="d-flex order-actions">
+                                <a onclick="formEditCategory()"><i class='bx bx-edit' ></i></a>
+                                <a class="ms-4" onclick="deleteCategory()"><i class='bx bxs-trash'></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

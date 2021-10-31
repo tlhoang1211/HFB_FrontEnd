@@ -9,4 +9,10 @@ function changePage(e, page){
 		}
 	}
 	e.parentElement.classList.add("active");
+	var pageContent = document.getElementsByClassName('page-content');
+	if (pageContent.item(0)) {
+		pageContent.item(0).remove();
+	}
+	localStorage.setItem('page', page);
+	loadHtml( '../../../inc/layout/admin/content/' + page + '/' + page + '.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/' + page + '/' + page + '.js');
 }

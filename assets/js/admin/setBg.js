@@ -80,50 +80,62 @@ $(function() {
 
     function theme1() {
       $('body').attr('class', 'bg-theme bg-theme1');
+	  localStorage.setItem('backround', 'bg-theme1');
     }
 
     function theme2() {
       $('body').attr('class', 'bg-theme bg-theme2');
+	  localStorage.setItem('backround', 'bg-theme2')
     }
 
     function theme3() {
       $('body').attr('class', 'bg-theme bg-theme3');
+	  localStorage.setItem('backround', 'bg-theme3')
     }
 
     function theme4() {
       $('body').attr('class', 'bg-theme bg-theme4');
+	  localStorage.setItem('backround', 'bg-theme4')
     }
 	
 	function theme5() {
       $('body').attr('class', 'bg-theme bg-theme5');
+	  localStorage.setItem('backround', 'bg-theme5')
     }
 	
 	function theme6() {
       $('body').attr('class', 'bg-theme bg-theme6');
+	  localStorage.setItem('backround', 'bg-theme6')
     }
 
     function theme7() {
       $('body').attr('class', 'bg-theme bg-theme7');
+	  localStorage.setItem('backround', 'bg-theme7')
     }
 
     function theme8() {
       $('body').attr('class', 'bg-theme bg-theme8');
+	  localStorage.setItem('backround', 'bg-theme8')
     }
 
     function theme9() {
       $('body').attr('class', 'bg-theme bg-theme9');
+	  localStorage.setItem('backround', 'bg-theme9')
     }
 
     function theme10() {
       $('body').attr('class', 'bg-theme bg-theme10');
+	  localStorage.setItem('backround', 'bg-theme10')
     }
 
     function theme11() {
       $('body').attr('class', 'bg-theme bg-theme11');
+	  localStorage.setItem('backround', 'bg-theme11')
     }
 
     function theme12() {
       $('body').attr('class', 'bg-theme bg-theme12');
+	  localStorage.setItem('backround', 'bg-theme12')
     }
 
 
