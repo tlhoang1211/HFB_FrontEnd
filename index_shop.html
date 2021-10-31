@@ -157,7 +157,9 @@
           <ul class="slides">
             <li
               class="bg-dark-30 bg-dark shop-page-header"
-              style="background-image: url('./assets/images/img/crab.png')"
+              style="
+                background-image: url('https://res.cloudinary.com/vernom/image/upload/v1635665219/hanoi_food_bank_project/background_image/home_bg1.jpg');
+              "
             >
               <div class="titan-caption">
                 <div class="caption-content">
@@ -181,7 +183,7 @@
             <li
               class="bg-dark-30 bg-dark shop-page-header"
               style="
-                background-image: url('./assets/images/img/boiledeggs.jpg');
+                background-image: url('https://res.cloudinary.com/vernom/image/upload/v1635664891/hanoi_food_bank_project/background_image/home_bg2.jpg');
               "
             >
               <div class="titan-caption">
@@ -224,7 +226,7 @@
             <div class="row mt-30">
               <div class="col-sm-12 align-center">
                 <a class="btn btn-b btn-round" href="./shop_product_col_4.html"
-                  >See all products</a
+                  >See all food</a
                 >
               </div>
             </div>
@@ -464,7 +466,6 @@
     <script src="assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
     <script src="assets/lib/flexslider/jquery.flexslider.js"></script>
     <script src="assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="assets/lib/smoothscroll.js"></script>
     <script src="assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
@@ -514,48 +515,50 @@
               shopItem.innerHTML = htmlsItem.join("");
               myResolve(); // when successful
             });
-            myPromise.then(
-              function() { 
-                listItems.data.content.map(function(item2){
-                  var tet = getTimeFromString2(item2.expirationDate);
-                  run();
-                  
-                  // Tổng số giây 
-                  var countDown = setInterval(run,1000);
-                  function run(){
-                      var now = new Date().getTime();
-                      var timeRest = tet - now;
-                      if(timeRest <= 0){
-                        clearInterval(countDown);
-                        document.querySelector(`#shop-item-${item2.id}`).style.display = 'none';
+            myPromise.then(function () {
+              listItems.data.content.map(function (item2) {
+                var tet = getTimeFromString2(item2.expirationDate);
+                run();
 
-                        var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${item2.id}`
-                        fetch(urlUpdateStatus, {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                          "Authorization":`Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                          'name': item2.name,
-                          'avatar':item2.avatar,
-                          'images':item2.images,
-                          'description': item2.description,
-                          'content':'',
-                          'quantity':item2.quantity,
-                          'expirationDate' :item2.expirationDate,
-                          'status': 0,
-                          'updatedBy': item2.updatedBy,
-                          'categoryId': item2.categoryId
-                        })})
-                        .then(response => response.json())
-                        .then(data => {
-                          getListItem()
-                        })
-                        .catch(function(error){
-                          console.log(error);
-                        });
-                      }
+                // Tổng số giây
+                var countDown = setInterval(run, 1000);
+                function run() {
+                  var now = new Date().getTime();
+                  var timeRest = tet - now;
+                  if (timeRest <= 0) {
+                    clearInterval(countDown);
+                    document.querySelector(
+                      `#shop-item-${item2.id}`
+                    ).style.display = "none";
+
+                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${item2.id}`;
+                    fetch(urlUpdateStatus, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({
+                        name: item2.name,
+                        avatar: item2.avatar,
+                        images: item2.images,
+                        description: item2.description,
+                        content: "",
+                        quantity: item2.quantity,
+                        expirationDate: item2.expirationDate,
+                        status: 0,
+                        updatedBy: item2.updatedBy,
+                        categoryId: item2.categoryId,
+                      }),
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        getListItem();
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                      });
+                  }
                 }
               });
             });

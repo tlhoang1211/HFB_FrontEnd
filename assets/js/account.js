@@ -213,7 +213,9 @@ function renderListFood(data) {
     }" style="width: 30px;height: 30px;"/></td>
     <td>${formatCategory(e.categoryId)}</td>
     <td>${e.expirationDate}</td>
-    <td>${e.status}</td>
+    <td>${
+      e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+    }</td>
     <td>${e.createdAt}</td>
     <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>` +
       "<td onclick=\"deleteFood(this, '" +
