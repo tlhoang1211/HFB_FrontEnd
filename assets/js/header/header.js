@@ -39,7 +39,7 @@ if (document.cookie != null && document.cookie != "") {
   token = cookies.token;
   usernameAccount = cookies.username;
 }
-var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+var getDetailAccount = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
 if (token === null || token === undefined || token === NaN || token === "") {
   loginregister.style.display = "block";
   useraccount.style.display = "none";
@@ -50,6 +50,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
   notifycation.style.display = "block";
 
   var viewAccount = document.querySelector(".navbar__user");
+  var userName = document.querySelector(".hi-name");
   fetch(getDetailFood, {
     method: "GET",
     headers: {
@@ -59,10 +60,20 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .then((response) => response.json())
     .then((account) => {
       objAccount = account.data;
+      // if (objAccount.avatar == "") {
       var htmlsItem = `
         <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-          src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
+          src="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg" alt="" class="navbar__user-img">
         `;
+      // } else {
+      //   var htmlsItem = `
+      //   <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+      //     src="${objAccount.avatar}" alt="" class="navbar__user-img">
+      //   `;
+      // }
+      // var htmlHiName = `<span>Hi ${objAccount.name}</span>`;
+
+      // userName.innerHTML = htmlHiName;
       viewAccount.innerHTML = htmlsItem;
 
       Notification.show(account.data.id, function (listNotify) {
@@ -94,9 +105,9 @@ if (token === null || token === undefined || token === NaN || token === "") {
             </li>
             `;
           });
-          $("#notifycation").html(li);
+          $("#notification").html(li);
 
-          console.log(111);
+          // console.log(111);
           if (quantityNotify == 0) {
             document.querySelector(".header__notify-notice").style.display =
               "none";
@@ -125,6 +136,7 @@ $(document).on("click", ".header__notify-item", function () {
     Notification.update(idAccount, idNoti, {
       idNotify: idNoti,
     });
+    console.log('idNotify: ' + idNoti)
     Notification.show(idAccount, function (listNotify) {
       listNotify.forEach(function (child) {
         if (child.val().idNotify == idNoti) {
@@ -134,6 +146,7 @@ $(document).on("click", ".header__notify-item", function () {
         }
       });
     });
+    console.log(categoryNoti, foodIdNoti, usernameAccount)
     myResolve();
   });
 
@@ -188,12 +201,6 @@ $(document).on("click", ".header__notify-item", function () {
                     notificationPromise3.then(function () {
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
-                          if (
-                            listNotifyAdmin == [] ||
-                            listNotifyAdmin == null ||
-                            listNotifyAdmin == undefined
-                          ) {
-                          } else {
                             listNotifyAdmin.forEach(function (child) {
                               if (child.val().foodid == foodIdNoti) {
                                 var idNotiAdmin = child.val().idNotify;
@@ -202,7 +209,6 @@ $(document).on("click", ".header__notify-item", function () {
                                 });
                               }
                             });
-                          }
                         });
                       });
                     });
@@ -212,11 +218,10 @@ $(document).on("click", ".header__notify-item", function () {
                   });
               }
             });
-          });
-        });
+          });}).catch(error => console.log(error))
     }
-  });
-});
+  })
+})
 
 // validate form
 $("#addformModal").validate({
@@ -268,6 +273,7 @@ function newFoodModal() {
   var expirationDate = document.getElementById("expirationDateModal").value;
   var description = document.getElementById("descriptionModal").value;
   var content = document.getElementById("contentModal").value;
+
   if (
     !nameFood == false &&
     !category == false &&
@@ -276,7 +282,10 @@ function newFoodModal() {
     !content == false
   ) {
     if (listImageFood.length == 0) {
-      swal("Warning!", "You need more illustrations!", "warning");
+      swal("Warning!", "You need more image!", "warning");
+    } else if(listImageFood.length > 3){
+      swal("Warning!", "You should only add a maximum of 3 images!", "warning");
+      console.log(listImageFood.length);
     } else {
       var dataPost = {
         name: nameFood || "",
@@ -334,30 +343,26 @@ function newFoodModal() {
                 console.log(time);
                 myResolve();
               });
-
               notifyFoodPromise.then(function () {
                 listAdmin2.map(function (admin) {
+
                   Notification.send(admin.id, {
-                    idNotify: "",
-                    usernameaccount: admin.username,
-                    foodid: idFood,
-                    avatar: avatarFood,
-                    title: "User add new food",
-                    message: "Time request: " + time,
-                    category: "food",
-                    status: 1,
+                    "idNotify": "",
+                    "usernameaccount": admin.username,
+                    "foodid": idFood,
+                    "avatar": avatarFood,
+                    "title": "User add new food",
+                    "message": "Time request: " + time,
+                    "category": "food",
+                    "status": 1,
                   });
                 });
               });
             })
-            .catch(function (error) {
-              console.log(error);
-            });
+            .catch(error => console.log(error));
           swal("Success!", "Add Food success!", "success");
         })
-        .catch(function (error) {
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     }
   }
 }
@@ -405,6 +410,20 @@ $("body").on("click", ".cloudinary-delete", function () {
     splittedImg[splittedImg.length - 1];
   var publicId = $(this).parent().attr("data-cloudinary");
   $(this).parent().remove();
+  var imgName2 =
+    splittedImg[splittedImg.length - 4] +
+    "/" +
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+    
+  for (let i = 0; i < listImageFood.length; i++) {
+    if(listImageFood[i] == imgName2){
+       listImageFood.splice(i, 1);
+    }
+  }
   $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
 });
 
@@ -451,6 +470,10 @@ function formatCategory(id) {
   return text;
 }
 
+// hoangtl2 - 29/10/2021
+// start
+
+// Display add food modal on click button
 var modal1 = document.querySelector(".modal-header-add-food");
 function addNewFood() {
   var cookie = document.cookie;
@@ -467,33 +490,19 @@ function addNewFood() {
   }
 }
 
-var modal1 = document.querySelector(".modal-header-add-food");
-function addNewFood() {
-  var cookie = document.cookie;
-  if (
-    cookie === null ||
-    cookie === undefined ||
-    cookie === NaN ||
-    cookie === "" ||
-    cookie === []
-  ) {
-    location.replace("../login_register.html");
-  } else {
-    modal1.style.display = "flex";
-  }
-}
-
+// Display donate modal on click button
 var modal2 = document.querySelector(".modal-header-donate");
 function donate() {
   modal2.style.display = "flex";
 }
 
-// Close Modal
+// Close Modal by clicking "close" button
 function closeModal() {
   modal1.style.display = "none";
   modal2.style.display = "none";
 }
 
+// Close Modal by clicking "esc" button
 $(document).keydown(function (event) {
   if (event.keyCode == 27) {
     modal1.style.display = "none";
@@ -502,6 +511,7 @@ $(document).keydown(function (event) {
   }
 });
 
+// add Category as folder name for saving images to Cloudinary
 $(document).ready(function () {
   $("select#category").change(function () {
     $(this)
@@ -517,9 +527,12 @@ $(document).ready(function () {
   });
 });
 
+// Change navbar bg color on scroll
 $(function () {
   $(document).scroll(function () {
     var $nav = $(".navbar-fixed-top");
     $nav.toggleClass("scrolled", $(this).scrollTop() > 2 * $nav.height());
   });
 });
+
+//end

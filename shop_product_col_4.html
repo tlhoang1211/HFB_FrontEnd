@@ -169,57 +169,47 @@
             </div>
           </div>
         </section>
-        <section class="module-small">
+        <section class="module-small" style="padding: 40px 0 0;">
           <div class="container">
             <form class="row">
-              <div class="col-sm-4 mb-sm-20">
-                <select class="form-control">
-                  <option selected="selected">Default Sorting</option>
-                  <option>Popular</option>
-                  <option>Latest</option>
-                  <option>Average Price</option>
-                  <option>High Price</option>
-                  <option>Low Price</option>
-                </select>
-              </div>
-              <div class="col-sm-2 mb-sm-20">
-                <select class="form-control">
-                  <option selected="selected">Woman</option>
-                  <option>Man</option>
-                </select>
-              </div>
-              <div class="col-sm-3 mb-sm-20">
-                <select name="category" id="category" class="form-control required">
-                  <option selected disabled>Category</option>
-                  <option value="1">Drinks</option>
-                  <option value="2">Noodle</option>
-                  <option value="3">Bread</option>
-                  <option value="4">Rice</option>
-                  <option value="5">Meat</option>
-                  <option value="6">Seafood</option>
-                  <option value="7">Vegetables</option>
-                  <option value="8">Vegetarian Food</option>
-                  <option value="9">Fruit</option>
-                  <option value="10">Fast Food</option>
-                  <option value="11">Snacks</option>
-                  <option value="12">Others</option>
-                </select>
+              <div class="col-sm-4">
+                <button style="padding: 10px 0 10px;" class="btn btn-block btn-g" type="button" onclick="searchNameCategory()">
+                  Search Food Name & Category
+                </button>
               </div>
               <div class="col-sm-3">
-                <button class="btn btn-block btn-round btn-g" type="submit">
-                  Apply
+                <button style="padding: 10px 0 10px;" class="btn btn-block btn-round btn-g" type="button" onclick="searchExpirationDate()">
+                  Search Expiration Date
+                </button>
+              </div>
+              <div class="col-sm-3">
+                <button style="padding: 10px 0 10px;" class="btn btn-block btn-round btn-g" type="button" onclick="sortByExpirationDate()">
+                  Sort By Expiration Date
+                </button>
+              </div>
+              <div class="col-sm-2">
+                <button style="padding: 10px 0 10px;" class="btn btn-block btn-round btn-g" type="button" onclick="sortByName()">
+                  Sort By Name
                 </button>
               </div>
             </form>
           </div>
         </section>
+        <section class="module-small" style="padding: 20px 0 40px;">
+          <div class="container">
+            <form class="row" id="searchAndSort">
+              
+            </form>
+          </div>
+        </section>
         <hr class="divider-w" />
+        </section> -->
         <section class="module-small">
           <div class="container">
-            <div class="row multi-columns-row  list-shop-item">
+            <div class="row multi-columns-row list-shop-item">
               
             </div>
-            <div class="row multi-columns-row " id="data-container"></div>
+            <div class="row multi-columns-row" id="data-container"></div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="pagination font-alt">
@@ -270,6 +260,90 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
     <script src="./assets/js/pagination.js"></script>
     <script>
+      var search = document.querySelector('#searchAndSort');
+
+      function searchNameCategory(){
+        var searchFoodNameCategory = `
+        <div class="col-sm-5">
+        </div>
+        <div class="col-sm-3">
+          <input class="form-control" id="nameSearchNameCategory" type="text" placeholder="Search Food Name">
+        </div>
+        <div class="col-sm-2">
+          <select name="category" id="categorySearchNameCategory" class="form-control required">
+            <option selected disabled>Category</option>
+            <option value="1">Drinks</option>
+            <option value="2">Noodle</option>
+            <option value="3">Bread</option>
+            <option value="4">Rice</option>
+            <option value="5">Meat</option>
+            <option value="6">Seafood</option>
+            <option value="7">Vegetables</option>
+            <option value="8">Vegetarian Food</option>
+            <option value="9">Fruit</option>
+            <option value="10">Fast Food</option>
+            <option value="11">Snacks</option>
+            <option value="12">Others</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <button onclick="searchNameCategory1()" class="btn btn-block btn-round btn-b" type="button">
+            Search
+          </button>
+        </div>
+        `;
+        search.innerHTML = searchFoodNameCategory;
+      }
+      function searchExpirationDate(){
+        var searchFoodExpirationDate = `
+          <div class="col-sm-8">
+          </div>
+          <div class="col-sm-2">
+            <input type="date" id="expirationDateSearchExpirationDate" class="form-control">
+          </div>
+          <div class="col-sm-2">
+            <button onclick="searchExpirationDate1()" class="btn btn-block btn-round btn-b" type="button">
+              Search
+            </button>
+          </div>
+        `;
+        search.innerHTML = searchFoodExpirationDate;
+      }
+      function sortByExpirationDate(){
+        var sortByFoodExpirationDate = `
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-4">
+            <button onclick="sortByExpirationDate1()" class="btn btn-block btn-round btn-b" type="button">
+              Sort by longest expiration date
+            </button>
+          </div>
+          <div class="col-sm-4">
+            <button onclick="sortByExpirationDate2()" class="btn btn-block btn-round btn-b" type="button">
+              Sort by shortest expiration date
+            </button>
+          </div>
+        `;
+        search.innerHTML = sortByFoodExpirationDate;
+      }
+      function sortByName(){
+        var sortByFoodName = `
+          <div class="col-sm-6">
+          </div>
+          <div class="col-sm-3">
+            <button onclick="sortByName1()" class="btn btn-block btn-round btn-b" type="button">
+              Sort By Name a->z
+            </button>
+          </div>
+          <div class="col-sm-3">
+            <button onclick="sortByName2()" class="btn btn-block btn-round btn-b" type="button">
+              Sort By Name z->a
+            </button>
+          </div>
+        `;
+        search.innerHTML = sortByFoodName;
+      }
+
       var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1';
 			var shopItem = document.querySelector('.list-shop-item');
       function getListItem(){
@@ -284,6 +358,88 @@
 				.catch(error => console.log(error));
       }
 			getListItem();
+
+      
+      function searchNameCategory1(){
+        var nameSearchNameCategory = document.querySelector('#nameSearchNameCategory');
+        var categorySearchNameCategory = document.querySelector('#categorySearchNameCategory');
+        var searchNameCategoryUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?name=${nameSearchNameCategory.value}&categoryId=${categorySearchNameCategory.value}&status=1`
+				fetch(searchNameCategoryUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
+
+      function searchExpirationDate1(){
+        var expirationDateSearchExpirationDate = document.querySelector('#expirationDateSearchExpirationDate');
+        var searchExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?expirationDate=${expirationDateSearchExpirationDate.value}&status=1`
+				fetch(searchExpirationDateUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
+
+      function sortByExpirationDate1(){
+        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=expirationDate&status=1`
+				fetch(sortByExpirationDateUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
+
+      function sortByExpirationDate2(){
+        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=expirationDate&status=1`
+				fetch(sortByExpirationDateUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
+
+      function sortByName1(){
+        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=name&status=1`
+				fetch(sortByNameUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
+
+      function sortByName2(){
+        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=name&status=1`
+				fetch(sortByNameUrl,{
+          method: 'GET'
+        })
+				.then(response => response.json())
+				.then(listItems => {
+            paginationFood(listItems.data.content);
+          
+				})
+				.catch(error => console.log(error));
+      }
     </script>
   </body>
 </html>
