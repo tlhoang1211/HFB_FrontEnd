@@ -148,8 +148,7 @@
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="description">
-                    <!-- <p>Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators. To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual languages.</p>
-                    <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words.</p> -->
+                    
                   </div>
                   <div class="tab-pane" id="data-sheet">
                     <!-- <table class="table table-striped ds-table table-responsive">
@@ -358,34 +357,32 @@
         })
 				.then(response => response.json())
 				.then(listItems => {
-          listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}`;
+          listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4`;
 					let myPromise = new Promise(function(myResolve) {
+            var listItemImages = listItems.data.images.split(",");
+            console.log(listItemImages);
             var htmlsItem = `
             <div class="row multi-columns-row" >
-                  <div class="slider-image">
-                    <div class="slider-info-food">
-                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
-                    </div>
-                  
-                    <div class="slider-info-food">
-                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100% ; max-height: 450px">
-                    </div>
-                  
-                    <div class="slider-info-food">
-                      <img src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%; max-height: 450px">
-                    </div>
-                    <div>
-                      <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(1)" alt="The Woods">
-                      </div>
-                      <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(2)" alt="Cinque Terre">
-                      </div>
-                      <div class="column-img-info-food">
-                        <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItems.data.avatar}" style="width:100%" onclick="showSlides(3)" alt="Mountains and fjords">
-                      </div>
-                    </div>
-                  </div>
+                  <div class="slider-image">`
+            listItemImages.map(function(image){
+              htmlsItem +=`
+                <div class="slider-info-food">
+                  <img src="https://res.cloudinary.com/vernom/image/upload/${image}" style="width:100%; max-height: 450px">
+                </div>`
+            })
+
+            htmlsItem +=`
+                    <div>`
+            for (let i = 0; i < listItemImages.length; i++) {
+              htmlsItem += `
+                <div class="column-img-info-food">
+                  <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${listItemImages[i]}" style="width:100%" onclick="showSlides(${i + 1})" alt="The Image ${i+1}">
+                </div>
+              `
+            }
+            htmlsItem +=`
+                </div>
+              </div>
             </div>
 						`
 
@@ -422,6 +419,9 @@
                   </div>
                 </div>
           `
+
+          var htmlsInfoDes = `<p> ${listItems.data.content}</p>`;
+          document.querySelector('#description').innerHTML = htmlsInfoDes
             shopItem.innerHTML = htmlsItem;
             viewInfoProduct.innerHTML = htmlsInfoProduct;
             myResolve();
@@ -470,7 +470,7 @@
                 // console.log(listFood.data.content);
                 var htmlsItem = listFood.data.content.map(function(item){
                   return `
-                    <div class="col-sm-6 col-md-3 col-lg-3" id="shop-item-${item.id}">
+                    <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
                       <div class="shop-item">
                         <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
                         <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
@@ -525,6 +525,7 @@
 			getInfoFood()
 
       // Add To Cart
+      var idUserFood;
       var modalsinglefood = document.querySelector('.modal-single-food');
       function addToCart(){
         var cookie = document.cookie;
@@ -578,7 +579,7 @@
 				modalsinglefood.style.display = 'none';
 			}
 
-      var idUserFood;
+      
       var avatarFood;
       // Send Request
       function sendRequest(){

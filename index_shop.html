@@ -531,7 +531,7 @@
                       `#shop-item-${item2.id}`
                     ).style.display = "none";
 
-                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${item2.id}`;
+                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
                     fetch(urlUpdateStatus, {
                       method: "POST",
                       headers: {
@@ -539,25 +539,14 @@
                         Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        name: item2.name,
-                        avatar: item2.avatar,
-                        images: item2.images,
-                        description: item2.description,
-                        content: "",
-                        quantity: item2.quantity,
-                        expirationDate: item2.expirationDate,
-                        status: 0,
-                        updatedBy: item2.updatedBy,
-                        categoryId: item2.categoryId,
+                        status: 0
                       }),
                     })
                       .then((response) => response.json())
                       .then((data) => {
                         getListItem();
                       })
-                      .catch(function (error) {
-                        console.log(error);
-                      });
+                      .catch(error => console.log(error));
                   }
                 }
               });

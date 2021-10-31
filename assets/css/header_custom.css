@@ -11,6 +11,7 @@
   border-radius: 10%;
   font-size: larger;
   font-weight: bold;
+  padding: 13px !important;
   background-color: whitesmoke !important;
   color: lightslategray !important;
   max-width: 83px;

@@ -27,29 +27,45 @@ function paginationFood(listFood) {
         $("#data-container").html(dataHtml);
         myResolve();
       });
+            paginationFoodPromise.then(
+                function() { 
+                  data.map(function(item2){
+                    var tet = getTimeFromString3(item2.expirationDate);
+                    run();
+                    
+                    // Tổng số giây 
+                    var countDown = setInterval(run,1000);
+                    function run(){
+                        var now = new Date().getTime();
+                        var timeRest = tet - now;
+                        if(timeRest <= 0){
+                            clearInterval(countDown);
+                            document.querySelector(`#pg-shop-item-${item2.id}`).style.display = 'none';
 
-      paginationFoodPromise.then(function () {
-        data.map(function (item2) {
-          var tet = getTimeFromString3(item2.expirationDate);
-          run();
-
-          // Tổng số giây
-          var countDown = setInterval(run, 1000);
-          function run() {
-            var now = new Date().getTime();
-            var timeRest = tet - now;
-            if (timeRest <= 0) {
-              clearInterval(countDown);
-              document.querySelector(
-                `#pg-shop-item-${item2.id}`
-              ).style.display = "none";
-            }
-          }
-        });
-      });
-    },
-  });
-}
+                            var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                            fetch(urlUpdateStatus, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                status: 0
+                            }),
+                            })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                getListItem();
+                            })
+                            .catch(error => console.log(error));
+                        }
+                    }
+                  })
+                }
+            );
+        }
+    })
+  }
 
 function getTimeFromString3(strDate) {
   var arrDate = strDate.split("/");
