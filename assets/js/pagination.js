@@ -41,10 +41,27 @@ function paginationFood(listFood){
                         var now = new Date().getTime();
                         var timeRest = tet - now;
                         if(timeRest <= 0){
-                          clearInterval(countDown);
-                          document.querySelector(`#pg-shop-item-${item2.id}`).style.display = 'none';
+                            clearInterval(countDown);
+                            document.querySelector(`#pg-shop-item-${item2.id}`).style.display = 'none';
+
+                            var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                            fetch(urlUpdateStatus, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                status: 0
+                            }),
+                            })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                getListItem();
+                            })
+                            .catch(error => console.log(error));
                         }
-                        }
+                    }
                   })
                 }
             );

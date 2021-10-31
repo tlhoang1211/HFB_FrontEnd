@@ -39,7 +39,7 @@ if (document.cookie != null && document.cookie != "") {
   token = cookies.token;
   usernameAccount = cookies.username;
 }
-var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
+var getDetailAccount = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${usernameAccount}`;
 if (token === null || token === undefined || token === NaN || token === "") {
   loginregister.style.display = "block";
   useraccount.style.display = "none";
@@ -50,7 +50,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
   notifycation.style.display = "block";
 
   var viewAccount = document.querySelector(".navbar__user");
-  fetch(getDetailFood, {
+  fetch(getDetailAccount, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -60,9 +60,8 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .then((account) => {
       objAccount = account.data;
       var htmlsItem = `
-        <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+        <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
           src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
-        <span>${account.data.name}</span>
         `;
       viewAccount.innerHTML = htmlsItem;
 
@@ -126,6 +125,7 @@ $(document).on("click", ".header__notify-item", function () {
     Notification.update(idAccount, idNoti, {
       idNotify: idNoti,
     });
+    console.log('idNotify: ' + idNoti)
     Notification.show(idAccount, function (listNotify) {
       listNotify.forEach(function (child) {
         if (child.val().idNotify == idNoti) {
@@ -135,6 +135,7 @@ $(document).on("click", ".header__notify-item", function () {
         }
       });
     });
+    console.log(categoryNoti, foodIdNoti, usernameAccount)
     myResolve();
   });
 
@@ -189,12 +190,6 @@ $(document).on("click", ".header__notify-item", function () {
                     notificationPromise3.then(function () {
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
-                          if (
-                            listNotifyAdmin == [] ||
-                            listNotifyAdmin == null ||
-                            listNotifyAdmin == undefined
-                          ) {
-                          } else {
                             listNotifyAdmin.forEach(function (child) {
                               if (child.val().foodid == foodIdNoti) {
                                 var idNotiAdmin = child.val().idNotify;
@@ -203,7 +198,6 @@ $(document).on("click", ".header__notify-item", function () {
                                 });
                               }
                             });
-                          }
                         });
                       });
                     });
@@ -213,9 +207,10 @@ $(document).on("click", ".header__notify-item", function () {
                   });
               }
             });
-          });
-        })}})})
-
+          });}).catch(error => console.log(error))
+    }
+  })
+})
 
 // validate form
 $("#addformModal").validate({
@@ -267,6 +262,7 @@ function newFoodModal() {
   var expirationDate = document.getElementById("expirationDateModal").value;
   var description = document.getElementById("descriptionModal").value;
   var content = document.getElementById("contentModal").value;
+
   if (
     !nameFood == false &&
     !category == false &&
@@ -275,7 +271,10 @@ function newFoodModal() {
     !content == false
   ) {
     if (listImageFood.length == 0) {
-      swal("Warning!", "You need more illustrations!", "warning");
+      swal("Warning!", "You need more image!", "warning");
+    } else if(listImageFood.length > 3){
+      swal("Warning!", "You should only add a maximum of 3 images!", "warning");
+      console.log(listImageFood.length);
     } else {
       var dataPost = {
         name: nameFood || "",
@@ -333,46 +332,26 @@ function newFoodModal() {
                 console.log(time);
                 myResolve();
               });
-
-              var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
               notifyFoodPromise.then(function () {
                 listAdmin2.map(function (admin) {
-                  // fetch(postrequestAPI, {
-                  //   method: 'POST',
-                  //   headers: {
-                  //     'Content-Type': 'application/json',
-                  //     "Authorization":`Bearer ${token}`
-                  //   },
-                  //   body: JSON.stringify({
-                  //     'userId': idAccount,
-                  //     'foodId': id,
-                  //     'message': message
-                  //   })})
-                  // .then(response => response.json())
-                  // .then(data => {})
-                  // .catch(error => console.log(error))
 
                   Notification.send(admin.id, {
-                    idNotify: "",
-                    usernameaccount: admin.username,
-                    foodid: idFood,
-                    avatar: avatarFood,
-                    title: "User add new food",
-                    message: "Time request: " + time,
-                    category: "food",
-                    status: 1,
+                    "idNotify": "",
+                    "usernameaccount": admin.username,
+                    "foodid": idFood,
+                    "avatar": avatarFood,
+                    "title": "User add new food",
+                    "message": "Time request: " + time,
+                    "category": "food",
+                    "status": 1,
                   });
                 });
               });
             })
-            .catch(function (error) {
-              console.log(error);
-            });
+            .catch(error => console.log(error));
           swal("Success!", "Add Food success!", "success");
         })
-        .catch(function (error) {
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     }
   }
 }
@@ -420,6 +399,20 @@ $("body").on("click", ".cloudinary-delete", function () {
     splittedImg[splittedImg.length - 1];
   var publicId = $(this).parent().attr("data-cloudinary");
   $(this).parent().remove();
+  var imgName2 =
+    splittedImg[splittedImg.length - 4] +
+    "/" +
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+    
+  for (let i = 0; i < listImageFood.length; i++) {
+    if(listImageFood[i] == imgName2){
+       listImageFood.splice(i, 1);
+    }
+  }
   $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
 });
 
@@ -513,5 +506,12 @@ $(document).ready(function () {
     myWidgetFood.update({
       folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
     });
+  });
+});
+
+$(function () {
+  $(document).scroll(function () {
+    var $nav = $(".navbar-fixed-top");
+    $nav.toggleClass("scrolled", $(this).scrollTop() > 2 * $nav.height());
   });
 });
