@@ -95,7 +95,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
             </li>
             `;
           });
-          $("#notifycation").html(li);
+          $("#notification").html(li);
 
           console.log(111);
           if (quantityNotify == 0) {
@@ -214,6 +214,7 @@ $(document).on("click", ".header__notify-item", function () {
               }
             });
           });
+        })}})})
 
 
 // validate form
@@ -333,8 +334,24 @@ function newFoodModal() {
                 myResolve();
               });
 
+              var postrequestAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`;
               notifyFoodPromise.then(function () {
                 listAdmin2.map(function (admin) {
+                  // fetch(postrequestAPI, {
+                  //   method: 'POST',
+                  //   headers: {
+                  //     'Content-Type': 'application/json',
+                  //     "Authorization":`Bearer ${token}`
+                  //   },
+                  //   body: JSON.stringify({
+                  //     'userId': idAccount,
+                  //     'foodId': id,
+                  //     'message': message
+                  //   })})
+                  // .then(response => response.json())
+                  // .then(data => {})
+                  // .catch(error => console.log(error))
+
                   Notification.send(admin.id, {
                     idNotify: "",
                     usernameaccount: admin.username,
@@ -447,22 +464,6 @@ function formatCategory(id) {
       break;
   }
   return text;
-}
-
-var modal1 = document.querySelector(".modal-header-add-food");
-function addNewFood() {
-  var cookie = document.cookie;
-  if (
-    cookie === null ||
-    cookie === undefined ||
-    cookie === NaN ||
-    cookie === "" ||
-    cookie === []
-  ) {
-    location.replace("../login_register.html");
-  } else {
-    modal1.style.display = "flex";
-  }
 }
 
 var modal1 = document.querySelector(".modal-header-add-food");

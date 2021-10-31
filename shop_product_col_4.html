@@ -173,22 +173,12 @@
           <div class="container">
             <form class="row">
               <div class="col-sm-4 mb-sm-20">
-                <select class="form-control">
-                  <option selected="selected">Default Sorting</option>
-                  <option>Popular</option>
-                  <option>Latest</option>
-                  <option>Average Price</option>
-                  <option>High Price</option>
-                  <option>Low Price</option>
-                </select>
+                  <input class="form-control" type="text" placeholder="Search Food Name">
+              </div>
+              <div class="col-sm-4 mb-sm-20">
+                <input type="date" class="form-control" placeholder="Search Expiration Date">
               </div>
               <div class="col-sm-2 mb-sm-20">
-                <select class="form-control">
-                  <option selected="selected">Woman</option>
-                  <option>Man</option>
-                </select>
-              </div>
-              <div class="col-sm-3 mb-sm-20">
                 <select name="category" id="category" class="form-control required">
                   <option selected disabled>Category</option>
                   <option value="1">Drinks</option>
@@ -205,9 +195,9 @@
                   <option value="12">Others</option>
                 </select>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-2">
                 <button class="btn btn-block btn-round btn-g" type="submit">
-                  Apply
+                  Search
                 </button>
               </div>
             </form>
