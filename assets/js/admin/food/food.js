@@ -25,15 +25,40 @@ function saveFood(){
         function(errorThrown){}
     );
 }
-
+var pageSize = 10, pageIndex = 0;
 // get data food
-function getListFood() {
-    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1', null, function(result){
-        if (result) {
+function getListFood(pageIndex) {
+    if (!pageIndex) {
+        pageIndex = 0;
+    }
+    var optionUrl = '';
+    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&page=' + pageIndex + '&limit=' + (pageIndex === 0 ? pageSize : (pageIndex * pageSize)), null, function(result){
+        if (result && result.status == 200) {
             console.log(result)
             if (result && result.data && result.data.content && result.data.content.length > 0) {
+                if (document.querySelectorAll("#table-food tbody").lastElementChild) {
+                    document.querySelectorAll("#table-food tbody").item(0).innerHTML = '';
+                }
                 document.querySelectorAll("#table-food tbody").item(0).innerHTML = renderListFood(result.data.content);
+                var total = 0;
+                total = result.data.totalElements;
+                var pageNumber = Math.ceil(total / pageSize);
+                if (pageNumber == 0){
+                    pageNumber = 1;
+                }
+                var options = {
+                    currentPage: pageIndex + 1,
+                    totalPages: pageNumber,
+                    totalCount: total,
+                    size: 'normal',
+                    alignment: 'right',
+                    onPageClicked: function (e, originalEvent, click, page) {
+                        getListFood(page - 1);
+                    }
+                }
+                $('#nextpage').bootstrapPaginator(options);
             }
+            
         }
     },
         function(errorThrown){}
@@ -98,9 +123,10 @@ function onDeleteFood(){
         expirationDate: objDelete.expirationDate
     };
     getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${objDelete.id}`, JSON.stringify(dataPost), function(result){
-        if (result) {
+        if (result && result.status == 200) {
             objDelete.ele.remove();
             $('#deleteFood').modal('hide');
+            getListFood();
         }
     },
         function(errorThrown){}
