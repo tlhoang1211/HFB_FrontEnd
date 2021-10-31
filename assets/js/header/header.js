@@ -60,9 +60,8 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .then((account) => {
       objAccount = account.data;
       var htmlsItem = `
-        <img style="width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+        <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
           src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="navbar__user-img">
-        <span>${account.data.name}</span>
         `;
       viewAccount.innerHTML = htmlsItem;
 
@@ -214,7 +213,10 @@ $(document).on("click", ".header__notify-item", function () {
               }
             });
           });
-
+        });
+    }
+  });
+});
 
 // validate form
 $("#addformModal").validate({
@@ -512,5 +514,12 @@ $(document).ready(function () {
     myWidgetFood.update({
       folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
     });
+  });
+});
+
+$(function () {
+  $(document).scroll(function () {
+    var $nav = $(".navbar-fixed-top");
+    $nav.toggleClass("scrolled", $(this).scrollTop() > 2 * $nav.height());
   });
 });

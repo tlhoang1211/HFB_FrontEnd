@@ -115,25 +115,23 @@
   text-align: center;
 }
 
-.header__notify-notice{
+.header__notify-notice {
   position: absolute;
   padding: 0px 4px;
-  top: 6px;
+  top: -3px;
   text-align: center;
   right: -7px;
   font-size: 12px;
-  line-height:16px;
-  background:pink;
+  line-height: 16px;
+  background: whitesmoke;
   color: #000;
   border-radius: 10px;
-  border: 2px solid #000;
   font-weight: 600;
 }
-.header__notify-icon{
-  font-size: 20px;
-  color: #fff;
-  margin-top: 14px;
 
+.header__notify-icon {
+  font-size: 20px;
+  color: whitesmoke;
+  margin-top: 10px;
   padding: 0 15px;
-  margin-left: 15px;
 }
