@@ -181,13 +181,16 @@
   }
 }
 
-.pagination {
+.pagination1,
+.pagination2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 20px;
 }
 
-.pagination a {
+.pagination1 a,
+.pagination2 a {
   padding: 0 !important;
 }
 

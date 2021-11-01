@@ -1,11 +1,18 @@
 // hoangtl2 - 01/11/2021 - food list pagination on account page
 // start
 var foodCount = 0;
+var requestCount = 0;
+
+var userID = document.getElementById("account_id").value;
 var paginDiv = document.getElementById("pagination-button");
+
 var foodDataTable = document.getElementById("food-data-table");
+
 var foodListAPI =
   "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2";
+
 var shopItem = document.querySelector("#list-food");
+
 function getListFood() {
   fetch(foodListAPI, {
     method: "GET",
@@ -19,7 +26,7 @@ function getListFood() {
 getListFood();
 
 function renderListFood(listFood) {
-  let container = $(".pagination");
+  let container = $(".pagination1");
   container.pagination({
     dataSource: listFood,
     pageSize: 5,
@@ -48,7 +55,6 @@ function renderListFood(listFood) {
       });
 
       dataHtml += "</div>";
-
       $("#list-food").html(dataHtml);
     },
   });
@@ -352,4 +358,97 @@ $(document).keydown(function (event) {
     event.preventDefault();
   }
 });
+// end
+
+// hoangtl2 - 01/11/2021 - request list pagination on account page
+// start
+var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
+
+var requestItem = document.querySelector("#list-request");
+
+function getListRequest() {
+  fetch(requestListAPI, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${isToken}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((food) => {
+      if (
+        food &&
+        food.data &&
+        food.data.content &&
+        food.data.content.length > 0
+      ) {
+        document.querySelector("#list-request").innerHTML = renderListRequest(
+          food.data.content
+        );
+      }
+    })
+    .catch((error) => console.log(error));
+}
+getListRequest();
+
+// function getListRequest() {
+//   fetch(
+//     `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,
+//     {
+//       method: "GET",
+//       headers: {
+//         Authorization: `Bearer ${isToken}`,
+//       },
+//     }
+//   )
+//     .then((response) => response.json())
+//     .then((food) => {
+//       if (
+//         food &&
+//         food.data &&
+//         food.data.content &&
+//         food.data.content.length > 0
+//       ) {
+//         document.querySelector("#list-request").innerHTML = renderListRequest(
+//           food.data.content
+//         );
+//       }
+//     })
+//     .catch((error) => console.log(error));
+// }
+
+function renderListRequest(listRequest) {
+  let container = $(".pagination2");
+  container.pagination({
+    dataSource: listRequest,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        requestCount++;
+        dataHtml +=
+          `<tr><td>${e.id}</td><td>${e.foodName || ""}</td><td>${
+            e.message
+          }</td><td>${e.supplierName}</td>` +
+          "<td onclick=\"formDetailRequest('" +
+          e.foodId +
+          '\')"><i class="fa fa-pencil-square-o"></i></td><td onclick="deleteRequest(this, \'' +
+          e.foodId +
+          "', '" +
+          e.message +
+          "', '" +
+          e.supplierId +
+          "', '" +
+          e.supplierName +
+          '\')"><i class="fa fa-trash-o"></i></td></tr>';
+      });
+
+      dataHtml += "</div>";
+
+      $("#list-request").html(dataHtml);
+    },
+  });
+}
 // end
