@@ -29,12 +29,6 @@ td {
   margin-left: 0px !important;
 }
 
-.modal-main {
-  width: fit-content !important;
-  display: flex;
-  margin: auto;
-}
-
 #cancel-button {
   float: right;
 }

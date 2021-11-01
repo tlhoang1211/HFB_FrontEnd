@@ -1,10 +1,10 @@
 "use strict";
 var objAccount = null;
 var listImageFood = [];
-function initPageAccount() {
-  getAccount();
-}
-initPageAccount();
+// function initPageAccount() {
+//   getAccount();
+// }
+// initPageAccount();
 // Validator register
 Validator({
   form: "#addneworder",
@@ -123,39 +123,6 @@ function showTabPanel(e) {
     default:
       break;
   }
-}
-
-// get data user
-function getAccount() {
-  fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentName}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${isToken}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((account) => {
-      if (account && account.data) {
-        objAccount = account.data;
-        bindDataAccount(account.data);
-      }
-    })
-    .catch((error) => console.log(error));
-}
-
-function bindDataAccount(data) {
-  document.querySelector("#account_id").value = data.id;
-  document.querySelector("#account_name").value = data.name;
-  document.querySelector("#account_phone").value = data.phone;
-  document.querySelector("#account_email").value = data.email;
-  document.querySelector("#account_address").value = data.address;
-  document.querySelector(".name-account").innerHTML = data.name;
-  document.querySelector("#avatar_account").src =
-    data.avatar ||
-    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
-  document.querySelector("#avatar_account").parentElement.href =
-    data.avatar ||
-    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
 
 // update profile

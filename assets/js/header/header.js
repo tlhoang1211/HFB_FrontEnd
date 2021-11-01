@@ -207,7 +207,8 @@ $(document).on("click", ".header__notify-item", function () {
                           listNotifyAdmin.forEach(function (child) {
                             if (
                               child.val().foodid == foodIdNoti &&
-                              child.val().title == "User add new food"
+                              child.val().title ==
+                                "User " + objAccount.name + " add new food"
                             ) {
                               var idNotiAdmin = child.val().idNotify;
                               Notification.update(admin.id, idNotiAdmin, {
@@ -357,7 +358,7 @@ function newFoodModal() {
                     usernameaccount: admin.username,
                     foodid: idFood,
                     avatar: avatarFood,
-                    title: "User add new food",
+                    title: "User" + objAccount.name + " add new food",
                     message: "Time request: " + time,
                     category: "food",
                     status: 1,
@@ -366,6 +367,11 @@ function newFoodModal() {
               });
             })
             .catch((error) => console.log(error));
+          modal1.style.display = "none";
+          var frm = document.getElementsByName("upload_new_food_form")[0];
+          frm.reset();
+          var image1 = document.getElementsByClassName("cloudinary-thumbnails");
+          image1.parentNode.removeChild(image1);
           swal("Success!", "Add Food success!", "success");
         })
         .catch((error) => console.log(error));
@@ -588,6 +594,7 @@ paypal.Button.render(
           } else {
             swal("Error!", "Payment failure!", "error");
           }
+          modal2.style.display = "none";
           console.log(res.id);
           console.log(data.paymentID);
           console.log(data.payerID);
