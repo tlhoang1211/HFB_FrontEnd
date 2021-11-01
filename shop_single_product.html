@@ -493,13 +493,13 @@
             Authorization: `Bearer ${token}`,
           },
         })
-          .then((response) => response.json())
-          .then((listItems) => {
-            listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
-            let myPromise = new Promise(function (myResolve) {
-              var listItemImages = listItems.data.images.split(",");
-              console.log(listItemImages);
-              var htmlsItem = `
+				.then(response => response.json())
+				.then(listItems => {
+          listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
+					let myPromise = new Promise(function(myResolve) {
+            var listItemImages = listItems.data.images.split(",");
+            console.log(listItemImages);
+            var htmlsItem = `
             <div class="row multi-columns-row" >
                   <div class="slider-image">`;
               listItemImages.map(function (image) {
