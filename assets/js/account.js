@@ -1,6 +1,6 @@
 "use strict";
-var objAccount = null,
-  listImageFood = [];
+var objAccount = null;
+var listImageFood = [];
 function initPageAccount() {
   getAccount();
 }
@@ -35,12 +35,15 @@ Validator({
 //       return false;
 //     }
 //     var description = document.getElementById("description").value;
+
 //     var dataPost = {
 //       name: nameFood || "",
 //       avatar: listImageFood[0],
 //       images: listImageFood.join(","),
 //       expirationDate: document.getElementById("expirationDate").value,
+
 //       createdBy: objAccount.id,
+
 //       categoryId: parseInt(category),
 //       description: description,
 //     };
@@ -106,7 +109,6 @@ function showTabPanel(e) {
       document.getElementsByClassName("listFood")[0].classList.add("active");
       document.getElementById("listFood").classList.add("active");
       document.getElementsByClassName("listFood")[0].classList.remove("d-none");
-      // getListFood();
       break;
     case "myrequest":
       document.getElementsByClassName("listRequest")[0].classList.add("active");
@@ -114,7 +116,6 @@ function showTabPanel(e) {
       document
         .getElementsByClassName("listRequest")[0]
         .classList.remove("d-none");
-      getListRequest();
       break;
     case "myfeedback":
       document.getElementsByClassName("feedback")[0].classList.add("active");
@@ -145,6 +146,7 @@ function getAccount() {
 }
 
 function bindDataAccount(data) {
+  document.querySelector("#account_id").value = data.id;
   document.querySelector("#account_name").value = data.name;
   document.querySelector("#account_phone").value = data.phone;
   document.querySelector("#account_email").value = data.email;
@@ -220,57 +222,6 @@ function formatCategory(id) {
       break;
   }
   return text;
-}
-
-// get data request
-function getListRequest() {
-  fetch(
-    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${isToken}`,
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then((food) => {
-      if (
-        food &&
-        food.data &&
-        food.data.content &&
-        food.data.content.length > 0
-      ) {
-        document.querySelector("#list-request").innerHTML = renderListRequest(
-          food.data.content
-        );
-      }
-    })
-    .catch((error) => console.log(error));
-}
-
-function renderListRequest(data) {
-  var count = 0;
-  var html = data.map(function (e) {
-    count++;
-    return (
-      `<tr><td>${count}</td><td>${e.foodName || ""}</td><td>${
-        e.message
-      }</td><td>${e.supplierName}</td>` +
-      "<td onclick=\"formDetailRequest('" +
-      e.foodId +
-      '\')"><i class="fa fa-pencil-square-o"></i></td><td onclick="deleteRequest(this, \'' +
-      e.foodId +
-      "', '" +
-      e.message +
-      "', '" +
-      e.supplierId +
-      "', '" +
-      e.supplierName +
-      '\')"><i class="fa fa-trash-o"></i></td></tr>'
-    );
-  });
-  return html.join("");
 }
 
 // detail request
