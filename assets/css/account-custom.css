@@ -28,3 +28,25 @@ td {
 .row {
   margin-left: 0px !important;
 }
+
+.modal-main {
+  width: fit-content !important;
+  display: flex;
+  margin: auto;
+}
+
+#cancel-button {
+  float: right;
+}
+
+.fa-pencil-square-o:hover,
+.fa-pencil-square-o:focus {
+  color: lightseagreen;
+  cursor: pointer;
+}
+
+.fa-trash-o:hover,
+.fa-trash-o:focus {
+  color: red;
+  cursor: pointer;
+}
