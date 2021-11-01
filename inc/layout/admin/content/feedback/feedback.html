@@ -1,3 +1,48 @@
+<div class="card">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-lg-3 col-xl-2">
+                <a type="button" class="btn btn-light mb-3 mb-lg-0" onclick="formAddCategory()" data-bs-toggle="modal"
+                    data-bs-target="#modalAddCategory"><i class="bx bxs-plus-square"></i>New category</a>
+            </div>
+            <div class="col-lg-9 col-xl-10">
+                <form class="float-lg-end">
+                    <div class="row row-cols-lg-auto g-2">
+                        <div class="col-12">
+                            <div class="position-relative">
+                                <input type="text" class="form-control ps-5" placeholder="Search category..."> <span
+                                    class="position-absolute top-50 product-show translate-middle-y"><i
+                                        class="bx bx-search"></i></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="btn-group float-start pe-2">
+                                <button class="btn btn-light dropdown-toggle show" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"
+                                    style="margin: 0px;">
+                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
+                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-12">
+                            <div class="btn-group" role="group">
+                                <button class="btn btn-light dropdown-toggle show" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="true">Status</button>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <li><a class="dropdown-item" onclick="filterStatus(this)">All</a></li>
+                                    <li><a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a></li>
+                                    <li><a class="dropdown-item" onclick="filterStatus(this, '1')">Active</a></li>
+                                </ul>
+                            </div>
+                        </div> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="card radius-10">
     <div class="card-body">
         <div class="d-flex align-items-center">
