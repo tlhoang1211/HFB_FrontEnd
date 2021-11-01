@@ -1,18 +1,15 @@
 <div class="card">
     <div class="card-body">
         <div class="row align-items-center">
-            <div class="col-lg-3 col-xl-2">
-                <a type="button" class="btn btn-light mb-3 mb-lg-0" onclick="formAddCategory()" data-bs-toggle="modal"
-                    data-bs-target="#modalAddCategory"><i class="bx bxs-plus-square"></i>New category</a>
-            </div>
-            <div class="col-lg-9 col-xl-10">
-                <form class="float-lg-end">
+            <div class="col-lg-12 col-xl-12">
+                <form class="float-lg-start">
                     <div class="row row-cols-lg-auto g-2">
                         <div class="col-12">
                             <div class="position-relative">
-                                <input type="text" class="form-control ps-5" placeholder="Search category..."> <span
-                                    class="position-absolute top-50 product-show translate-middle-y"><i
-                                        class="bx bx-search"></i></span>
+                                <input id="searchCategory" type="text" class="form-control ps-5" placeholder="Search category...">
+                                <span class="position-absolute top-50 product-show translate-middle-y" onclick="searchNameCategory('#searchCategory')">
+                                    <i class="bx bx-search"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="col-12">
@@ -21,8 +18,8 @@
                                     data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"
                                     style="margin: 0px;">
-                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
-                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
+                                    <a class="dropdown-item" onclick="onChangeOrderByCategory(this, 'asc')">From a-z</a>
+                                    <a class="dropdown-item" onclick="onChangeOrderByCategory(this, 'desc')">From z-a</a>
                                 </div>
                             </div>
                         </div>
@@ -30,11 +27,11 @@
                             <div class="btn-group" role="group">
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Status</button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item" onclick="filterStatus(this)">All</a></li>
-                                    <li><a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a></li>
-                                    <li><a class="dropdown-item" onclick="filterStatus(this, '1')">Active</a></li>
-                                </ul>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                    <a class="dropdown-item" onclick="filterStatusCategory(this)">All</a>
+                                    <a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a>
+                                    <a class="dropdown-item" onclick="filterStatus(this, '1')">Active</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -48,6 +45,10 @@
         <div class="d-flex align-items-center">
             <div>
                 <h5 class="mb-0">List of category</h5>
+            </div>
+            <div class="ms-auto">
+                <a type="button" class="btn btn-light mb-3 mb-lg-0" onclick="formAddCategory()" data-bs-toggle="modal"
+                    data-bs-target="#modalAddCategory"><i class="bx bxs-plus-square"></i>New category</a>
             </div>
         </div>
         <hr/>
@@ -64,19 +65,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>name</td>
-                        <td>11/10/2021</td>
-                        <td>laphuong</td>
-                        <td>active</td>
-                        <td>
-                            <div class="d-flex order-actions">
-                                <a onclick="formEditCategory()"><i class='bx bx-edit' ></i></a>
-                                <a class="ms-4" onclick="deleteCategory()"><i class='bx bxs-trash'></i></a>
-                            </div>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -103,14 +91,6 @@
                         <label for="name" class="form-label">Description</label>
                         <textarea id="description" class="form-control" rows="4" style="resize: vertical"
                             placeholder="Enter Description"></textarea>
-                        <span class="form-message"></span>
-                    </div>
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Status</label>
-                        <select name="form-control" id="statusAddCategory">
-                            <option value="1">Active</option>
-                            <option value="0">Deactivate</option>
-                        </select>
                         <span class="form-message"></span>
                     </div>
                 </form>

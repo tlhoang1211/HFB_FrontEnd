@@ -2,6 +2,7 @@ $(document).ready(function () {
     Notification.config();
 });
 var listImageFood = [];
+var orderBy = 'asc', statusFood = null, searchName;
 function formAddFood() {
     document.getElementById('modalAddFood').classList.add('show');
 }
@@ -84,14 +85,41 @@ function saveFood(){
         function(errorThrown){}
     );
 }
-var pageSize = 10, pageIndex = 0;
+function onChangeOrderBy(e, type){
+    orderBy = type;
+    addActive(e);
+    getListFood();
+}
+function filterStatus(e, type, ){
+    if (type) {
+        statusFood = type;
+    } else {
+        statusFood = null;
+    }
+    addActive(e);
+    getListFood();
+}
+function searchNameFood(ele){
+    searchName = $(ele).val();
+    getListFood();
+}
 // get data food
 function getListFood(pageIndex) {
     if (!pageIndex) {
         pageIndex = 0;
     }
     var optionUrl = '';
-    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&page=' + pageIndex + '&limit=' + (pageIndex === 0 ? pageSize : (pageIndex * pageSize)), null, function(result){
+    if (statusFood) {
+        optionUrl += '&status=' + parseInt(statusFood);
+    }
+    if (orderBy) {
+        optionUrl += '&order=' + orderBy;
+    }
+    optionUrl += '&sortBy=name';
+    if (searchName) {
+        optionUrl += '&name=' + searchName;
+    }
+    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {
                 if (document.querySelectorAll("#table-food tbody").lastElementChild) {
@@ -154,11 +182,7 @@ function renderListFood(data) {
         });
     return html.join("");
 }
-var orderBy = 'asc'
-function onChangeOrderBy(e, type){
-    orderBy = type;
-    e.classList.add('active')
-}
+
 var idApproval;
 function approvalFood(e, id, createdBy, avatar){
     idApproval = {

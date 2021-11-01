@@ -2,6 +2,7 @@
     "use strict"
     // get token
     var token, pageContent, currentUserName, objAccount;
+    var pageSize = 20, pageIndex = 0;
     function startLoad(cookie){
         var getbackround = document.getElementsByClassName('bg-theme');
         if (cookie) {
@@ -122,5 +123,21 @@
         .catch(function (error) {
             failCallback();
         });
+    }
+
+    function addActive(ele){
+        // Get the parent node
+        var parent = ele.parentNode;
+        // Filter the children, exclude the element
+        var siblings = [].slice.call(parent.children).filter(function (child) {
+            return child !== ele;
+        });
+        if (siblings && siblings.length > 0) {
+            for (let index = 0, len = siblings.length; index < siblings.length; index++) {
+                var element = siblings[index].classList;
+                element.remove('active');
+            }
+        }
+        ele.classList.add('active');
     }
 // });
