@@ -1,7 +1,8 @@
 // hoangtl2 - 01/11/2021 - food list pagination on account page
 // start
-
-var dataAccount = null;
+var foodCount = 0;
+var paginDiv = document.getElementById("pagination-button");
+var foodDataTable = document.getElementById("food-data-table");
 var foodListAPI =
   "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2";
 var shopItem = document.querySelector("#list-food");
@@ -27,10 +28,8 @@ function renderListFood(listFood) {
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
       var dataHtml = "<div>";
-      // var count = 0;
       $.each(data, function (index, e) {
-        // count++;
-        // console.log(e.name);
+        foodCount++;
         dataHtml +=
           `<tr id="food-row-${e.id}">
         <td>${e.id}</td>
@@ -53,6 +52,11 @@ function renderListFood(listFood) {
       $("#list-food").html(dataHtml);
     },
   });
+
+  if (foodCount == 5) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+  }
 }
 //end
 
@@ -86,9 +90,7 @@ function deleteFood(id) {
     .then((response) => response.json())
     .then((food) => {
       if (food) {
-        document
-          .getElementById("food-row-" + id)
-          .setAttribute("style", "display: none");
+        document.getElementById("food-row-" + id).style.display = "none";
         modal3.style.display = "none";
         swal("Success!", "Delete success!", "success");
         getListFood();

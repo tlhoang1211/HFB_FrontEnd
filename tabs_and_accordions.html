@@ -413,7 +413,10 @@
                     <div class="tab-pane" id="listFood">
                       <div class="card radius-10">
                         <div class="card-body">
-                          <div class="table-responsive">
+                          <span id="no-food-noti" style="display: none"
+                            >You haven't upload any food yet!</span
+                          >
+                          <div class="table-responsive" id="food-data-table">
                             <table
                               class="table align-middle mb-0 table-striped table-bordered"
                             >
@@ -435,7 +438,7 @@
                                 id="list-food"
                               ></tbody>
                             </table>
-                            <div class="row">
+                            <div class="row" id="pagination-button">
                               <div class="col-sm-12">
                                 <div class="pagination font-alt"></div>
                               </div>

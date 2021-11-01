@@ -248,11 +248,17 @@
             <!-- Donate-->
             <div class="tab-pane" id="donate">
               <h4>Charity Application</h4>
-              <form id="formDonate" class="form new-food-form" role="form" onsubmit="return false">
+              <form
+                id="formDonate"
+                class="form new-food-form"
+                role="form"
+                onsubmit="return false"
+              >
                 <div class="form-group">
                   <label for="donatorName" class="form-label">Your Name</label>
                   <input
-                    id="donatorName" name="donatorName"
+                    id="donatorName"
+                    name="donatorName"
                     class="form-control"
                     type="text"
                     placeholder="Enter your name"
@@ -264,7 +270,8 @@
                     >Your Phone Number</label
                   >
                   <input
-                    id="donatorPhoneNumber" name="donatorPhoneNumber"
+                    id="donatorPhoneNumber"
+                    name="donatorPhoneNumber"
                     class="form-control"
                     type="text"
                     placeholder="Enter your phone number"
@@ -276,7 +283,8 @@
                     >Amount Of Money</label
                   >
                   <input
-                    id="amount" name="amount"
+                    id="amount"
+                    name="amount"
                     class="form-control"
                     type="number"
                     min="1"
@@ -289,7 +297,8 @@
                 <div class="form-group">
                   <label for="contentDonate" class="form-label">Content</label>
                   <textarea
-                    id="contentDonate" name="contentDonate"
+                    id="contentDonate"
+                    name="contentDonate"
                     class="form-control"
                     rows="5"
                     style="resize: vertical"
@@ -306,6 +315,12 @@
                   >
                     Close
                   </button>
+                  <button
+                    id="newDonate"
+                    type="submit"
+                    class="btn btn-round btnSubmit"
+                    style="margin-bottom: 10px; background-color: #fff"
+                  ></button>
                 </div>
               </form>
             </div>
@@ -336,6 +351,3 @@
   type="text/javascript"
 ></script>
 <script src="../assets/js/header/header.js"></script>
-
-
-

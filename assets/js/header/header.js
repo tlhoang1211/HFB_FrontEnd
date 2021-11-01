@@ -51,7 +51,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
 
   var viewAccount = document.querySelector(".navbar__user");
   var userName = document.getElementById("hi-name");
-  
+
   fetch(getDetailAccount, {
     method: "GET",
     headers: {
@@ -132,7 +132,7 @@ $(document).on("click", ".header__notify-item", function () {
 
   let notificationPromise = new Promise(function (myResolve) {
     Notification.update(idAccount, idNoti, {
-      "idNotify": idNoti,
+      idNotify: idNoti,
     });
     console.log("idNotify: " + idNoti);
     Notification.show(idAccount, function (listNotify) {
@@ -145,7 +145,11 @@ $(document).on("click", ".header__notify-item", function () {
       });
     });
 
-    console.log("category: " +categoryNoti, "FoodIdNoti:" + foodIdNoti, "UsernameAccount: " +usernameAccount)
+    console.log(
+      "category: " + categoryNoti,
+      "FoodIdNoti:" + foodIdNoti,
+      "UsernameAccount: " + usernameAccount
+    );
     myResolve();
   });
 
@@ -154,7 +158,7 @@ $(document).on("click", ".header__notify-item", function () {
     if (categoryNoti == "request") {
       console.log("start notification");
       Notification.update(idAccount, idNoti, {
-        "status": 0,
+        status: 0,
       });
     }
     if (categoryNoti == "food") {
@@ -190,7 +194,9 @@ $(document).on("click", ".header__notify-item", function () {
                   .then((response) => response.json())
                   .then((listAdmin) => {
                     var listAdmins;
-                    let notificationPromise3 = new Promise(function (myResolve) {
+                    let notificationPromise3 = new Promise(function (
+                      myResolve
+                    ) {
                       listAdmins = listAdmin.data;
                       myResolve();
                     });
@@ -198,14 +204,17 @@ $(document).on("click", ".header__notify-item", function () {
                     notificationPromise3.then(function () {
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
-                            listNotifyAdmin.forEach(function (child) {
-                              if (child.val().foodid == foodIdNoti && child.val().title == "User add new food") {
-                                var idNotiAdmin = child.val().idNotify;
-                                Notification.update(admin.id, idNotiAdmin, {
-                                  "status": 0,
-                                });
-                              }
-                            });
+                          listNotifyAdmin.forEach(function (child) {
+                            if (
+                              child.val().foodid == foodIdNoti &&
+                              child.val().title == "User add new food"
+                            ) {
+                              var idNotiAdmin = child.val().idNotify;
+                              Notification.update(admin.id, idNotiAdmin, {
+                                status: 0,
+                              });
+                            }
+                          });
                         });
                       });
                     });
@@ -533,49 +542,66 @@ $(function () {
 });
 
 // paypal
-var donatorName = document.getElementById('donatorName');
-var donatorPhoneNumber = document.getElementById('donatorPhoneNumber');
-var amount = document.getElementById('amount');
-var contentDonate = document.getElementById('contentDonate');
-var newDonate = document.getElementById('newDonate');
+var donatorName = document.getElementById("donatorName");
+var donatorPhoneNumber = document.getElementById("donatorPhoneNumber");
+var amount = document.getElementById("amount");
+var contentDonate = document.getElementById("contentDonate");
+var newDonate = document.getElementById("newDonate");
 
-
-paypal.Button.render({
-    env: 'sandbox', // Or 'production'
+paypal.Button.render(
+  {
+    env: "sandbox", // Or 'production'
     // Set up the payment:
     // 1. Add a payment callback
-    payment: function(data, actions) {
-        // 2. Make a request to your server
-        return actions.request.post
-        (`https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay?name=${donatorName.value}&phone=${donatorPhoneNumber.value}&amount=${amount.value}&content=${contentDonate.value}`)
-            .then(function(res) {
-                // 3. Return res.id from the response
-                return res.id;
-            })
-            .catch(error => {
-              console.log(error);
-              swal("Error!", "Payment failure! \nYou need to enter the donation amount", "error")});
+    payment: function (data, actions) {
+      // 2. Make a request to your server
+      return actions.request
+        .post(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay?name=${donatorName.value}&phone=${donatorPhoneNumber.value}&amount=${amount.value}&content=${contentDonate.value}`
+        )
+        .then(function (res) {
+          // 3. Return res.id from the response
+          return res.id;
+        })
+        .catch((error) => {
+          console.log(error);
+          swal(
+            "Error!",
+            "Payment failure! \nYou need to enter the donation amount",
+            "error"
+          );
+        });
     },
     // Execute the payment:
     // 1. Add an onAuthorize callback
-    onAuthorize: function(data, actions) {
-        // 2. Make a request to your server
-        return actions.request.get(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay/success?paymentId=${data.paymentID}&PayerID=${data.payerID}`)
-            .then(function(res) {
-                // 3. Show the buyer a confirmation message.
-                if (res.id == data.paymentID) {
-                    // success
-                    swal("Success!", "Thank you for your contribution!", "success");
-                }else{
-                  swal("Error!", "Payment failure!", "error");
-                }
-                console.log(res.id)
-                console.log(data.paymentID)
-                console.log(data.payerID)
-            })
-            .catch(error => {
-              console.log(error);
-              swal("Error!", "Payment failure! \nYou need to enter the donation amount", "error")})
-    }
-}, '#newDonate');
+    onAuthorize: function (data, actions) {
+      // 2. Make a request to your server
+      return actions.request
+        .get(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay/success?paymentId=${data.paymentID}&PayerID=${data.payerID}`
+        )
+        .then(function (res) {
+          // 3. Show the buyer a confirmation message.
+          if (res.id == data.paymentID) {
+            // success
+            swal("Success!", "Thank you for your contribution!", "success");
+          } else {
+            swal("Error!", "Payment failure!", "error");
+          }
+          console.log(res.id);
+          console.log(data.paymentID);
+          console.log(data.payerID);
+        })
+        .catch((error) => {
+          console.log(error);
+          swal(
+            "Error!",
+            "Payment failure! \nYou need to enter the donation amount",
+            "error"
+          );
+        });
+    },
+  },
+  "#newDonate"
+);
 //end
