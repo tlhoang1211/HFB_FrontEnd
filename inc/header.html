@@ -101,6 +101,7 @@
             <div class="tab-pane">
               <h4>Add New Food</h4>
               <form
+                name="upload_new_food_form"
                 class="form"
                 onsubmit="return false"
                 id="addformModal"
@@ -130,7 +131,7 @@
                         id="categoryModal"
                         class="form-control required"
                       >
-                        <option selected disabled value="">Select</option>
+                        <option selected disabled value="0">Select</option>
                         <option value="1">Drinks</option>
                         <option value="2">Noodle</option>
                         <option value="3">Bread</option>
@@ -319,7 +320,12 @@
                     id="newDonate"
                     type="submit"
                     class="btn btn-round btnSubmit"
-                    style="margin-bottom: 10px; background-color: #fff"
+                    style="
+                      margin-bottom: 10px;
+                      background-color: #fff;
+                      padding-right: unset;
+                      padding-top: unset;
+                    "
                   ></button>
                 </div>
               </form>

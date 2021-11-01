@@ -3,15 +3,52 @@
 var foodCount = 0;
 var requestCount = 0;
 
-var userID = document.getElementById("account_id").value;
-var paginDiv = document.getElementById("pagination-button");
+var objAccount = null;
+
+function initPageAccount() {
+  getAccount();
+}
+initPageAccount();
+
+// get data user
+function getAccount() {
+  fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentName}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${isToken}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((account) => {
+      if (account && account.data) {
+        objAccount = account.data;
+        getListRequest(objAccount.id);
+        // console.log(objAccount.id);
+        bindDataAccount(account.data);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+function bindDataAccount(data) {
+  document.querySelector("#account_id").value = data.id;
+  document.querySelector("#account_name").value = data.name;
+  document.querySelector("#account_phone").value = data.phone;
+  document.querySelector("#account_email").value = data.email;
+  document.querySelector("#account_address").value = data.address;
+  document.querySelector(".name-account").innerHTML = data.name;
+  document.querySelector("#avatar_account").src =
+    data.avatar ||
+    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
+  document.querySelector("#avatar_account").parentElement.href =
+    data.avatar ||
+    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
+}
 
 var foodDataTable = document.getElementById("food-data-table");
 
 var foodListAPI =
   "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2";
-
-var shopItem = document.querySelector("#list-food");
 
 function getListFood() {
   fetch(foodListAPI, {
@@ -362,11 +399,12 @@ $(document).keydown(function (event) {
 
 // hoangtl2 - 01/11/2021 - request list pagination on account page
 // start
-var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
-
 var requestItem = document.querySelector("#list-request");
 
-function getListRequest() {
+function getListRequest(userID) {
+  // console.log(userID);
+  var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
+
   fetch(requestListAPI, {
     method: "GET",
     headers: {
@@ -384,51 +422,26 @@ function getListRequest() {
         document.querySelector("#list-request").innerHTML = renderListRequest(
           food.data.content
         );
+
+        console.log(food.data.content);
       }
     })
     .catch((error) => console.log(error));
 }
-getListRequest();
-
-// function getListRequest() {
-//   fetch(
-//     `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${objAccount.id}&status=1`,
-//     {
-//       method: "GET",
-//       headers: {
-//         Authorization: `Bearer ${isToken}`,
-//       },
-//     }
-//   )
-//     .then((response) => response.json())
-//     .then((food) => {
-//       if (
-//         food &&
-//         food.data &&
-//         food.data.content &&
-//         food.data.content.length > 0
-//       ) {
-//         document.querySelector("#list-request").innerHTML = renderListRequest(
-//           food.data.content
-//         );
-//       }
-//     })
-//     .catch((error) => console.log(error));
-// }
 
 function renderListRequest(listRequest) {
-  let container = $(".pagination2");
-  container.pagination({
+  let requestContainer = $(".pagination2");
+  requestContainer.pagination({
     dataSource: listRequest,
     pageSize: 5,
     showGoInput: true,
     showGoButton: true,
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
-      var dataHtml = "<div>";
+      var dataHtml1 = "<div>";
       $.each(data, function (index, e) {
         requestCount++;
-        dataHtml +=
+        dataHtml1 +=
           `<tr><td>${e.id}</td><td>${e.foodName || ""}</td><td>${
             e.message
           }</td><td>${e.supplierName}</td>` +
@@ -445,9 +458,9 @@ function renderListRequest(listRequest) {
           '\')"><i class="fa fa-trash-o"></i></td></tr>';
       });
 
-      dataHtml += "</div>";
+      dataHtml1 += "</div>";
 
-      $("#list-request").html(dataHtml);
+      $("#list-request").html(dataHtml1);
     },
   });
 }
