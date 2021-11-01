@@ -53,9 +53,12 @@ function renderListFood(listFood) {
     },
   });
 
-  if (foodCount == 5) {
+  if (foodCount == 0) {
     foodDataTable.style.display = "none";
     document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-noti")
+      .setAttribute("style", "text-align: center;");
   }
 }
 //end
