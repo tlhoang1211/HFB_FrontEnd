@@ -413,28 +413,32 @@
                     <div class="tab-pane" id="listFood">
                       <div class="card radius-10">
                         <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table align-middle mb-0">
+                          <span id="no-food-noti" style="display: none"
+                            >You haven't upload any food yet!</span
+                          >
+                          <div class="table-responsive" id="food-data-table">
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
                               <thead class="table-light">
                                 <tr>
                                   <th>#</th>
-                                  <th>Name</th>
+                                  <th>Food Name</th>
                                   <th>Image</th>
                                   <th>Category</th>
                                   <th>Expiration Date</th>
-                                  <th>Status</th>
                                   <th>Created At</th>
-                                  <th></th>
-                                  <th></th>
+                                  <th>Status</th>
+                                  <th>Edit</th>
+                                  <th>Delete</th>
                                 </tr>
                               </thead>
-                              <tbody class="list-food-item"></tbody>
                               <tbody
                                 class="row multi-columns-row"
                                 id="list-food"
                               ></tbody>
                             </table>
-                            <div class="row">
+                            <div class="row" id="pagination-button">
                               <div class="col-sm-12">
                                 <div class="pagination font-alt"></div>
                               </div>
@@ -448,15 +452,17 @@
                       <div class="card radius-10">
                         <div class="card-body">
                           <div class="table-responsive">
-                            <table class="table align-middle mb-0">
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
                               <thead class="table-light">
                                 <tr>
                                   <th>#</th>
                                   <th>Name</th>
                                   <th>Message</th>
                                   <th>Supplier Name</th>
-                                  <th></th>
-                                  <th></th>
+                                  <th>Edit</th>
+                                  <th>Delete</th>
                                 </tr>
                               </thead>
                               <tbody id="list-request"></tbody>
@@ -532,11 +538,23 @@
                 <div class="modal-body">
                   <!-- Add new food -->
                   <div class="tab-pane">
-                    <h4>Are you sure you want to delete this food?</h4>
-                    <button id="accept-button" class="btn btn-round btn-danger">
+                    <h4 class="text-center">
+                      Are you sure you want to delete this food?
+                    </h4>
+                    <button
+                      type="button"
+                      id="accept-button"
+                      class="btn btn-round btn-danger"
+                      value=""
+                    >
                       I'm sure
                     </button>
-                    <button id="cancel-button" class="btn btn-round">
+                    <button
+                      type="button"
+                      id="cancel-button"
+                      class="btn btn-round"
+                      onclick="cancelModal()"
+                    >
                       Cancel
                     </button>
                   </div>

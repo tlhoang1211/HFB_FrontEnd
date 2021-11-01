@@ -1,10 +1,11 @@
 // hoangtl2 - 01/11/2021 - food list pagination on account page
 // start
-
-var dataAccount = null;
+var foodCount = 0;
+var paginDiv = document.getElementById("pagination-button");
+var foodDataTable = document.getElementById("food-data-table");
 var foodListAPI =
   "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2";
-var shopItem = document.querySelector(".list-food-item");
+var shopItem = document.querySelector("#list-food");
 function getListFood() {
   fetch(foodListAPI, {
     method: "GET",
@@ -27,25 +28,23 @@ function renderListFood(listFood) {
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
       var dataHtml = "<div>";
-      var count = 0;
       $.each(data, function (index, e) {
-        count++;
-        // console.log(e.name);
+        foodCount++;
         dataHtml +=
-          `<tr>
-        <td>${count}</td>
+          `<tr id="food-row-${e.id}">
+        <td>${e.id}</td>
         <td>${e.name || ""}</td>
         <td><img src="https://res.cloudinary.com/vernom/image/upload/${
           e.avatar
         }" style="width: 30px;height: 30px;"/></td>
         <td>${formatCategory(e.categoryId)}</td>
         <td>${e.expirationDate}</td>
+        <td>${e.createdAt}</td>
         <td>${
           e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
         }</td>
-        <td>${e.createdAt}</td>
         <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteFood()><i class="fa fa-trash-o"></i></td></tr>`;
+          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
       dataHtml += "</div>";
@@ -53,6 +52,11 @@ function renderListFood(listFood) {
       $("#list-food").html(dataHtml);
     },
   });
+
+  if (foodCount == 5) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+  }
 }
 //end
 
@@ -63,8 +67,11 @@ function formUpdateFood() {}
 
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");
-function confirmDeleteFood() {
+function confirmDeleteFood(id) {
   modal3.style.display = "flex";
+  var buttonValue = document.getElementById("accept-button");
+  // console.log(id);
+  buttonValue.setAttribute("onclick", "deleteFood(" + id + ")");
 }
 
 // delete food
@@ -83,14 +90,17 @@ function deleteFood(id) {
     .then((response) => response.json())
     .then((food) => {
       if (food) {
-        e.parentElement.remove();
+        document.getElementById("food-row-" + id).style.display = "none";
+        modal3.style.display = "none";
+        swal("Success!", "Delete success!", "success");
+        getListFood();
       }
     })
     .catch((error) => console.log(error));
 }
 
 // Close Modal by clicking "close" button
-function closeModal() {
+function cancelModal() {
   modal3.style.display = "none";
 }
 

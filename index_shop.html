@@ -541,14 +541,14 @@
                         Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        status: 0
+                        status: 0,
                       }),
                     })
                       .then((response) => response.json())
                       .then((data) => {
                         getListItem();
                       })
-                      .catch(error => console.log(error));
+                      .catch((error) => console.log(error));
                   }
                 }
               });
