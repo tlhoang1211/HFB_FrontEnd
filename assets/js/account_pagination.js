@@ -43,7 +43,7 @@ function renderListFood(listFood) {
         <td>${
           e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
         }</td>
-        <td onclick="formUpdateFood()"><i class="fa fa-pencil-square-o"></i></td>` +
+        <td onclick="formUpdateFood(${e.id})"><i class="fa fa-pencil-square-o"></i></td>` +
           `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
@@ -66,7 +66,245 @@ function renderListFood(listFood) {
 // hoangtl2 - 01/11/2021 - food list pagination on account page
 // start
 // update food
-function formUpdateFood() {}
+
+var editImageFood = document.querySelector('.view-image-product');
+var editInfoFood = document.querySelector('.view-info-product');
+var editContentDesFood = document.querySelector('.view-info-des-content');
+var editUser = document.querySelector('.editUser');
+var listFood = document.querySelector('.listFood');
+var listFoodPagination = document.querySelector('.listFoodPagination');
+editUser.style.display = 'none';
+function formUpdateFood(id) {
+  editUser.style.display = 'block';
+  listFood.style.display = 'none';
+  listFoodPagination.style.display = 'none';
+  var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
+  fetch(getDetailFood, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(response => response.json())
+  .then(foodInfo => {
+    var htmls = `
+      <div class="row multi-columns-row" >
+        <div class="slider-image">
+          <div class="slider-info-food">
+            <img src="https://res.cloudinary.com/vernom/image/upload/${foodInfo.data.avatar}" style="width:100%; max-height: 450px">
+          </div>
+        </div>
+      </div>
+    `;
+
+    var htmlsInfoProduct = `
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="product-title font-alt">${foodInfo.data.name}</h6>
+        </div>
+      </div>
+      <div class="row mb-20">
+        <div class="col-sm-12">
+          <p style="font-size: 12px; color: #000; margin: 0;">Expiration Date: ${foodInfo.data.expirationDate}</p>
+        </div>
+      </div>
+      <div class="row mb-20">
+        <div class="col-sm-12">
+          <div class="product_meta">Categories:<a href="#"> ${foodInfo.data.category}</a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    var htmlsDes = `
+    <div class="row multi-columns-row" >
+    <div class="col-sm-12" style="padding: 0;">
+      <p>Description: ${foodInfo.data.description}</p>
+    </div>
+    </div>
+    <div class="row multi-columns-row" >
+      <div class="col-sm-12" style="padding: 0;">
+        <p>Content: ${foodInfo.data.content}</p>
+      </div>
+    </div>
+    `
+
+    editImageFood.innerHTML = htmls;
+    editInfoFood.innerHTML = htmlsInfoProduct;
+    editContentDesFood.innerHTML = htmlsDes;
+  })
+  .catch((error) => console.log(error));
+}
+
+function backToList(){
+  editUser.style.display = 'none';
+  listFood.style.display = 'block';
+  listFoodPagination.style.display = 'block';
+}
+
+// validate form
+$("#editformEdit").validate({
+  onfocusout: false,
+  onkeyup: false,
+  onclick: false,
+  rules: {
+    nameFoodEdit: {
+      // name element not id
+      required: true,
+    },
+    categoryEdit: {
+      required: true,
+    },
+    expirationDateEdit: {
+      required: true,
+    },
+    descriptionEdit: {
+      required: true,
+    },
+    contentEdit: {
+      required: true,
+    },
+  },
+  messages: {
+    nameFoodEdit: {
+      required: "Please provide name food.",
+    },
+    categoryEdit: {
+      required: "Please choose category.",
+    },
+    expirationDateEdit: {
+      required: "Please provide expiration date.",
+    },
+    descriptionEdit: {
+      required: "Please provide description.",
+    },
+    contentEdit: {
+      required: "Please provide content.",
+    },
+  },
+});
+
+function newFoodEdit(){
+  var nameFood = document.getElementById("nameFoodEdit").value;
+  var category = document.getElementById("categoryEdit").value;
+  var expirationDate = document.getElementById("expirationDateEdit").value;
+  var description = document.getElementById("descriptionEdit").value;
+  var content = document.getElementById("contentEdit").value;
+
+  if (!nameFood == false && !category == false && !expirationDate == false && !description == false && !content == false) {
+    if (listImageFood.length == 0) {
+      swal("Warning!", "You need more image!", "warning");
+    } else if (listImageFood.length > 3) {
+      swal("Warning!", "You should only add a maximum of 3 images!", "warning");
+      console.log(listImageFood.length);
+    } else {}
+  }
+}
+
+// food
+var myWidgetFood = cloudinary.createUploadWidget(
+  {
+    cloudName: "vernom",
+    uploadPreset: "fn5rpymu",
+    form: "#editformEdit",
+    folder: "hanoi_food_bank_project/uploaded_food",
+    fieldName: "thumbnailsFoodEdit[]",
+    thumbnails: ".thumbnailsFoodEdit",
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      listImageFood.push(result.info.path);
+      var arrayThumnailInputs = document.querySelectorAll(
+        'input[name="thumbnailsFoodEdit[]"]'
+      );
+      for (let i = 0; i < arrayThumnailInputs.length; i++) {
+        arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
+          "data-cloudinary-public-id"
+        );
+      }
+    }
+  }
+);
+
+document.getElementById("upload_image_foodEdit").addEventListener(
+  "click",
+  function () {
+    myWidgetFood.open();
+  },
+  false
+);
+
+$("body").on("click", ".cloudinary-delete-edit", function () {
+  var splittedImg = $(this).parent().find("img").attr("src").split("/");
+  var imgName =
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+  var publicId = $(this).parent().attr("data-cloudinary");
+  $(this).parent().remove();
+  var imgName2 =
+    splittedImg[splittedImg.length - 4] +
+    "/" +
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+
+  for (let i = 0; i < listImageFood.length; i++) {
+    if (listImageFood[i] == imgName2) {
+      listImageFood.splice(i, 1);
+    }
+  }
+  $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
+});
+
+function formatCategory(id) {
+  var text = "";
+  switch (id) {
+    case 1:
+      text = "Drinks";
+      break;
+    case 2:
+      text = "Noodle";
+      break;
+    case 3:
+      text = "Bread";
+      break;
+    case 4:
+      text = "Rice";
+      break;
+    case 5:
+      text = "Meat";
+      break;
+    case 6:
+      text = "Seafood";
+      break;
+    case 7:
+      text = "Vegetables";
+      break;
+    case 8:
+      text = "Vegetarian Food";
+      break;
+    case 9:
+      text = "Fruit";
+      break;
+    case 10:
+      text = "Fast Food";
+      break;
+    case 11:
+      text = "Snacks";
+      break;
+    case 12:
+      text = "Others";
+      break;
+  }
+  return text;
+}
+
+
 
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");

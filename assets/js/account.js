@@ -19,45 +19,45 @@ Validator({
   ],
 });
 
-document.getElementById("newFood").addEventListener(
-  "click",
-  function () {
-    var nameFood = document.getElementById("nameFood").value;
-    var category = document.getElementById("category").value;
+// document.getElementById("newFood").addEventListener(
+//   "click",
+//   function () {
+//     var nameFood = document.getElementById("nameFood").value;
+//     var category = document.getElementById("category").value;
 
-    var expirationDate = document.getElementById("expirationDate").value;
-    if (!expirationDate) {
-      $(".alert-danger").alert();
-      return false;
-    }
-    if (listImageFood.length == 0) {
-      $(".alert-danger").alert();
-      return false;
-    }
-    var description = document.getElementById("description").value;
-    var dataPost = {
-      name: nameFood || "",
-      avatar: listImageFood[0],
-      images: listImageFood.join(","),
-      expirationDate: document.getElementById("expirationDate").value,
-      createdBy: objAccount.id,
-      categoryId: parseInt(category),
-      description: description,
-    };
-    fetch("https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify(dataPost),
-    })
-      .then((response) => response.json())
-      .then(function (data) {})
-      .catch(function (error) {});
-  },
-  false
-);
+//     var expirationDate = document.getElementById("expirationDate").value;
+//     if (!expirationDate) {
+//       $(".alert-danger").alert();
+//       return false;
+//     }
+//     if (listImageFood.length == 0) {
+//       $(".alert-danger").alert();
+//       return false;
+//     }
+//     var description = document.getElementById("description").value;
+//     var dataPost = {
+//       name: nameFood || "",
+//       avatar: listImageFood[0],
+//       images: listImageFood.join(","),
+//       expirationDate: document.getElementById("expirationDate").value,
+//       createdBy: objAccount.id,
+//       categoryId: parseInt(category),
+//       description: description,
+//     };
+//     fetch("https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${isToken}`,
+//       },
+//       body: JSON.stringify(dataPost),
+//     })
+//       .then((response) => response.json())
+//       .then(function (data) {})
+//       .catch(function (error) {});
+//   },
+//   false
+// );
 
 // hiennv 24/10
 // ********* active
