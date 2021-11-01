@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../assets/css/notify.css" />
 <link rel="stylesheet" href="../assets/css/repository.css" />
 <link rel="stylesheet" href="../assets/css/header_custom.css" />
+
 <style>
   label.error {
     color: red;
@@ -247,11 +248,11 @@
             <!-- Donate-->
             <div class="tab-pane" id="donate">
               <h4>Charity Application</h4>
-              <form class="form new-food-form" role="form">
+              <form id="formDonate" class="form new-food-form" role="form" onsubmit="return false">
                 <div class="form-group">
                   <label for="donatorName" class="form-label">Your Name</label>
                   <input
-                    id="donatorName"
+                    id="donatorName" name="donatorName"
                     class="form-control"
                     type="text"
                     placeholder="Enter your name"
@@ -263,7 +264,7 @@
                     >Your Phone Number</label
                   >
                   <input
-                    id="donatorPhoneNumber"
+                    id="donatorPhoneNumber" name="donatorPhoneNumber"
                     class="form-control"
                     type="text"
                     placeholder="Enter your phone number"
@@ -275,17 +276,20 @@
                     >Amount Of Money</label
                   >
                   <input
-                    id="amount"
+                    id="amount" name="amount"
                     class="form-control"
                     type="number"
+                    min="1"
+                    value="1"
+                    oninput="this.value = Math.abs(this.value)"
                     placeholder="Enter the amount you want to donate"
                   />
                   <span class="form-message"></span>
                 </div>
                 <div class="form-group">
-                  <label for="content" class="form-label">Content</label>
+                  <label for="contentDonate" class="form-label">Content</label>
                   <textarea
-                    id="content"
+                    id="contentDonate" name="contentDonate"
                     class="form-control"
                     rows="5"
                     style="resize: vertical"
@@ -332,3 +336,6 @@
   type="text/javascript"
 ></script>
 <script src="../assets/js/header/header.js"></script>
+
+
+
