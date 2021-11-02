@@ -493,13 +493,13 @@
             Authorization: `Bearer ${token}`,
           },
         })
-				.then(response => response.json())
-				.then(listItems => {
-          listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
-					let myPromise = new Promise(function(myResolve) {
-            var listItemImages = listItems.data.images.split(",");
-            console.log(listItemImages);
-            var htmlsItem = `
+          .then((response) => response.json())
+          .then((listItems) => {
+            listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
+            let myPromise = new Promise(function (myResolve) {
+              var listItemImages = listItems.data.images.split(",");
+              console.log(listItemImages);
+              var htmlsItem = `
             <div class="row multi-columns-row" >
                   <div class="slider-image">`;
               listItemImages.map(function (image) {
@@ -529,30 +529,10 @@
 						`;
 
               var htmlsInfoProduct = `
-            <div class="row">
+                <div class="row">
                   <div class="col-sm-12">
                     <h1 class="product-title font-alt">${listItems.data.name}</h1>
                   </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12">
-                    <div class="col-sm-12">
-                      <div class="description">
-                        <span style="font-size: 16px; color: #000;">Expiration Date: ${listItems.data.expirationDate}</span>
-                        <p id="expirationdate"><span style="font-size: 14px; color: #000;"></span></p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12">
-                    <div class="description">
-                      <p>${listItems.data.description}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Ask for food</a></div>
                 </div>
                 <div class="row mb-20">
                   <div class="col-sm-12">
@@ -560,10 +540,26 @@
                     </div>
                   </div>
                 </div>
-          `;
+                <div class="row mb-20">
+                  <div class="col-sm-12">
+                      <div class="description">
+                        <span style="font-size: 16px; color: #000;">Expiration Date: ${listItems.data.expirationDate}</span>
+                        <p id="expirationdate"><span style="font-size: 14px; color: #000;"></span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12">
+                    <div class="description">
+                      <p>Content: ${listItems.data.content}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-20">
+                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Ask for food</a></div>
+                </div>`;
+              var htmlsInfoDes = `<p> ${listItems.data.description}</p>`;
 
-              var htmlsInfoDes = `<p> ${listItems.data.content}</p>`;
-              
               document.querySelector("#description").innerHTML = htmlsInfoDes;
               shopItem.innerHTML = htmlsItem;
               viewInfoProduct.innerHTML = htmlsInfoProduct;
