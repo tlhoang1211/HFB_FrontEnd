@@ -419,7 +419,7 @@
 									</div> -->
                     <!-- List of food -->
                     <div class="tab-pane" id="listFood">
-                      <div class="card radius-10">
+                      <div class="card radius-10 listFoodPagination" >
                         <div class="card-body" id="center-noti">
                           <span id="no-food-noti" style="display: none"
                             >You haven't upload any food yet!</span
@@ -450,6 +450,110 @@
                               <div class="col-sm-12">
                                 <div class="pagination1 font-alt"></div>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="editUser">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="col-sm-10"></div>
+                            <div class="col-sm-2">
+                              <button
+                                onclick="backToList()"
+                                type="button"
+                                class="btn btn-b btn-round btnSubmit"
+                              >
+                                <i class="fa fa-plus"></i> Back to list
+                              </button>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="row" style="top: 34px; position: absolute;">
+                              <div class="col-sm-11 view-image-product"></div>
+                              <div class="col-sm-11 view-info-product" style="max-height: 200px; padding: 0;">
+                                
+                              </div>
+                              <div class="col-sm-11 view-info-des-content">
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6" >
+                            <div class="tab-pane">
+                              <h4>Edit Food</h4>
+                              <form class="form" onsubmit="return false" id="editformEdit" role="form" >
+                                <div class="form-group">
+                                  <label for="nameFoodEdit" class="form-label" >Food Name</label >
+                                  <input id="nameFoodEdit" name="nameFoodEdit" class="form-control" type="text" placeholder="Enter Food Name"
+                                  />
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-sm-6 category_col">
+                                    <div class="form-group">
+                                      <label for="categoryEdit" class="form-label" >Category</label >
+                                      <select name="categoryEdit" id="categoryEdit" class="form-control required" >
+                                        <option selected disabled value="">Select</option>
+                                        <option value="1">Drinks</option>
+                                        <option value="2">Noodle</option>
+                                        <option value="3">Bread</option>
+                                        <option value="4">Rice</option>
+                                        <option value="5">Meat</option>
+                                        <option value="6">Seafood</option>
+                                        <option value="7">Vegetables</option>
+                                        <option value="8">Vegetarian Food</option>
+                                        <option value="9">Fruit</option>
+                                        <option value="10">Fast Food</option>
+                                        <option value="11">Snacks</option>
+                                        <option value="12">Others</option>
+                                      </select>
+                                      <span class="form-message"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6 date_col">
+                                    <div class="form-group">
+                                      <label for="expirationDateEdit" class="form-label" >Expiration Date</label >
+                                      <input id="expirationDateEdit" name="expirationDateEdit" class="form-control" type="date" />
+                                      <span class="form-message"></span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="name" class="form-label">Image Food</label>
+                                  <br />
+                                  <button type="button" id="upload_image_foodEdit" class="upload-btn btn btn-round" >
+                                    <i class="fa fa-download"></i> Upload image
+                                  </button>
+
+                                  <div class="thumbnailsFoodEdit">
+                                    <ul class="cloudinary-thumbnails">
+                                      <li class="cloudinary-thumbnail" data-cloudinary="">
+                                        <img src="" style="width: 300px; height: 300px" />
+                                        <a href="#" class="cloudinary-delete-edit">x</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <input type="hidden" name="imageFoodsEdit" id="imageFoodsEdit" />
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label for="descriptionEdit" class="form-label" >Description</label>
+                                  <textarea id="descriptionEdit" name="descriptionEdit" class="form-control" rows="2" style="resize: vertical" placeholder="Enter Description" ></textarea>
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label for="contentEdit" class="form-label">Content</label>
+                                  <textarea id="contentEdit" name="contentEdit" class="form-control" rows="5" style="resize: vertical" placeholder="Enter Description"
+                                  ></textarea>
+                                  <span class="form-message"></span>
+                                </div>
+                                <div>
+                                  <button onclick="newFoodEdit()" type="submit"  class="btn btn-success btn-round btnSubmit" style="margin-bottom: 10px" >
+                                    <i class="fa fa-plus"></i> Update
+                                  </button>
+                                </div>
+                              </form>
                             </div>
                           </div>
                         </div>
@@ -633,6 +737,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"
     />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
     <script src="./assets/js/account_pagination.js"></script>
 
     <script>
@@ -645,9 +751,9 @@
     <script>
       function started() {
         var tokenaccount = document.cookie;
-        // if (tokenaccount) {
-        //   location.replace("../login_register.html");
-        // }
+        if (!tokenaccount) {
+          location.replace('../login_register.html');
+        }
       }
       started();
     </script>

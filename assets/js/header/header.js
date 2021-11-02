@@ -129,6 +129,8 @@ $(document).on("click", ".header__notify-item", function () {
   var categoryNoti;
   var foodIdNoti;
   var usernameAccount;
+  var title;
+  var messageNoti;
 
   let notificationPromise = new Promise(function (myResolve) {
     Notification.update(idAccount, idNoti, {
@@ -141,6 +143,8 @@ $(document).on("click", ".header__notify-item", function () {
           categoryNoti = child.val().category;
           foodIdNoti = child.val().foodid;
           usernameAccount = child.val().usernameaccount;
+          title = child.val().title;
+          messageNoti = child.val().message
         }
       });
     });
@@ -148,7 +152,8 @@ $(document).on("click", ".header__notify-item", function () {
     console.log(
       "category: " + categoryNoti,
       "FoodIdNoti:" + foodIdNoti,
-      "UsernameAccount: " + usernameAccount
+      "UsernameAccount: " + usernameAccount,
+      "Title" + title
     );
     myResolve();
   });
@@ -156,12 +161,13 @@ $(document).on("click", ".header__notify-item", function () {
   notificationPromise.then(function () {
     console.log("start notification");
     if (categoryNoti == "request") {
-      console.log("start notification");
+      console.log("start notification request");
       Notification.update(idAccount, idNoti, {
         status: 0,
       });
     }
     if (categoryNoti == "food") {
+      console.log("start notification food");
       fetch(
         `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/roles?username=${usernameAccount}`,
         {
@@ -173,6 +179,7 @@ $(document).on("click", ".header__notify-item", function () {
       )
         .then((response) => response.json())
         .then((listRole) => {
+          console.log("start notification food role user");
           var listRoles;
           let notificationPromise2 = new Promise(function (myResolve) {
             listRoles = listRole.data;
@@ -180,8 +187,10 @@ $(document).on("click", ".header__notify-item", function () {
           });
 
           notificationPromise2.then(function () {
+            console.log("start notification food role user 222");
             listRoles.map(function (role) {
               if (role.name == "ROLE_ADMIN") {
+                console.log("start notification food role ADMIN");
                 fetch(
                   `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
                   {
@@ -194,25 +203,21 @@ $(document).on("click", ".header__notify-item", function () {
                   .then((response) => response.json())
                   .then((listAdmin) => {
                     var listAdmins;
-                    let notificationPromise3 = new Promise(function (
-                      myResolve
-                    ) {
+                    console.log("start notification food role ADMIN 222");
+                    let notificationPromise3 = new Promise(function (myResolve) {
                       listAdmins = listAdmin.data;
                       myResolve();
                     });
 
                     notificationPromise3.then(function () {
+                      console.log("start notification food role ADMIN 333");
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
                           listNotifyAdmin.forEach(function (child) {
-                            if (
-                              child.val().foodid == foodIdNoti &&
-                              child.val().title ==
-                                "User " + objAccount.name + " add new food"
-                            ) {
+                            if (child.val().foodid == foodIdNoti && child.val().title == title && child.val().message == messageNoti){
                               var idNotiAdmin = child.val().idNotify;
                               Notification.update(admin.id, idNotiAdmin, {
-                                status: 0,
+                                  "status": 0
                               });
                             }
                           });
@@ -294,8 +299,8 @@ function newFoodModal() {
       swal("Warning!", "You need more image!", "warning");
     } else if (listImageFood.length > 3) {
       swal("Warning!", "You should only add a maximum of 3 images!", "warning");
-      console.log(listImageFood.length);
-    } else {
+    }
+     else {
       var dataPost = {
         name: nameFood || "",
         avatar: listImageFood[0],
@@ -354,14 +359,14 @@ function newFoodModal() {
               notifyFoodPromise.then(function () {
                 listAdmin2.map(function (admin) {
                   Notification.send(admin.id, {
-                    idNotify: "",
-                    usernameaccount: admin.username,
-                    foodid: idFood,
-                    avatar: avatarFood,
-                    title: "User" + objAccount.name + " add new food",
-                    message: "Time request: " + time,
-                    category: "food",
-                    status: 1,
+                    "idNotify": "",
+                    "usernameaccount": admin.username,
+                    "foodid": idFood,
+                    "avatar": avatarFood,
+                    "title": "User " + objAccount.name + " add new food",
+                    "message": "Time request: " + time,
+                    "category": "food",
+                    "status": 1,
                   });
                 });
               });
@@ -380,7 +385,7 @@ function newFoodModal() {
 }
 
 // food
-var myWidgetFood = cloudinary.createUploadWidget(
+var myWidgetFoodModal = cloudinary.createUploadWidget(
   {
     cloudName: "vernom",
     uploadPreset: "fn5rpymu",
@@ -407,7 +412,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
 document.getElementById("upload_image_foodModal").addEventListener(
   "click",
   function () {
-    myWidgetFood.open();
+    myWidgetFoodModal.open();
   },
   false
 );
@@ -533,7 +538,7 @@ $(document).ready(function () {
       .removeClass("selected");
     var selectedCategory = $(this).children("option:selected").text();
     console.log(selectedCategory);
-    myWidgetFood.update({
+    myWidgetFoodModal.update({
       folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
     });
   });
