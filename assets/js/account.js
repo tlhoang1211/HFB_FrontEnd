@@ -1,10 +1,7 @@
 "use strict";
 var objAccount = null;
 var listImageFood = [];
-// function initPageAccount() {
-//   getAccount();
-// }
-// initPageAccount();
+
 // Validator register
 Validator({
   form: "#addneworder",
@@ -187,98 +184,4 @@ function formatCategory(id) {
       break;
   }
   return text;
-}
-
-// detail request
-function formDetailRequest(id) {
-  fetch(
-    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${isToken}`,
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then((food) => {
-      if (food) {
-        document
-          .getElementsByClassName("detailRequest")[0]
-          .classList.remove("d-none");
-        bindDataDetailRequest(food.data);
-      }
-    })
-    .catch((error) => console.log(error));
-}
-
-// bind data detail request
-function bindDataDetailRequest(data) {
-  document.querySelectorAll("#image_food_detail_request").src =
-    data.avatar ||
-    "https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg";
-  document.querySelectorAll("#detailRequest .product-title").item(0).innerHTML =
-    data.foodDTO.name;
-  document.querySelectorAll("#detailRequest .description p").item(0).innerHTML =
-    data.message;
-  document
-    .querySelectorAll("#detailRequest .product_meta a")
-    .item(0).innerHTML = convertStatus(data.status);
-  document
-    .querySelectorAll("#detailRequest .row-btn")
-    .item(
-      0
-    ).innerHTML = `<div class="col-sm-6"><a class="btn btn-sm btn-block btn-warning" onclick="editRequest()"><i class="fa fa-edit"></i> Edit</a></div>
-	<div class="col-sm-6"><a class="btn btn-sm btn-block btn-danger" onclick="deleteRequestInDetail()"><i class="fa fa-trash-o"></i> Delete</a></div>`;
-}
-
-// delete request
-function deleteRequest(e, id, message, supplierId, supplierName) {
-  var dataPost = {
-    message: message || "",
-    status: 0,
-    supplierId: supplierId,
-    supplierName: supplierName,
-    updatedBy: objAccount.id,
-  };
-  fetch(
-    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify(dataPost),
-    }
-  )
-    .then((response) => response.json())
-    .then((food) => {
-      if (food) {
-        e.parentElement.remove();
-      }
-    })
-    .catch((error) => console.log(error));
-}
-
-// convert status
-function convertStatus(status) {
-  switch (status) {
-    case 0:
-      status = "Deactive";
-      break;
-    case 1:
-      status = "Pending";
-      break;
-    case 2:
-      status = "Confirmed";
-      break;
-    case 3:
-      status = "Done";
-      break;
-    case 4:
-      status = "Cancel";
-      break;
-  }
-  return status;
 }
