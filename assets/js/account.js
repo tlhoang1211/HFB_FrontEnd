@@ -1,6 +1,6 @@
 "use strict";
 var objAccount = null;
-var listImageFood = [];
+var listImageFood1 = [];
 // function initPageAccount() {
 //   getAccount();
 // }
@@ -30,7 +30,7 @@ Validator({
 //       $(".alert-danger").alert();
 //       return false;
 //     }
-//     if (listImageFood.length == 0) {
+//     if (listImageFood1.length == 0) {
 //       $(".alert-danger").alert();
 //       return false;
 //     }
@@ -38,8 +38,8 @@ Validator({
 
 //     var dataPost = {
 //       name: nameFood || "",
-//       avatar: listImageFood[0],
-//       images: listImageFood.join(","),
+//       avatar: listImageFood1[0],
+//       images: listImageFood1.join(","),
 //       expirationDate: document.getElementById("expirationDate").value,
 
 //       createdBy: objAccount.id,

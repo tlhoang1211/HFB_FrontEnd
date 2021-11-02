@@ -525,6 +525,7 @@
                                   <button type="button" id="upload_image_foodEdit" class="upload-btn btn btn-round" >
                                     <i class="fa fa-download"></i> Upload image
                                   </button>
+
                                   <div class="thumbnailsFoodEdit">
                                     <ul class="cloudinary-thumbnails">
                                       <li class="cloudinary-thumbnail" data-cloudinary="">
@@ -533,7 +534,7 @@
                                       </li>
                                     </ul>
                                   </div>
-                                  <input type="hidden" id="imageFoodsEdit" />
+                                  <input type="hidden" name="imageFoodsEdit" id="imageFoodsEdit" />
                                   <span class="form-message"></span>
                                 </div>
                                 <div class="form-group">
@@ -736,6 +737,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"
     />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
     <script src="./assets/js/account_pagination.js"></script>
 
     <script>
@@ -748,9 +751,9 @@
     <script>
       function started() {
         var tokenaccount = document.cookie;
-        // if (tokenaccount) {
-        //   location.replace("../login_register.html");
-        // }
+        if (!tokenaccount) {
+          location.replace('../login_register.html');
+        }
       }
       started();
     </script>

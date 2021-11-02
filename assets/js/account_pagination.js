@@ -23,7 +23,7 @@ function getAccount() {
       if (account && account.data) {
         objAccount = account.data;
         getListRequest(objAccount.id);
-        // console.log(objAccount.id);
+        console.log(objAccount.id);
         bindDataAccount(account.data);
       }
     })
@@ -117,10 +117,14 @@ var editUser = document.querySelector('.editUser');
 var listFood = document.querySelector('.listFood');
 var listFoodPagination = document.querySelector('.listFoodPagination');
 editUser.style.display = 'none';
+var infoFoodDetail;
 function formUpdateFood(id) {
+  
   editUser.style.display = 'block';
   listFood.style.display = 'none';
   listFoodPagination.style.display = 'none';
+  
+
   var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
   fetch(getDetailFood, {
     method: "GET",
@@ -130,7 +134,12 @@ function formUpdateFood(id) {
   })
   .then(response => response.json())
   .then(foodInfo => {
-    var htmls = `
+    let editFoodPromise = new Promise(function (myResolve) {
+      infoFoodDetail = foodInfo.data;
+      myResolve();
+    })
+    editFoodPromise.then(function () {
+      var htmls = `
       <div class="row multi-columns-row" >
         <div class="slider-image">
           <div class="slider-info-food">
@@ -138,43 +147,50 @@ function formUpdateFood(id) {
           </div>
         </div>
       </div>
-    `;
+      `;
 
-    var htmlsInfoProduct = `
-      <div class="row">
-        <div class="col-sm-12">
-          <h3 class="product-title font-alt">${foodInfo.data.name}</h6>
-        </div>
-      </div>
-      <div class="row mb-20">
-        <div class="col-sm-12">
-          <p style="font-size: 12px; color: #000; margin: 0;">Expiration Date: ${foodInfo.data.expirationDate}</p>
-        </div>
-      </div>
-      <div class="row mb-20">
-        <div class="col-sm-12">
-          <div class="product_meta">Categories:<a href="#"> ${foodInfo.data.category}</a>
+      var htmlsInfoProduct = `
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="product-title font-alt">${foodInfo.data.name}</h6>
           </div>
         </div>
-      </div>
-    `;
+        <div class="row mb-20">
+          <div class="col-sm-12">
+            <p style="font-size: 12px; color: #000; margin: 0;">Expiration Date: ${foodInfo.data.expirationDate}</p>
+          </div>
+        </div>
+        <div class="row mb-20">
+          <div class="col-sm-12">
+            <div class="product_meta">Categories:<a href="#"> ${foodInfo.data.category}</a>
+            </div>
+          </div>
+        </div>
+      `;
 
-    var htmlsDes = `
-    <div class="row multi-columns-row" >
-    <div class="col-sm-12" style="padding: 0;">
-      <p>Description: ${foodInfo.data.description}</p>
-    </div>
-    </div>
-    <div class="row multi-columns-row" >
+      var htmlsDes = `
+      <div class="row multi-columns-row" >
       <div class="col-sm-12" style="padding: 0;">
-        <p>Content: ${foodInfo.data.content}</p>
+        <p>Description: ${foodInfo.data.description}</p>
       </div>
-    </div>
-    `
+      </div>
+      <div class="row multi-columns-row" >
+        <div class="col-sm-12" style="padding: 0;">
+          <p>Content: ${foodInfo.data.content}</p>
+        </div>
+      </div>
+      `
 
-    editImageFood.innerHTML = htmls;
-    editInfoFood.innerHTML = htmlsInfoProduct;
-    editContentDesFood.innerHTML = htmlsDes;
+      editImageFood.innerHTML = htmls;
+      editInfoFood.innerHTML = htmlsInfoProduct;
+      editContentDesFood.innerHTML = htmlsDes;
+    })
+
+    document.getElementById("nameFoodEdit").value = foodInfo.data.name;
+    document.getElementById("categoryEdit").value =  formatCategoryStringToInt(foodInfo.data.category);
+    document.getElementById("expirationDateEdit").value = foodInfo.data.expirationDate.split("/").reverse().join("-");
+    document.getElementById("descriptionEdit").value = foodInfo.data.description;
+    document.getElementById("contentEdit").value = foodInfo.data.content;
   })
   .catch((error) => console.log(error));
 }
@@ -226,6 +242,7 @@ $("#editformEdit").validate({
     },
   },
 });
+var listImageFood=[];
 
 function newFoodEdit(){
   var nameFood = document.getElementById("nameFoodEdit").value;
@@ -235,16 +252,132 @@ function newFoodEdit(){
   var content = document.getElementById("contentEdit").value;
 
   if (!nameFood == false && !category == false && !expirationDate == false && !description == false && !content == false) {
-    if (listImageFood.length == 0) {
-      swal("Warning!", "You need more image!", "warning");
-    } else if (listImageFood.length > 3) {
+    if (listImageFood.length > 3) {
       swal("Warning!", "You should only add a maximum of 3 images!", "warning");
       console.log(listImageFood.length);
-    } else {}
+    } 
+    else {
+      var dataPost
+      if (listImageFood.length == 0) {
+        if(nameFood == infoFoodDetail.name &&
+          category == formatCategoryStringToInt(infoFoodDetail.category) &&
+          expirationDate == infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
+          description == infoFoodDetail.description &&
+          content == infoFoodDetail.content){
+            swal("Warning!", "You did not update food information!", "warning");
+        }else{
+          dataPost = {
+            name: nameFood || "",
+            avatar: infoFoodDetail.avatar,
+            images: infoFoodDetail.images,
+            expirationDate: expirationDate,
+            updatedBy: objAccount.id,
+            categoryId: parseInt(category),
+            description: description,
+            content: content,
+            status: 1
+          };
+        }
+      } else {
+          if(nameFood == infoFoodDetail.name &&
+            category == formatCategoryStringToInt(infoFoodDetail.category) &&
+            expirationDate == infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
+            description == infoFoodDetail.description &&
+            content == infoFoodDetail.content && 
+            listImageFood.join(",") == infoFoodDetail.images){
+              swal("Warning!", "You did not update food information!", "warning");
+          }else{
+            dataPost = {
+              name: nameFood || "",
+              avatar: listImageFood[0],
+              images: listImageFood.join(","),
+              expirationDate: expirationDate,
+              updatedBy: objAccount.id,
+              categoryId: parseInt(category),
+              description: description,
+              content: content,
+              status: 1
+            };
+          }
+      }
+      if(!dataPost == false){
+        fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${infoFoodDetail.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dataPost),
+        })
+        .then((response) => response.json())
+        .then(function (data1) {
+          console.log(data1.data);
+          fetch(
+            `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((listAdmin) => {
+              var listAdmin2;
+              var idFood;
+              var avatarFood;
+              var time;
+              let notifyFoodPromise = new Promise(function (myResolve) {
+                listAdmin2 = listAdmin.data;
+                idFood = data1.data.id;
+                avatarFood = data1.data.avatar;
+                var today = new Date();
+                time =
+                  today.getDate() +
+                  "-" +
+                  (today.getMonth() + 1) +
+                  "-" +
+                  today.getFullYear() +
+                  " " +
+                  today.getHours() +
+                  ":" +
+                  today.getMinutes() +
+                  ":" +
+                  today.getSeconds();
+                myResolve();
+              });
+              notifyFoodPromise.then(function () {
+                listAdmin2.map(function (admin) {
+                  Notification.send(admin.id, {
+                    "idNotify": "",
+                    "usernameaccount": admin.username,
+                    "foodid": idFood,
+                    "avatar": avatarFood,
+                    "title": "User " + objAccount.name + " update food",
+                    "message": "Time request: " + time,
+                    "category": "food",
+                    "status": 1,
+                  });
+                });
+              });
+            })
+            .catch((error) => console.log(error));
+          swal("Success!", "Edit Food success!", "success");
+
+          modal1.style.display = "none";
+          var frm = document.getElementsByName("upload_new_food_form")[0];
+          frm.reset();
+          var image1 = document.getElementsByClassName("cloudinary-thumbnails");
+          image1.parentNode.removeChild(image1);
+        })
+        .catch((error) => console.log(error));
+      }
+    }
   }
 }
 
 // food
+
 var myWidgetFood = cloudinary.createUploadWidget(
   {
     cloudName: "vernom",
@@ -347,6 +480,49 @@ function formatCategory(id) {
   return text;
 }
 
+function formatCategoryStringToInt(category) {
+  var text;
+  switch (category) {
+    case "Drinks":
+      text = 1;
+      break;
+    case "Noodle":
+      text = 2;
+      break;
+    case "Bread":
+      text = 3;
+      break;
+    case "Rice":
+      text = 4;
+      break;
+    case "Meat":
+      text = 5;
+      break;
+    case "Seafood":
+      text = 6;
+      break;
+    case "Vegetables":
+      text = 7;
+      break;
+    case "Vegetarian Food":
+      text = 8;
+      break;
+    case "Fruit":
+      text = 9;
+      break;
+    case "Fast Food":
+      text = 10;
+      break;
+    case "Snacks":
+      text = 11;
+      break;
+    case "Others":
+      text = 12;
+      break;
+  }
+  return text;
+}
+
 
 
 // display donate modal on click delete button
@@ -402,9 +578,9 @@ $(document).keydown(function (event) {
 var requestItem = document.querySelector("#list-request");
 
 function getListRequest(userID) {
-  // console.log(userID);
+  console.log(userID);
   var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
-
+  console.log(requestListAPI);
   fetch(requestListAPI, {
     method: "GET",
     headers: {
@@ -413,13 +589,14 @@ function getListRequest(userID) {
   })
     .then((response) => response.json())
     .then((food) => {
+      console.log(food);
       if (
         food &&
         food.data &&
         food.data.content &&
         food.data.content.length > 0
       ) {
-        document.querySelector("#list-request").innerHTML = renderListRequest(
+        renderListRequest(
           food.data.content
         );
 
