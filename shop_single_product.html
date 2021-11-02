@@ -558,8 +558,8 @@
                 <div class="row mb-20">
                   <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Ask for food</a></div>
                 </div>`;
-
               var htmlsInfoDes = `<p> ${listItems.data.description}</p>`;
+
               document.querySelector("#description").innerHTML = htmlsInfoDes;
               shopItem.innerHTML = htmlsItem;
               viewInfoProduct.innerHTML = htmlsInfoProduct;
@@ -627,7 +627,7 @@
                         <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
                         </div>
                         <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                        <p id="countdown-${item.id}"></p>
+                        <p>Expiration Date: ${item.expirationDate}</p>
                       </div>
                     </div>
                     `;
@@ -644,39 +644,29 @@
                     // Tổng số giây
                     var countDown = setInterval(run, 1000);
                     function run() {
-                      var p = document.querySelector(`#countdown-${item2.id}`);
                       var now = new Date().getTime();
-                      //Số s đến thời gian hiện tại
                       var timeRest = tet - now;
-                      //Số s còn lại để đến tết;
-                      var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
-                      //Số ngày còn lại
-                      var hours = Math.floor(
-                        (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                      );
-                      // Số giờ còn lại
-                      var minute = Math.floor(
-                        (timeRest % (1000 * 60 * 60)) / (1000 * 60)
-                      );
-                      // Số phút còn lại
-                      var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
-                      // Số giây còn lại
                       if (timeRest <= 0) {
                         clearInterval(countDown);
-                        document.querySelector(
-                          `#shop-item-${item2.id}`
-                        ).style.display = "none";
+                        document.querySelector(`#shop-item-${item2.id}`).style.display = "none";
+
+                        var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                            fetch(urlUpdateStatus, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                                status: 0
+                            }),
+                            })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                getListItem();
+                            })
+                            .catch(error => console.log(error));
                       }
-                      p.innerHTML =
-                        "TIME REMAINING: " +
-                        day +
-                        " DAY " +
-                        hours +
-                        " : " +
-                        minute +
-                        " : " +
-                        sec +
-                        "  ";
                     }
                   });
                 });
