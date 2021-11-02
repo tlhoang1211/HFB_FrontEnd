@@ -104,7 +104,18 @@
         .catch(error => console.log(console.log(error)));
         
     }
-
+    function loadScript(arrSrc) {
+        if (arrSrc) {
+            if (arrSrc.length > 0) {
+                for (let index = 0; index < arrSrc.length; index++) {
+                    var newSrc = document.createElement('script');
+                    newSrc.src = arrSrc[index];
+                    $("body").append(newSrc);
+                }
+            }
+            
+        }
+    }
     function getConnectAPI(method, url, dataPost, successCallback, failCallback){
         fetch(url, {
             method: method,
