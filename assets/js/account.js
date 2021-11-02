@@ -35,15 +35,12 @@ Validator({
 //       return false;
 //     }
 //     var description = document.getElementById("description").value;
-
 //     var dataPost = {
 //       name: nameFood || "",
 //       avatar: listImageFood1[0],
 //       images: listImageFood1.join(","),
 //       expirationDate: document.getElementById("expirationDate").value,
-
 //       createdBy: objAccount.id,
-
 //       categoryId: parseInt(category),
 //       description: description,
 //     };
