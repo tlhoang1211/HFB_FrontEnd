@@ -1,4 +1,4 @@
-// hoangtl2 - 01/11/2021 - food list pagination on account page
+// hoangtl2 - 01/11/2021 - get data user
 // start
 var foodCount = 0;
 var requestCount = 0;
@@ -10,7 +10,6 @@ function initPageAccount() {
 }
 initPageAccount();
 
-// get data user
 function getAccount() {
   fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentName}`, {
     method: "GET",
@@ -22,6 +21,7 @@ function getAccount() {
     .then((account) => {
       if (account && account.data) {
         objAccount = account.data;
+        getListFood(objAccount.id);
         getListRequest(objAccount.id);
         console.log(objAccount.id);
         bindDataAccount(account.data);
@@ -44,23 +44,21 @@ function bindDataAccount(data) {
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
+// end
 
-var foodDataTable = document.getElementById("food-data-table");
-
-var foodListAPI =
-  "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2";
-
-function getListFood() {
+// hoangtl2 - 01/11/2021 - food list pagination on account page
+// start
+function getListFood(userID) {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&createdBy=${userID}`;
   fetch(foodListAPI, {
     method: "GET",
   })
     .then((response) => response.json())
-    .then((listItems) => {
-      renderListFood(listItems.data.content);
+    .then((foodList) => {
+      renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
-getListFood();
 
 function renderListFood(listFood) {
   let container = $(".pagination1");
@@ -76,11 +74,8 @@ function renderListFood(listFood) {
         foodCount++;
         dataHtml +=
           `<tr id="food-row-${e.id}">
-        <td>${e.id}</td>
+        <td>${foodCount}</td>
         <td>${e.name || ""}</td>
-        <td><img src="https://res.cloudinary.com/vernom/image/upload/${
-          e.avatar
-        }" style="width: 30px;height: 30px;"/></td>
         <td>${formatCategory(e.categoryId)}</td>
         <td>${e.expirationDate}</td>
         <td>${e.createdAt}</td>
@@ -96,18 +91,17 @@ function renderListFood(listFood) {
     },
   });
 
+  var foodDataTable = document.getElementById("food-data-table");
+
   if (foodCount == 0) {
     foodDataTable.style.display = "none";
     document.getElementById("no-food-noti").removeAttribute("style");
     document
-      .getElementById("center-noti")
+      .getElementById("center-food-noti")
       .setAttribute("style", "text-align: center;");
   }
 }
-//end
 
-// hoangtl2 - 01/11/2021 - food list pagination on account page
-// start
 // update food
 
 var editImageFood = document.querySelector('.view-image-product');
@@ -553,30 +547,15 @@ function deleteFood(id) {
         document.getElementById("food-row-" + id).style.display = "none";
         modal3.style.display = "none";
         swal("Success!", "Delete success!", "success");
-        getListFood();
+        getListFood(objAccount.id);
       }
     })
     .catch((error) => console.log(error));
 }
-
-// Close Modal by clicking "close" button
-function cancelModal() {
-  modal3.style.display = "none";
-}
-
-// Close Modal by clicking "esc" button
-$(document).keydown(function (event) {
-  if (event.keyCode == 27) {
-    modal3.style.display = "none";
-    event.preventDefault();
-  }
-});
 // end
 
 // hoangtl2 - 01/11/2021 - request list pagination on account page
 // start
-var requestItem = document.querySelector("#list-request");
-
 function getListRequest(userID) {
   console.log(userID);
   var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
@@ -588,19 +567,14 @@ function getListRequest(userID) {
     },
   })
     .then((response) => response.json())
-    .then((food) => {
-      console.log(food);
+    .then((requestsList) => {
       if (
-        food &&
-        food.data &&
-        food.data.content &&
-        food.data.content.length > 0
+        requestsList &&
+        requestsList.data &&
+        requestsList.data.content &&
+        requestsList.data.content.length > 0
       ) {
-        renderListRequest(
-          food.data.content
-        );
-
-        console.log(food.data.content);
+        renderListRequest(requestsList.data.content);
       }
     })
     .catch((error) => console.log(error));
@@ -619,20 +593,16 @@ function renderListRequest(listRequest) {
       $.each(data, function (index, e) {
         requestCount++;
         dataHtml1 +=
-          `<tr><td>${e.id}</td><td>${e.foodName || ""}</td><td>${
-            e.message
-          }</td><td>${e.supplierName}</td>` +
-          "<td onclick=\"formDetailRequest('" +
+          `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
+            e.foodName
+          }</td><td>${e.supplierName}</td><td>${convertRequestStatus(
+            e.status
+          )}</td><td onclick="formDetailRequest(${
+            e.foodId
+          })"><i class="fa fa-pencil-square-o"></i></td>` +
+          `<td onclick=confirmDeleteRequest(` +
           e.foodId +
-          '\')"><i class="fa fa-pencil-square-o"></i></td><td onclick="deleteRequest(this, \'' +
-          e.foodId +
-          "', '" +
-          e.message +
-          "', '" +
-          e.supplierId +
-          "', '" +
-          e.supplierName +
-          '\')"><i class="fa fa-trash-o"></i></td></tr>';
+          `)><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
       dataHtml1 += "</div>";
@@ -640,5 +610,187 @@ function renderListRequest(listRequest) {
       $("#list-request").html(dataHtml1);
     },
   });
+
+  var requestDataTable = document.getElementById("request-data-table");
+
+  if (requestCount == 0) {
+    requestDataTable.style.display = "none";
+    document.getElementById("no-request-noti").removeAttribute("style");
+    document
+      .getElementById("center-request-noti")
+      .setAttribute("style", "text-align: center;");
+  }
+}
+
+// display delete modal on click delete button
+function confirmDeleteRequest(foodId) {
+  modal3.style.display = "flex";
+  var buttonValue = document.getElementById("accept-button");
+  // console.log(id);
+  buttonValue.setAttribute("onclick", `deleteRequest(` + foodId + `)`);
+}
+
+// delete food
+function deleteRequest(foodId) {
+  console.log(foodId);
+  var dataPost = {
+    status: 0,
+    updatedBy: objAccount.id,
+  };
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/
+      ${foodId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${isToken}`,
+      },
+      body: JSON.stringify(dataPost),
+    }
+  )
+    .then((response) => response.json())
+    .then((request) => {
+      if (request) {
+        document.getElementById("request-row-" + objAccount.id).style.display =
+          "none";
+        modal3.style.display = "none";
+        swal("Success!", "Delete success!", "success");
+        getListRequest(objAccount.id);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+// end
+
+// hoangtl2 - 01/10/2021 - close Modal by clicking "close" button
+// start
+function cancelModal() {
+  modal3.style.display = "none";
+}
+
+// close Modal by clicking "esc" button
+$(document).keydown(function (event) {
+  if (event.keyCode == 27) {
+    modal3.style.display = "none";
+    event.preventDefault();
+  }
+});
+
+// detail request
+function formDetailRequest(id) {
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${isToken}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((food) => {
+      if (food) {
+        document
+          .getElementsByClassName("listRequest")[0]
+          .classList.remove("active");
+        document.getElementById("listRequest").classList.remove("active");
+        document
+          .getElementsByClassName("detailRequest")[0]
+          .classList.add("active");
+        document.getElementById("detailRequest").classList.add("active");
+        document
+          .getElementsByClassName("detailRequest")[0]
+          .classList.remove("d-none");
+        bindDataDetailRequest(food.data);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+// bind data detail request
+function bindDataDetailRequest(data) {
+  var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/";
+  document.getElementById(
+    "image_food_detail_request"
+  ).src = `${cloudinary_url}${data.foodDTO.avatar}`;
+  document.getElementById("food-title").innerHTML = data.foodDTO.name;
+  var message = data.message;
+  document.getElementById("message").innerHTML = message;
+  document.getElementById("request-status").innerHTML = convertRequestStatus(
+    data.status
+  );
+
+  document
+    .querySelectorAll("#detailRequest .row-btn")
+    .item(
+      0
+    ).innerHTML = `<div class="col-sm-12"><a class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data})"><i class="fa fa-edit"></i> Edit</a></div>`;
+}
+
+function updateRequestMessage(data) {
+  var recipientMsg = document.getElementById("message").value;
+  var dataPost = {
+    supplierId: "",
+    supplierName: "",
+    message: recipientMsg,
+    status: "",
+    updatedBy: objAccount.id,
+  };
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${data.foodDTO.id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${isToken}`,
+      },
+      body: JSON.stringify(dataPost),
+    }
+  )
+    .then((response) => response.json())
+    .then((request) => {
+      let editRequestPromise = new Promise(function (myResolve) {
+        var msgRequest = request.data;
+        myResolve();
+      });
+      if (request) {
+        document
+          .getElementsByClassName("listRequest")[0]
+          .classList.remove("active");
+        document.getElementById("listRequest").classList.remove("active");
+        document
+          .getElementsByClassName("detailRequest")[0]
+          .classList.add("active");
+        document.getElementById("detailRequest").classList.add("active");
+        document
+          .getElementsByClassName("detailRequest")[0]
+          .classList.remove("d-none");
+        bindDataDetailRequest(food.data);
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+// convert request status
+function convertRequestStatus(status) {
+  switch (status) {
+    case 0:
+      status = "Deactive";
+      break;
+    case 1:
+      status = "Pending";
+      break;
+    case 2:
+      status = "Confirmed";
+      break;
+    case 3:
+      status = "Done";
+      break;
+    case 4:
+      status = "Cancel";
+      break;
+  }
+  return status;
 }
 // end
