@@ -1,0 +1,205 @@
+
+var orderBy = 'asc', statusAccount = null, searchName_Account;
+function formAddAccount() {
+        document.getElementById('modalAddAccount').classList.add('show');
+}
+// save Account
+function saveAccount() {
+        var name = document.getElementById("nameAccount").value;
+        var categoryId = document.getElementById("category").value;
+        var expirationDate = document.getElementById("expirationDate").value;
+        var description = document.getElementById("description").value;
+        if (!expirationDate) {
+                $(".alert-danger").alert();
+                return false;
+        }
+        if (listImageAccount.length == 0) {
+                $(".alert-danger").alert();
+                return false;
+        }
+
+        var dataPost = {
+                name: name,
+                avatar: listImageAccount[0],
+                images: listImageAccount.join(","),
+                expirationDate: expirationDate,
+                createdBy: objAccount.id,
+                categoryId: categoryId,
+                description: description
+        }
+        getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/users', JSON.stringify(dataPost), function (result) {
+                if (result && result.status == 200) {
+                        getListAccount();
+                        $('#modalAddAccount').modal('hide');
+                }
+        },
+                function (errorThrown) { }
+        );
+}
+function onChangeOrderBy(e, type) {
+        orderBy = type;
+        addActive(e);
+        getListAccount();
+}
+function filterStatus(e, type,) {
+        if (type) {
+                statusAccount = type;
+        } else {
+                statusAccount = null;
+        }
+        addActive(e);
+        getListAccount();
+}
+function searchNameAccount(ele) {
+        searchName_Account = $(ele).val();
+        getListAccount();
+}
+// get data Account
+function getListAccount(pageIndex) {
+        if (!pageIndex) {
+                pageIndex = 0;
+        }
+        var optionUrl = '';
+        if (statusAccount) {
+                optionUrl += '&status=' + parseInt(statusAccount);
+        }
+        if (orderBy) {
+                optionUrl += '&order=' + orderBy;
+        }
+        optionUrl += '&sortBy=name';
+        if (searchName_Account) {
+                optionUrl += '&keyword=' + searchName_Account;
+        }
+        getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/search?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function (result) {
+                if (result && result.status == 200) {
+                        if (result && result.data && result.data.content && result.data.content.length > 0) {
+                                console.log(result)
+                                if (document.querySelectorAll("#table-Account tbody").lastElementChild) {
+                                        document.querySelectorAll("#table-Account tbody").item(0).innerHTML = '';
+                                }
+                                document.querySelectorAll("#table-Account tbody").item(0).innerHTML = renderListAccount(result.data.content);
+                                var total = 0;
+                                total = result.data.totalElements;
+                                var pageNumber = Math.ceil(total / pageSize);
+                                if (pageNumber == 0) {
+                                        pageNumber = 1;
+                                }
+                                var options = {
+                                        currentPage: pageIndex + 1,
+                                        totalPages: pageNumber,
+                                        totalCount: total,
+                                        size: 'normal',
+                                        alignment: 'right',
+                                        onPageClicked: function (e, originalEvent, click, page) {
+                                                getListAccount(page - 1);
+                                        }
+                                }
+                                $('#nextpage').bootstrapPaginator(options);
+                        }
+
+                }
+        },
+                function (errorThrown) { }
+        );
+}
+getListAccount();
+function renderListAccount(data) {
+        var count = 0;
+        var html = data.map(function (e) {
+                count++;
+                var htmld = '';
+                htmld += '<tr><td>'+ count +'</td>';
+                if (e.avatar) {
+                        htmld += '<td><img src="https://res.cloudinary.com/vernom/image/upload/'+ e.avatar +'" style="width: 30px;height: 30px;"/></td>'
+                } else {
+                        htmld += '<td><img src="https://via.placeholder.com/110x110" style="width: 30px;height: 30px;"/></td>';
+                }
+                htmld += '<td>'+ e.name +'</td>';
+                htmld += '<td>'+ e.email +'</td>';
+                htmld += '<td>'+ e.phone +'</td>';
+                htmld += '<td>'+ e.address +'</td>';
+                htmld += '<td>'+ convertStatusAccount(e.status) +'</td>';
+                htmld += '<td>'+ e.createdAt +'</td>';
+                htmld += '<td><div class="d-flex order-actions">';
+                htmld += '<a onclick="formUpdateAccount(this, \'' + e.id + '\')"><i class="bx bx-edit"></i></a>';
+                htmld += '<a class="ms-4" onclick="deleteAccount(this, \'' + e.id + '\')"><i class="bx bx-trash"></i></a>';
+                htmld += '</td>';
+                return htmld;
+        });
+        return html.join("");
+}
+var objDeleteAccount;
+function deleteAccount(e, id, name, cateID, avatar, images, description, content, expirationDate) {
+        objDeleteAccount = {
+                ele: e.parentElement.parentElement.parentElement,
+                id: id,
+                name: name,
+                cateID: cateID,
+                avatar: avatar,
+                images: images,
+                description: description,
+                content: content,
+                expirationDate: expirationDate
+        }
+        $('#deleteAccount').modal('show');
+}
+function onDeleteAccount() {
+        var dataPost = {
+                name: objDeleteAccount.name,
+                updatedBy: objAccount.id,
+                categoryId: objDeleteAccount.cateID,
+                status: 0,
+                avatar: objDeleteAccount.avatar,
+                images: objDeleteAccount.images,
+                description: objDeleteAccount.description,
+                content: objDeleteAccount.content,
+                expirationDate: objDeleteAccount.expirationDate
+        };
+        getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Accounts/${objDeleteAccount.id}`, JSON.stringify(dataPost), function (result) {
+                if (result && result.status == 200) {
+                        objDeleteAccount.ele.remove();
+                        $('#deleteAccount').modal('hide');
+                        getListAccount();
+                }
+        },
+                function (errorThrown) { }
+        );
+}
+
+function convertStatusAccount(status) {
+        var text = '';
+        switch (status) {
+                case 0:
+                        text = 'Deactive';
+                        break;
+                case 1:
+                        text = 'Pending';
+                        break;
+                case 2:
+                        text = 'Active';
+                        break;
+                default:
+                        text = 'Pending';
+                        break;
+        }
+        return text;
+}
+
+function colorStatusAccount(status) {
+        var color = '';
+        switch (status) {
+                case 0:
+                        color = 'text-danger';
+                        break;
+                case 1:
+                        color = 'text-warning';
+                        break;
+                case 2:
+                        color = 'text-success';
+                        break;
+                default:
+                        color = 'text-warning';
+                        break;
+        }
+        return color;
+}
