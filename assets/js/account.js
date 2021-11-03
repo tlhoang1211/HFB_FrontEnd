@@ -96,15 +96,20 @@ function showTabPanel(e) {
       getAccount();
       break;
     case "myfood":
-      document.getElementsByClassName("listFoodPost")[0].classList.remove("d-none");
-
-      document.getElementsByClassName("listFoodPending")[0].classList.remove("d-none");
-
+      document
+        .getElementsByClassName("listFoodPost")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("listFoodPending")[0]
+        .classList.remove("d-none");
       document.getElementsByClassName("listFood")[0].classList.add("active");
       document.getElementById("listFood").classList.add("active");
       document.getElementsByClassName("listFood")[0].classList.remove("d-none");
       break;
     case "myrequest":
+      document
+        .getElementsByClassName("listFoodRequest")[0]
+        .classList.remove("d-none");
       document.getElementsByClassName("listRequest")[0].classList.add("active");
       document.getElementById("listRequest").classList.add("active");
       document

@@ -243,15 +243,19 @@
                     <li class="tab-account profile active">
                       <a href="#profile" data-toggle="tab"> Information</a>
                     </li>
-                    
+
                     <li class="tab-account listFood d-none">
-                      <a onclick="listfood()"  data-toggle="tab"> List All</a>
+                      <a onclick="listfood()" data-toggle="tab"> List All</a>
                     </li>
                     <li class="tab-account listFoodPost d-none">
-                      <a onclick="listFoodPost()"  data-toggle="tab"> List posted foods</a>
+                      <a onclick="listFoodPost()" data-toggle="tab">
+                        List posted foods</a
+                      >
                     </li>
                     <li class="tab-account listFoodPending d-none">
-                      <a onclick="listFoodPending()"  data-toggle="tab"> List pending food</a>
+                      <a onclick="listFoodPending()" data-toggle="tab">
+                        List pending food</a
+                      >
                     </li>
                     <!-- <li class="tab-account listFoodPending d-none">
                       <a onclick="listFoodPending()"  data-toggle="tab"> List expired food</a>
@@ -263,7 +267,18 @@
                       >
                     </li>
                     <li class="tab-account detailRequest d-none">
-                      <a href="#detailRequest" data-toggle="tab"> Details request</a>
+                      <a href="#detailRequest" data-toggle="tab">
+                        Details request</a
+                      >
+                    </li>
+                    <li class="tab-account listFoodRequest d-none">
+                      <a
+                        href="#listFoodRequest"
+                        onclick="listFoodRequests()"
+                        data-toggle="tab"
+                      >
+                        List requests for your food</a
+                      >
                     </li>
                     <li class="tab-account feedback d-none">
                       <a href="#feedback" data-toggle="tab"> Feedbacks</a>
@@ -399,17 +414,14 @@
                       <div class="editUser">
                         <div class="row">
                           <div class="col-sm-12">
-                            <div class="col-sm-10"></div>
-                            <div class="col-sm-2">
-                              <button
-                                onclick="backToFoodList()"
-                                type="button"
-                                class="btn btn-b btn-round btnSubmit"
-                              >
-                                <i class="fa fa-angle-double-left"></i> Back to
-                                list
-                              </button>
-                            </div>
+                            <button
+                              onclick="backToFoodList()"
+                              type="button"
+                              class="btn btn-b btn-round btnSubmit"
+                            >
+                              <i class="fa fa-angle-double-left"></i> Back to
+                              list
+                            </button>
                           </div>
                           <div class="col-sm-6">
                             <div
@@ -752,13 +764,16 @@
 
     <script
       src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
-      type="text/javascript"></script>
+      type="text/javascript"
+    ></script>
     <script
       defer
-      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"
+    ></script>
     <script
       defer
-      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+      src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"
+    ></script>
     <script src="./assets/js/notification.js"></script>
     <!-- <script src="./assets/js/app.js"></script> -->
 
@@ -766,11 +781,13 @@
 
     <script
       src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
-      type="text/javascript"></script>
+      type="text/javascript"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+      href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"
+    />
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
@@ -791,7 +808,8 @@
     <script>
       var tokenaccount = document.cookie;
       if (!tokenaccount) {
-        location.replace('../login_register.html');}
+        location.replace("../login_register.html");
+      }
 
       // var listFood = document.querySelector('#listFood');
       // var listFoodPost = document.querySelector('#listFoodPost');
@@ -864,7 +882,6 @@
       //       break;
       //     }
       //   }
-  
     </script>
   </body>
 </html>
