@@ -21,7 +21,7 @@ function getAccount() {
     .then((account) => {
       if (account && account.data) {
         objAccount = account.data;
-        getListFood(objAccount.id);
+        getListFoodAll();
         getListRequest(objAccount.id);
         console.log(objAccount.id);
         bindDataAccount(account.data);
@@ -48,8 +48,55 @@ function bindDataAccount(data) {
 
 // hoangtl2 - 01/11/2021 - food list pagination on account page
 // start
-function getListFood(userID) {
-  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&createdBy=${userID}`;
+function listfood(){
+  getListFoodAll();
+}
+function listFoodPost(){
+  getListFoodActive();
+}
+function listFoodPending(){
+  getListFoodSending();
+}
+
+function getListFoodAll() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?&createdBy=${objAccount.id}`;
+  fetch(foodListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((foodList) => {
+      var listAllFood;
+      let listFoodPromise = new Promise(function (myResolve) {
+        listAllFood= foodList.data.content;
+        listAllFood.map(function (food) {
+          if(food.status == 0){
+            const index = listAllFood.indexOf(food);
+            listAllFood.splice(index, 1);
+          }
+        })
+        myResolve();
+      })
+      listFoodPromise.then(function(){
+        renderListFood(listAllFood);
+      })
+    })
+    .catch((error) => console.log(error));
+}
+
+function getListFoodActive() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&createdBy=${objAccount.id}`;
+  fetch(foodListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((foodList) => {
+      renderListFood(foodList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
+
+function getListFoodSending() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&createdBy=${objAccount.id}`;
   fetch(foodListAPI, {
     method: "GET",
   })
@@ -108,14 +155,18 @@ var editImageFood = document.querySelector('.view-image-product');
 var editInfoFood = document.querySelector('.view-info-product');
 var editContentDesFood = document.querySelector('.view-info-des-content');
 var editUser = document.querySelector('.editUser');
-var listFood = document.querySelector('.listFood');
+var listFood1 = document.querySelector('.listFood');
 var listFoodPagination = document.querySelector('.listFoodPagination');
+var listFoodPost1 = document.querySelector('.listFoodPost');
+var listFoodPending1 = document.querySelector('.listFoodPending');
 editUser.style.display = 'none';
 var infoFoodDetail;
 function formUpdateFood(id) {
   
   editUser.style.display = 'block';
-  listFood.style.display = 'none';
+  listFood1.style.display = 'none';
+  listFoodPending1.style.display = 'none';
+  listFoodPost1.style.display = 'none';
   listFoodPagination.style.display = 'none';
   
 
@@ -191,7 +242,9 @@ function formUpdateFood(id) {
 
 function backToList(){
   editUser.style.display = 'none';
-  listFood.style.display = 'block';
+  listFood1.style.display = 'block';
+  listFoodPending1.style.display = 'block';
+  listFoodPost1.style.display = 'block';
   listFoodPagination.style.display = 'block';
 }
 
@@ -691,17 +744,11 @@ function formDetailRequest(id) {
     .then((response) => response.json())
     .then((food) => {
       if (food) {
-        document
-          .getElementsByClassName("listRequest")[0]
-          .classList.remove("active");
+        document.getElementsByClassName("listRequest")[0].classList.remove("active");
         document.getElementById("listRequest").classList.remove("active");
-        document
-          .getElementsByClassName("detailRequest")[0]
-          .classList.add("active");
+        document.getElementsByClassName("detailRequest")[0].classList.add("active");
         document.getElementById("detailRequest").classList.add("active");
-        document
-          .getElementsByClassName("detailRequest")[0]
-          .classList.remove("d-none");
+        document.getElementsByClassName("detailRequest")[0].classList.remove("d-none");
         bindDataDetailRequest(food.data);
       }
     })
@@ -755,17 +802,11 @@ function updateRequestMessage(data) {
         myResolve();
       });
       if (request) {
-        document
-          .getElementsByClassName("listRequest")[0]
-          .classList.remove("active");
+        document.getElementsByClassName("listRequest")[0].classList.remove("active");
         document.getElementById("listRequest").classList.remove("active");
-        document
-          .getElementsByClassName("detailRequest")[0]
-          .classList.add("active");
+        document.getElementsByClassName("detailRequest")[0].classList.add("active");
         document.getElementById("detailRequest").classList.add("active");
-        document
-          .getElementsByClassName("detailRequest")[0]
-          .classList.remove("d-none");
+        document.getElementsByClassName("detailRequest")[0].classList.remove("d-none");
         bindDataDetailRequest(food.data);
       }
     })
