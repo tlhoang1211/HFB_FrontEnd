@@ -670,7 +670,8 @@ function renderListRequest(listRequest) {
         dataHtml1 +=
           `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
             e.foodName
-          }</td><td id="supplier-name">${
+          }
+          </td><td id="supplier-name">${
             e.supplierName
           }</td><td>${convertRequestStatus(
             e.status
