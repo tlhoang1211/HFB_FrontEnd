@@ -246,7 +246,7 @@ function formUpdateFood(id) {
     .catch((error) => console.log(error));
 }
 
-function backToList() {
+function backToFoodList() {
   editUser.style.display = "none";
   listFood1.style.display = "block";
   listFoodPending1.style.display = "block";
@@ -665,6 +665,7 @@ function renderListRequest(listRequest) {
     callback: function (data, pagination) {
       var dataHtml1 = "<div>";
       $.each(data, function (index, e) {
+        console.log(e);
         requestCount++;
         dataHtml1 +=
           `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
@@ -799,7 +800,7 @@ function bindDataDetailRequest(data) {
     .getElementsByClassName("row-btn")
     .item(
       0
-    ).innerHTML = `<div class="col-sm-12"><input id="old-message" style="display:none" value="${message}"/><button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id}, ${data.foodDTO.createdBy})"><i class="fa fa-edit"></i> Update Message</button></div><div class="col-sm-12">
+    ).innerHTML = `<div class="col-sm-12"><input id="old-message" style="display:none" value="${message}"/><button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id})"><i class="fa fa-edit"></i> Update Message</button></div><div class="col-sm-12">
     <a onclick="backToRequestList()" type="button" lass="btn btn-sm btn-round" style="padding: 6px 0px 0px 0px !important">
     <i class="fa fa-angle-double-left"></i> Back to list</a></div>`;
 }
@@ -832,60 +833,47 @@ function updateRequestMessage(foodID, supplierID) {
       )
         .then((response) => response.json())
         .then(function (request) {
-          fetch(
-            `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${supName}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-            .then((response) => response.json())
-            .then((supData) => {
-              var supplier;
-              var idFood;
-              var avatarFood;
-              var time;
-              var requestData = request.data;
-              console.log(supData.data);
-              console.log(requestData);
-              let notifyRequestPromise = new Promise(function (myResolve) {
-                supplier = supData.data;
-                idFood = requestData.foodId;
-                avatarFood = cloudinary_url + requestData.foodDTO.avatar;
-                var today = new Date();
-                time =
-                  today.getDate() +
-                  "-" +
-                  (today.getMonth() + 1) +
-                  "-" +
-                  today.getFullYear() +
-                  " " +
-                  today.getHours() +
-                  ":" +
-                  today.getMinutes() +
-                  ":" +
-                  today.getSeconds();
-                myResolve();
-              });
-              notifyRequestPromise.then(function () {
-                Notification.send(supplier.id, {
-                  idNotify: "",
-                  usernameaccount: supplier.name,
-                  foodid: idFood,
-                  avatar: avatarFood,
-                  title:
-                    "User " +
-                    objAccount.name +
-                    "has just updated request message",
-                  message: "Time request: " + time,
-                  category: "food",
-                  status: 1,
-                });
-              });
-            })
-            .catch((error) => console.log(error));
+          var idFood;
+          var avatarFood;
+          var time;
+          var requestData = request.data;
+          let notifyRequestPromise = new Promise(function (myResolve) {
+            idFood = requestData.foodId;
+            avatarFood = requestData.foodDTO.avatar;
+            var today = new Date();
+            time =
+              today.getDate() +
+              "-" +
+              (today.getMonth() + 1) +
+              "-" +
+              today.getFullYear() +
+              " " +
+              today.getHours() +
+              ":" +
+              today.getMinutes() +
+              ":" +
+              today.getSeconds();
+            myResolve();
+          });
+          notifyRequestPromise.then(function () {
+            // console.log("idNoti: "+supplierID);
+            // console.log("usernameaccount: "+'');
+            // console.log("foodid: "+idFood);
+            // console.log("avatar: "+avatarFood);
+            // console.log("objAccount: "+objAccount.name);
+
+            Notification.send(supplierID, {
+              idNotify: "",
+              usernameaccount: "",
+              foodid: idFood,
+              avatar: avatarFood,
+              title:
+                "User " + objAccount.name + "has just updated request message",
+              message: "Time request: " + time,
+              category: "request",
+              status: 1,
+            });
+          });
           swal("Success!", "Successfully updated message!", "success");
         });
     }
