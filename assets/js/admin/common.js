@@ -28,6 +28,7 @@
                 
             // }
             getAccount();
+            listCategory();
         } else {
             loadHtml('login.html', 'body', 'div', 'wrapper', '', 'afterbegin', '../../../assets/js/admin/login.js');
         }
@@ -151,4 +152,26 @@
         }
         ele.classList.add('active');
     }
+    var arrCategory = [];
+    function listCategory(){
+        getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/categories?status=1', null, function(result){
+            if (result && result.status == 200) {
+                if (result && result.data && result.data.content && result.data.content.length > 0) {
+                    arrCategory = result.data.content;
+                    
+                }
+            }
+        },
+            function(errorThrown){}
+        );
+    }
+    function goBack(parentFile, file){
+        var pageContent = document.getElementsByClassName('page-content');
+        if (pageContent.item(0)) {
+            pageContent.item(0).remove();
+        }
+        localStorage.setItem('page', 'newFood');
+        loadHtml( '../../../inc/layout/admin/content/'+ parentFile +'/' + file + '.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/'+ parentFile +'/'+ file +'.js');
+    }
+    
 // });

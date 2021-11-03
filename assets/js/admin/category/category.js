@@ -4,30 +4,24 @@ function formAddCategory() {
 }
 // save Category
 function saveCategory(){
-    var name = document.getElementById("nameCategory").value;
-    var categoryId = document.getElementById("category").value;
-    var expirationDate = document.getElementById("expirationDate").value;
-    var description = document.getElementById("description").value;
-    if (!expirationDate) {
+    var name = $('#nameCategory').val();
+    var status = $('#statusCategory').val();
+    var id = $('#idCategory').val(); 
+    if (!name) {
+        // name is required
         $(".alert-danger").alert();
         return false;
-      }
-      if (listImageCategory.length == 0) {
-        $(".alert-danger").alert();
-        return false;
-      }
-    
+    }
     var dataPost = {
         name: name,
-        avatar: listImageCategory[0],
-        images: listImageCategory.join(","),
-        expirationDate: expirationDate,
-        createdBy: objAccount.id,
-        categoryId: categoryId,
-        description: description
+        createdBy: objAccount.id
     }
-
-    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/Categorys', JSON.stringify(dataPost), function(result){
+    var idUpdate = '';
+    if (id) {
+        dataPost['status'] = parseInt(status);
+        idUpdate = '/' + id;
+    }
+    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/categories' + idUpdate, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             getListCategory();
             $('#modalAddCategory').modal('hide');
@@ -41,7 +35,7 @@ function onChangeOrderByCategory(e, type){
     addActive(e);
     getListCategory();
 }
-function filterStatusCategory(e, type, ){
+function filterStatusCategory(e, type){
     if (type) {
         statusCategory = type;
     } else {
@@ -105,8 +99,7 @@ getListCategory();
 function renderListCategory(data) {
     var count = 0;
     var html = data.map(function (e) {
-        count++;
-                    
+        count++;      
         return (
             `<tr>
                 <td>${count}</td>
@@ -120,45 +113,38 @@ function renderListCategory(data) {
                     </div>
                 </td>
                 <td>
-                    <div class="d-flex order-actions">
-                        <a onclick="formUpdateCategory(this, ${e.id})"><i class='bx bx-edit' ></i></a>`
-                        + "<a onclick=\"deleteCategory(this, '" + e.id +"', '" + e.name + "', '" + e.description + '\')" class="ms-4"><i class="bx bxs-trash"></i></a></div>' +
+                    <div class="d-flex order-actions">`
+                        + "<a onclick=\"formUpdateCategory('" + e.id + "', '" + e.name + "', '" + e.status + '\')"><i class="bx bx-edit"></i></a>'
+                        + "<a onclick=\"deleteCategory(this, '" + e.id + "', '" + e.name + '\')" class="ms-4 ' + (e.status == 0 ? 'd-none' : '') + '"><i class="bx bxs-trash"></i></a></div>' +
                 `</td>
             </tr>`
             );
         });
     return html.join("");
 }
-var objDelete;
-function deleteCategory(e, id, name, cateID, avatar, images, description, content, expirationDate) {
-    objDelete = {
-        ele: e.parentElement.parentElement.parentElement,
+function formUpdateCategory(id, name, status) {
+    $('#modalAddCategory').modal('show');
+    document.getElementById('statusCategory').parentElement.classList.remove('d-none');
+    $('#nameCategory').val(name);
+    $('#statusCategory').val(status);
+    $('#idCategory').val(id); 
+}
+var objDeleteCategory;
+function deleteCategory(e, id, name) {
+    objDeleteCategory = {
         id: id,
-        name: name,
-        cateID: cateID,
-        avatar: avatar,
-        images: images,
-        description: description,
-        content: content,
-        expirationDate: expirationDate
+        name: name
     }
     $('#deleteCategory').modal('show');
 }
 function onDeleteCategory(){
     var dataPost = {
-        name: objDelete.name,
+        name: objDeleteCategory.name,
         updatedBy: objAccount.id,
-        categoryId: objDelete.cateID,
-        status: 0,
-        avatar: objDelete.avatar,
-        images: objDelete.images,
-        description: objDelete.description,
-        content: objDelete.content,
-        expirationDate: objDelete.expirationDate
+        status: 0
     };
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Categorys/${objDelete.id}`, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/categories/${objDeleteCategory.id}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            objDelete.ele.remove();
             $('#deleteCategory').modal('hide');
             getListCategory();
         }

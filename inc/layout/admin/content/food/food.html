@@ -34,14 +34,10 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="btn-group" role="group">
+                            <div class="btn-group filter-category" role="group">
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Category</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                                    <a class="dropdown-item active" onclick="filterStatus(this)">All</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '1')">Pending</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '2')">Active</a>
                                 </div>
                             </div>
                         </div>
@@ -58,8 +54,7 @@
                 <h5 class="mb-0">Food list</h5>
             </div>
             <div class="ms-auto">
-                <a type="button" class="btn btn-light mb-3 mb-lg-0 float-end" onclick="formAddFood()" data-bs-toggle="modal"
-                data-bs-target="#modalAddFood"><i class="bx bxs-plus-square"></i>New Food</a>
+                <a type="button" class="btn btn-light mb-3 mb-lg-0 float-end" onclick="formAddFood()"><i class="bx bxs-plus-square"></i>New Food</a>
             </div>
         </div>
         <hr />
@@ -68,13 +63,15 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
                         <th>Image</th>
+                        <th>Name</th>
                         <th>Category</th>
                         <th>Expiration date</th>
                         <th>Status</th>
                         <th>Create at</th>
                         <th>Action</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +85,7 @@
 </div>
 <div class="modal fade" id="modalAddFood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-secondary">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Add new food</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
