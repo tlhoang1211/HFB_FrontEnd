@@ -246,7 +246,7 @@ function formUpdateFood(id) {
     .catch((error) => console.log(error));
 }
 
-function backToList() {
+function backToFoodList() {
   editUser.style.display = "none";
   listFood1.style.display = "block";
   listFoodPending1.style.display = "block";
@@ -669,7 +669,8 @@ function renderListRequest(listRequest) {
         dataHtml1 +=
           `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
             e.foodName
-          }</td><td id="supplier-name">${
+          }
+          </td><td id="supplier-name">${
             e.supplierName
           }</td><td>${convertRequestStatus(
             e.status
@@ -832,47 +833,28 @@ function updateRequestMessage(foodID, supplierID) {
       )
         .then((response) => response.json())
         .then(function (request) {
-          fetch(
-            `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${supName}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-            .then((response) => response.json())
-            .then((supData) => {
-              var supplier;
               var idFood;
               var avatarFood;
               var time;
               var requestData = request.data;
-              console.log(supData.data);
-              console.log(requestData);
               let notifyRequestPromise = new Promise(function (myResolve) {
-                supplier = supData.data;
                 idFood = requestData.foodId;
-                avatarFood = cloudinary_url + requestData.foodDTO.avatar;
+                avatarFood = requestData.foodDTO.avatar;
                 var today = new Date();
                 time =
-                  today.getDate() +
-                  "-" +
-                  (today.getMonth() + 1) +
-                  "-" +
-                  today.getFullYear() +
-                  " " +
-                  today.getHours() +
-                  ":" +
-                  today.getMinutes() +
-                  ":" +
-                  today.getSeconds();
+                  today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                 myResolve();
               });
               notifyRequestPromise.then(function () {
-                Notification.send(supplier.id, {
+                // console.log("idNoti: "+supplierID);
+                // console.log("usernameaccount: "+'');
+                // console.log("foodid: "+idFood);
+                // console.log("avatar: "+avatarFood);
+                // console.log("objAccount: "+objAccount.name);
+
+                Notification.send(supplierID, {
                   idNotify: "",
-                  usernameaccount: supplier.name,
+                  usernameaccount: "",
                   foodid: idFood,
                   avatar: avatarFood,
                   title:
@@ -880,12 +862,10 @@ function updateRequestMessage(foodID, supplierID) {
                     objAccount.name +
                     "has just updated request message",
                   message: "Time request: " + time,
-                  category: "food",
+                  category: "request",
                   status: 1,
                 });
               });
-            })
-            .catch((error) => console.log(error));
           swal("Success!", "Successfully updated message!", "success");
         });
     }
