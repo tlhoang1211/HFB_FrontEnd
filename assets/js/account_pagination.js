@@ -110,6 +110,7 @@ function getListFoodSending() {
 }
 
 function renderListFood(listFood) {
+  foodCount = 0;
   let container = $(".pagination1");
   container.pagination({
     dataSource: listFood,
@@ -665,7 +666,6 @@ function renderListRequest(listRequest) {
     callback: function (data, pagination) {
       var dataHtml1 = "<div>";
       $.each(data, function (index, e) {
-        console.log(e);
         requestCount++;
         dataHtml1 +=
           `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
@@ -710,7 +710,6 @@ function confirmDeleteRequest(foodId) {
 
 // delete food
 function deleteRequest(foodId) {
-  console.log(foodId);
   var dataPost = {
     status: 0,
     updatedBy: objAccount.id,
@@ -857,12 +856,6 @@ function updateRequestMessage(foodID, supplierID) {
             myResolve();
           });
           notifyRequestPromise.then(function () {
-            // console.log("idNoti: "+supplierID);
-            // console.log("usernameaccount: "+'');
-            // console.log("foodid: "+idFood);
-            // console.log("avatar: "+avatarFood);
-            // console.log("objAccount: "+objAccount.name);
-
             Notification.send(supplierID, {
               idNotify: "",
               usernameaccount: "",
@@ -910,9 +903,27 @@ function backToRequestList() {
   document
     .getElementsByClassName("detailRequest")[0]
     .classList.remove("active");
+  document.getElementsByClassName("detailRequest")[0].classList.add("d-none");
   document.getElementById("detailRequest").classList.remove("active");
   document.getElementsByClassName("listRequest")[0].classList.add("active");
   document.getElementById("listRequest").classList.add("active");
   document.getElementsByClassName("listRequest")[0].classList.remove("d-none");
 }
 // end
+
+function listFoodRequests() {
+  document.getElementById("listRequest").classList.remove("active");
+  getFoodActive();
+}
+
+function getFoodActive() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&createdBy=${objAccount.id}`;
+  fetch(foodListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((foodList) => {
+      renderListFood(foodList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
