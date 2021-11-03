@@ -5,6 +5,8 @@ var requestCount = 0;
 
 var objAccount = null;
 
+var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/";
+
 function initPageAccount() {
   getAccount();
 }
@@ -23,7 +25,7 @@ function getAccount() {
         objAccount = account.data;
         getListFoodAll();
         getListRequest(objAccount.id);
-        console.log(objAccount.id);
+        // console.log(objAccount.id);
         bindDataAccount(account.data);
       }
     })
@@ -129,7 +131,9 @@ function renderListFood(listFood) {
         <td>${
           e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
         }</td>
-        <td onclick="formUpdateFood(${e.id})"><i class="fa fa-pencil-square-o"></i></td>` +
+        <td onclick="formUpdateFood(${
+          e.id
+        })"><i class="fa fa-pencil-square-o"></i></td>` +
           `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
@@ -150,7 +154,6 @@ function renderListFood(listFood) {
 }
 
 // update food
-
 var editImageFood = document.querySelector('.view-image-product');
 var editInfoFood = document.querySelector('.view-info-product');
 var editContentDesFood = document.querySelector('.view-info-des-content');
@@ -168,7 +171,6 @@ function formUpdateFood(id) {
   listFoodPending1.style.display = 'none';
   listFoodPost1.style.display = 'none';
   listFoodPagination.style.display = 'none';
-  
 
   var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
   fetch(getDetailFood, {
@@ -177,14 +179,14 @@ function formUpdateFood(id) {
       Authorization: `Bearer ${token}`,
     },
   })
-  .then(response => response.json())
-  .then(foodInfo => {
-    let editFoodPromise = new Promise(function (myResolve) {
-      infoFoodDetail = foodInfo.data;
-      myResolve();
-    })
-    editFoodPromise.then(function () {
-      var htmls = `
+    .then((response) => response.json())
+    .then((foodInfo) => {
+      let editFoodPromise = new Promise(function (myResolve) {
+        infoFoodDetail = foodInfo.data;
+        myResolve();
+      });
+      editFoodPromise.then(function () {
+        var htmls = `
       <div class="row multi-columns-row" >
         <div class="slider-image">
           <div class="slider-info-food">
@@ -194,7 +196,7 @@ function formUpdateFood(id) {
       </div>
       `;
 
-      var htmlsInfoProduct = `
+        var htmlsInfoProduct = `
         <div class="row">
           <div class="col-sm-12">
             <h3 class="product-title font-alt">${foodInfo.data.name}</h6>
@@ -213,7 +215,7 @@ function formUpdateFood(id) {
         </div>
       `;
 
-      var htmlsDes = `
+        var htmlsDes = `
       <div class="row multi-columns-row" >
       <div class="col-sm-12" style="padding: 0;">
         <p>Description: ${foodInfo.data.description}</p>
@@ -224,20 +226,25 @@ function formUpdateFood(id) {
           <p>Content: ${foodInfo.data.content}</p>
         </div>
       </div>
-      `
+      `;
 
-      editImageFood.innerHTML = htmls;
-      editInfoFood.innerHTML = htmlsInfoProduct;
-      editContentDesFood.innerHTML = htmlsDes;
+        editImageFood.innerHTML = htmls;
+        editInfoFood.innerHTML = htmlsInfoProduct;
+        editContentDesFood.innerHTML = htmlsDes;
+      });
+
+      document.getElementById("nameFoodEdit").value = foodInfo.data.name;
+      document.getElementById("categoryEdit").value = formatCategoryStringToInt(
+        foodInfo.data.category
+      );
+      document.getElementById(
+        "expirationDateEdit"
+      ).value = foodInfo.data.expirationDate.split("/").reverse().join("-");
+      document.getElementById("descriptionEdit").value =
+        foodInfo.data.description;
+      document.getElementById("contentEdit").value = foodInfo.data.content;
     })
-
-    document.getElementById("nameFoodEdit").value = foodInfo.data.name;
-    document.getElementById("categoryEdit").value =  formatCategoryStringToInt(foodInfo.data.category);
-    document.getElementById("expirationDateEdit").value = foodInfo.data.expirationDate.split("/").reverse().join("-");
-    document.getElementById("descriptionEdit").value = foodInfo.data.description;
-    document.getElementById("contentEdit").value = foodInfo.data.content;
-  })
-  .catch((error) => console.log(error));
+    .catch((error) => console.log(error));
 }
 
 function backToList(){
@@ -289,30 +296,38 @@ $("#editformEdit").validate({
     },
   },
 });
-var listImageFood=[];
+var listImageFood = [];
 
-function newFoodEdit(){
+function newFoodEdit() {
   var nameFood = document.getElementById("nameFoodEdit").value;
   var category = document.getElementById("categoryEdit").value;
   var expirationDate = document.getElementById("expirationDateEdit").value;
   var description = document.getElementById("descriptionEdit").value;
   var content = document.getElementById("contentEdit").value;
 
-  if (!nameFood == false && !category == false && !expirationDate == false && !description == false && !content == false) {
+  if (
+    !nameFood == false &&
+    !category == false &&
+    !expirationDate == false &&
+    !description == false &&
+    !content == false
+  ) {
     if (listImageFood.length > 3) {
       swal("Warning!", "You should only add a maximum of 3 images!", "warning");
       console.log(listImageFood.length);
-    } 
-    else {
-      var dataPost
+    } else {
+      var dataPost;
       if (listImageFood.length == 0) {
-        if(nameFood == infoFoodDetail.name &&
+        if (
+          nameFood == infoFoodDetail.name &&
           category == formatCategoryStringToInt(infoFoodDetail.category) &&
-          expirationDate == infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
+          expirationDate ==
+            infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
           description == infoFoodDetail.description &&
-          content == infoFoodDetail.content){
-            swal("Warning!", "You did not update food information!", "warning");
-        }else{
+          content == infoFoodDetail.content
+        ) {
+          swal("Warning!", "You haven't updated food information!", "warning");
+        } else {
           dataPost = {
             name: nameFood || "",
             avatar: infoFoodDetail.avatar,
@@ -322,108 +337,117 @@ function newFoodEdit(){
             categoryId: parseInt(category),
             description: description,
             content: content,
-            status: 1
+            status: 1,
           };
         }
       } else {
-          if(nameFood == infoFoodDetail.name &&
-            category == formatCategoryStringToInt(infoFoodDetail.category) &&
-            expirationDate == infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
-            description == infoFoodDetail.description &&
-            content == infoFoodDetail.content && 
-            listImageFood.join(",") == infoFoodDetail.images){
-              swal("Warning!", "You did not update food information!", "warning");
-          }else{
-            dataPost = {
-              name: nameFood || "",
-              avatar: listImageFood[0],
-              images: listImageFood.join(","),
-              expirationDate: expirationDate,
-              updatedBy: objAccount.id,
-              categoryId: parseInt(category),
-              description: description,
-              content: content,
-              status: 1
-            };
-          }
+        if (
+          nameFood == infoFoodDetail.name &&
+          category == formatCategoryStringToInt(infoFoodDetail.category) &&
+          expirationDate ==
+            infoFoodDetail.expirationDate.split("/").reverse().join("-") &&
+          description == infoFoodDetail.description &&
+          content == infoFoodDetail.content &&
+          listImageFood.join(",") == infoFoodDetail.images
+        ) {
+          swal("Warning!", "You haven't updated food information!", "warning");
+        } else {
+          dataPost = {
+            name: nameFood || "",
+            avatar: listImageFood[0],
+            images: listImageFood.join(","),
+            expirationDate: expirationDate,
+            updatedBy: objAccount.id,
+            categoryId: parseInt(category),
+            description: description,
+            content: content,
+            status: 1,
+          };
+        }
       }
-      if(!dataPost == false){
-        fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${infoFoodDetail.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(dataPost),
-        })
-        .then((response) => response.json())
-        .then(function (data1) {
-          console.log(data1.data);
-          fetch(
-            `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-            .then((response) => response.json())
-            .then((listAdmin) => {
-              var listAdmin2;
-              var idFood;
-              var avatarFood;
-              var time;
-              let notifyFoodPromise = new Promise(function (myResolve) {
-                listAdmin2 = listAdmin.data;
-                idFood = data1.data.id;
-                avatarFood = data1.data.avatar;
-                var today = new Date();
-                time =
-                  today.getDate() +
-                  "-" +
-                  (today.getMonth() + 1) +
-                  "-" +
-                  today.getFullYear() +
-                  " " +
-                  today.getHours() +
-                  ":" +
-                  today.getMinutes() +
-                  ":" +
-                  today.getSeconds();
-                myResolve();
-              });
-              notifyFoodPromise.then(function () {
-                listAdmin2.map(function (admin) {
-                  Notification.send(admin.id, {
-                    "idNotify": "",
-                    "usernameaccount": admin.username,
-                    "foodid": idFood,
-                    "avatar": avatarFood,
-                    "title": "User " + objAccount.name + " update food",
-                    "message": "Time request: " + time,
-                    "category": "food",
-                    "status": 1,
+      if (!dataPost == false) {
+        fetch(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${infoFoodDetail.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(dataPost),
+          }
+        )
+          .then((response) => response.json())
+          .then(function (data1) {
+            console.log(data1.data);
+            fetch(
+              `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((listAdmin) => {
+                var listAdmin2;
+                var idFood;
+                var avatarFood;
+                var time;
+                let notifyFoodPromise = new Promise(function (myResolve) {
+                  listAdmin2 = listAdmin.data;
+                  idFood = data1.data.id;
+                  avatarFood = data1.data.avatar;
+                  var today = new Date();
+                  time =
+                    today.getDate() +
+                    "-" +
+                    (today.getMonth() + 1) +
+                    "-" +
+                    today.getFullYear() +
+                    " " +
+                    today.getHours() +
+                    ":" +
+                    today.getMinutes() +
+                    ":" +
+                    today.getSeconds();
+                  myResolve();
+                });
+                notifyFoodPromise.then(function () {
+                  listAdmin2.map(function (admin) {
+                    Notification.send(admin.id, {
+                      idNotify: "",
+                      usernameaccount: admin.username,
+                      foodid: idFood,
+                      avatar: avatarFood,
+                      title:
+                        "User " +
+                        objAccount.name +
+                        " has just updated the food information",
+                      message: "Time request: " + time,
+                      category: "food",
+                      status: 1,
+                    });
                   });
                 });
-              });
-            })
-            .catch((error) => console.log(error));
-          swal("Success!", "Edit Food success!", "success");
+              })
+              .catch((error) => console.log(error));
+            swal("Success!", "Successfully updated data!", "success");
 
-          modal1.style.display = "none";
-          var frm = document.getElementsByName("upload_new_food_form")[0];
-          frm.reset();
-          var image1 = document.getElementsByClassName("cloudinary-thumbnails");
-          image1.parentNode.removeChild(image1);
-        })
-        .catch((error) => console.log(error));
+            modal1.style.display = "none";
+            var frm = document.getElementsByName("upload_new_food_form")[0];
+            frm.reset();
+            var image1 = document.getElementsByClassName(
+              "cloudinary-thumbnails"
+            );
+            image1.parentNode.removeChild(image1);
+          })
+          .catch((error) => console.log(error));
       }
     }
   }
 }
-
-// food
 
 var myWidgetFood = cloudinary.createUploadWidget(
   {
@@ -570,8 +594,6 @@ function formatCategoryStringToInt(category) {
   return text;
 }
 
-
-
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");
 function confirmDeleteFood(id) {
@@ -610,9 +632,9 @@ function deleteFood(id) {
 // hoangtl2 - 01/11/2021 - request list pagination on account page
 // start
 function getListRequest(userID) {
-  console.log(userID);
+  // console.log(userID);
   var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
-  console.log(requestListAPI);
+  // console.log(requestListAPI);
   fetch(requestListAPI, {
     method: "GET",
     headers: {
@@ -648,7 +670,9 @@ function renderListRequest(listRequest) {
         dataHtml1 +=
           `<tr id="request-row-${e.recipientId}"><td>${requestCount}</td><td>${
             e.foodName
-          }</td><td>${e.supplierName}</td><td>${convertRequestStatus(
+          }</td><td id="supplier-name">${
+            e.supplierName
+          }</td><td>${convertRequestStatus(
             e.status
           )}</td><td onclick="formDetailRequest(${
             e.foodId
@@ -757,7 +781,6 @@ function formDetailRequest(id) {
 
 // bind data detail request
 function bindDataDetailRequest(data) {
-  var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/";
   document.getElementById(
     "image_food_detail_request"
   ).src = `${cloudinary_url}${data.foodDTO.avatar}`;
@@ -767,50 +790,103 @@ function bindDataDetailRequest(data) {
   document.getElementById("request-status").innerHTML = convertRequestStatus(
     data.status
   );
-
   document
-    .querySelectorAll("#detailRequest .row-btn")
+    .getElementsByClassName("row-btn")
     .item(
       0
-    ).innerHTML = `<div class="col-sm-12"><a class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data})"><i class="fa fa-edit"></i> Edit</a></div>`;
+    ).innerHTML = `<div class="col-sm-12"><input id="old-message" style="display:none" value="${message}"/><button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id}, ${data.foodDTO.createdBy})"><i class="fa fa-edit"></i> Update Message</button></div><div class="col-sm-12">
+    <a onclick="backToRequestList()" type="button" lass="btn btn-sm btn-round" style="padding: 6px 0px 0px 0px !important">
+    <i class="fa fa-angle-double-left"></i> Back to list</a></div>`;
 }
 
-function updateRequestMessage(data) {
+function updateRequestMessage(foodID, supplierID) {
   var recipientMsg = document.getElementById("message").value;
-  var dataPost = {
-    supplierId: "",
-    supplierName: "",
-    message: recipientMsg,
-    status: "",
-    updatedBy: objAccount.id,
-  };
-  fetch(
-    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${data.foodDTO.id}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify(dataPost),
+  var oldMsg = document.getElementById("old-message").value;
+  var supName = document.getElementById("supplier-name").innerText;
+  if (recipientMsg.length != 0) {
+    if (recipientMsg == oldMsg) {
+      swal("Warning!", "You haven't changed the message field!", "warning");
+    } else {
+      var dataPost = {
+        supplierId: supplierID,
+        supplierName: supName,
+        message: recipientMsg,
+        updatedBy: objAccount.id,
+        status: 1,
+      };
+      fetch(
+        `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${foodID}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${isToken}`,
+          },
+          body: JSON.stringify(dataPost),
+        }
+      )
+        .then((response) => response.json())
+        .then(function (request) {
+          fetch(
+            `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${supName}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((supData) => {
+              var supplier;
+              var idFood;
+              var avatarFood;
+              var time;
+              var requestData = request.data;
+              console.log(supData.data);
+              console.log(requestData);
+              let notifyRequestPromise = new Promise(function (myResolve) {
+                supplier = supData.data;
+                idFood = requestData.foodId;
+                avatarFood = cloudinary_url + requestData.foodDTO.avatar;
+                var today = new Date();
+                time =
+                  today.getDate() +
+                  "-" +
+                  (today.getMonth() + 1) +
+                  "-" +
+                  today.getFullYear() +
+                  " " +
+                  today.getHours() +
+                  ":" +
+                  today.getMinutes() +
+                  ":" +
+                  today.getSeconds();
+                myResolve();
+              });
+              notifyRequestPromise.then(function () {
+                Notification.send(supplier.id, {
+                  idNotify: "",
+                  usernameaccount: supplier.name,
+                  foodid: idFood,
+                  avatar: avatarFood,
+                  title:
+                    "User " +
+                    objAccount.name +
+                    "has just updated request message",
+                  message: "Time request: " + time,
+                  category: "food",
+                  status: 1,
+                });
+              });
+            })
+            .catch((error) => console.log(error));
+          swal("Success!", "Successfully updated message!", "success");
+        });
     }
-  )
-    .then((response) => response.json())
-    .then((request) => {
-      let editRequestPromise = new Promise(function (myResolve) {
-        var msgRequest = request.data;
-        myResolve();
-      });
-      if (request) {
-        document.getElementsByClassName("listRequest")[0].classList.remove("active");
-        document.getElementById("listRequest").classList.remove("active");
-        document.getElementsByClassName("detailRequest")[0].classList.add("active");
-        document.getElementById("detailRequest").classList.add("active");
-        document.getElementsByClassName("detailRequest")[0].classList.remove("d-none");
-        bindDataDetailRequest(food.data);
-      }
-    })
-    .catch((error) => console.log(error));
+  } else {
+    swal("Warning!", "You cannot leave the message blank!", "warning");
+  }
 }
 
 // convert request status
@@ -833,5 +909,16 @@ function convertRequestStatus(status) {
       break;
   }
   return status;
+}
+
+// back button
+function backToRequestList() {
+  document
+    .getElementsByClassName("detailRequest")[0]
+    .classList.remove("active");
+  document.getElementById("detailRequest").classList.remove("active");
+  document.getElementsByClassName("listRequest")[0].classList.add("active");
+  document.getElementById("listRequest").classList.add("active");
+  document.getElementsByClassName("listRequest")[0].classList.remove("d-none");
 }
 // end
