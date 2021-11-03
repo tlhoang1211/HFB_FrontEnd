@@ -99,11 +99,9 @@ function showTabPanel(e) {
       document
         .getElementsByClassName("listFoodPost")[0]
         .classList.remove("d-none");
-
       document
         .getElementsByClassName("listFoodPending")[0]
         .classList.remove("d-none");
-
       document.getElementsByClassName("listFood")[0].classList.add("active");
       document.getElementById("listFood").classList.add("active");
       document.getElementsByClassName("listFood")[0].classList.remove("d-none");
