@@ -24,9 +24,6 @@
             loadHtml('setBg.html', '.wrapper', 'div', 'switcher-wrapper', '', 'afterend', '../../../assets/js/admin/setBg.js');
             creaElement('div', 'page-wrapper', '', '.wrapper', 'afterbegin');
             loadHtml( '../../../inc/layout/admin/content/dashboard/dashboard.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/dashboard/dashboard.js');
-            // if (localStorage.getItem('backround')) {
-                
-            // }
             getAccount();
             listCategory();
         } else {

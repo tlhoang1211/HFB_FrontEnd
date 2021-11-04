@@ -2,7 +2,7 @@
     <div class="card-body p-4">
         <h5 class="card-title">Add New Product</h5>
         <hr />
-        <div class="form-body mt-4">
+        <div class="form-body mt-4" id="new-food-form">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="border border-3 p-4 rounded">
@@ -19,8 +19,17 @@
                         <div class="mb-3">
                             <label for="inputProductDescription" class="form-label">Product
                                 Images</label>
-                            <input id="image-uploadify" type="file"
-                                accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                            <input id="image-uploadify" type="hidden">
+                            <div class="imageuploadify well">
+                                <div class="imageuploadify-overlay">
+                                    <i class="fa fa-picture-o"></i>
+                                </div>
+                                <div class="imageuploadify-images-list text-center">
+                                    <i class="bx bxs-cloud-upload"></i>
+                                    <button type="button" class="btn btn-default" style="background: white; color: rgb(58, 160, 255);">Select file to
+                                        upload</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

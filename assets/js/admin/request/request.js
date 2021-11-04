@@ -35,7 +35,20 @@ function saveRequest(){
         function(errorThrown){}
     );
 }
-var pageSize = 10, pageIndex = 0;
+function onChangeOrderByRequest(e, type){
+    orderByRequest = type;
+    addActive(e);
+    getListRequest();
+}
+function filterStatusRequest(e, type){
+    if (type) {
+        statusRequest = type;
+    } else {
+        statusRequest = null;
+    }
+    addActive(e);
+    getListRequest();
+}
 // get data Request
 function getListRequest(pageIndex) {
     if (!pageIndex) {
@@ -48,7 +61,7 @@ function getListRequest(pageIndex) {
     if (orderByRequest) {
         optionUrl += '&order=' + orderByRequest;
     }
-    optionUrl += '&sortBy=id';
+    // optionUrl += '&sortBy=foodId';   
     getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {
@@ -85,62 +98,77 @@ function renderListRequest(data) {
     var count = 0;
     var html = data.map(function (e) {
         count++;
-        return (
-            `<tr>
-            <td>${count}</td>
-            <td>${e.name || ""}</td>
-            <td><img src="https://res.cloudinary.com/vernom/image/upload/${e.avatar}" style="width: 30px;height: 30px;"/></td>
-            <td></td>
-            <td>${e.expirationDate}</td>
-            <td>
-                <div class="d-flex align-items-center ${colorStatusRequest(e.status)}">
-                    <i class='bx bx-radio-circle-marked bx-burst bx-rotate-90 align-middle font-18 me-1'></i>
-					<span>${convertStatusRequest(e.status)}</span>
-                </div>
-            </td>
-            <td>${e.createdAt}</td>
-            <td >
-                <div class="d-flex order-actions">
-                    <a onclick="formUpdateRequest(this, ${e.id})"><i class='bx bx-edit' ></i></a>`
-                    + "<a onclick=\"approvalRequest(this, '" + e.id +"', '" + e.createdBy + "', '" + e.avatar + '\')" class="ms-4"><i class="bx bx-check"></i></a>'
-                    + "<a onclick=\"deleteRequest(this, '" + e.id +"', '" + e.name +"', '"
-                    + e.categoryId + "', '" + e.avatar + "', '" + e.images + "', '" + e.description + "', '" 
-                    + e.content + "', '" + e.expirationDate + '\')" class="ms-4"><i class="bx bxs-trash"></i></a>' +
-                `</div>
-            </td></tr>`
-            );
-        });
+        var htmls = '';
+        htmls += '<tr>';
+        htmls += '<td>';
+        if (e.status == 1 || e.status == 2) {
+            htmls += '<input type="checkbox" class="form-check-input" data-id="'+ e.recipientId +'">';
+        }
+        htmls += '</td>';
+        htmls += '<td>'+ count +'</td>';
+        htmls += '<td>'+ (e.foodName || '') +'</td>';
+        htmls += '<td>'+ (e.message || '') +'</td>';
+        htmls += '<td>'+ (e.supplierName || '') +'</td>';
+        htmls += '<td>'+ (e.recipientName || '') +'</td>';
+        htmls += '<td>'+ (e.recipientPhone || '') +'</td>';
+        htmls += '<td>'+ (e.recipientAddr || '') +'</td>';
+        htmls += '<td>';
+        htmls += '<div class="d-flex align-items-center ' + colorStatusRequest(e.status) + '">';
+        htmls += '<i class="bx bx-radio-circle-marked bx-burst bx-rotate-90 align-middle font-18 me-1"></i>';
+        htmls += '<span>' + convertStatusRequest(e.status) +'</span>';
+        htmls += '</div>';
+        htmls += '</td>';
+        htmls += '<td>'+ (e.createdAt || '') +'</td>';
+
+        htmls += '<td style="width: 55px;">';
+        htmls += '<div class="d-flex order-actions">';
+        htmls += '<a onclick="formUpdateFood(this)"><i class="bx bx-edit"></i></a>';
+        htmls += '</div>';
+        htmls += '</td>';
+        htmls += '<td style="width: 55px;">';
+        if (e.status == 1) {
+            htmls += '<div class="d-flex order-actions">';
+            htmls += '<a onclick="approvalRequest(this, \'' + e.foodId + '\' , \'' + e.recipientId + '\')"><i class="bx bx-check"></i></a>';
+            htmls += '</div>';
+        }
+        htmls += '</td>';
+        htmls += '<td style="width: 55px;">';
+        if (e.status == 1) {
+            htmls += '<div class="d-flex order-actions">';
+            htmls += '<a onclick="deleteRequest(this, \'' + e.foodId + '\', \'' + e.recipientId + '\')" class=""><i class="bx bxs-trash"></i></a>';
+            htmls += '</div>';
+        }
+        
+        htmls += '</td></tr>';
+        return htmls;
+    });
     return html.join("");
 }
-var orderBy = 'asc'
-function onChangeOrderBy(e, type){
-    orderBy = type;
-    e.classList.add('active')
-}
-var idApproval;
-function approvalRequest(e, id, createdBy, avatar){
-    idApproval = {
-        ele: e.parentElement.parentElement.parentElement,
-        id: id,
-        createdBy: createdBy,
-        avatar: avatar
+
+var idApprovalRequest;
+function approvalRequest(e, foodId, recipientId){
+    idApprovalRequest = {
+        status: 3,
+        recipientId: recipientId,
+        foodId: foodId,
     }
     $('#approvalRequest').modal('show');
 }
 function onBrowseRequest(){
+    console.log(idApprovalRequest)
     var dataPost = {
-        status: 2
+        status: 3,
+        updatedBy: objAccount.id,
     };
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/4/5
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Requests/status/${idApproval.id}`, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(idApprovalRequest.recipientId) + '/' + parseInt(idApprovalRequest.foodId), JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            Notification.send(parseInt(idApproval.createdBy), {
+            Notification.send(parseInt(idApprovalRequest.recipientId), {
                 sender: objAccount.id,
                 idNotify: "",
                 usernameaccount: "",
-                Requestid: parseInt(idApproval.id),
+                Requestid: parseInt(idApprovalRequest.recipientId),
                 avatar: idApproval.avatar,
                 title: "Admin approved",
                 message: "Time request: " + time,
@@ -156,33 +184,19 @@ function onBrowseRequest(){
     );
 }
 var objDelete;
-function deleteRequest(e, id, name, cateID, avatar, images, description, content, expirationDate) {
+function deleteRequest(e, foodId, recipientId) {
     objDelete = {
-        ele: e.parentElement.parentElement.parentElement,
-        id: id,
-        name: name,
-        cateID: cateID,
-        avatar: avatar,
-        images: images,
-        description: description,
-        content: content,
-        expirationDate: expirationDate
+        foodId: foodId,
+        recipientId: recipientId
     }
     $('#deleteRequest').modal('show');
 }
 function onDeleteRequest(){
     var dataPost = {
-        name: objDelete.name,
         updatedBy: objAccount.id,
-        categoryId: objDelete.cateID,
-        status: 0,
-        avatar: objDelete.avatar,
-        images: objDelete.images,
-        description: objDelete.description,
-        content: objDelete.content,
-        expirationDate: objDelete.expirationDate
+        status: 0
     };
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Requests/${objDelete.id}`, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(objDelete.recipientId) + '/' + parseInt(objDelete.foodId), JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             objDelete.ele.remove();
             $('#deleteRequest').modal('hide');
@@ -203,7 +217,13 @@ function convertStatusRequest(status){
             text = 'Pending';
             break;
         case 2:
-            text = 'Active';
+            text = 'Confirmed';
+            break;
+        case 3:
+            text = 'Done';
+            break;
+        case 4:
+            text = 'Expired';
             break;
         default:
             text = 'Pending';
@@ -222,7 +242,13 @@ function colorStatusRequest(status){
             color = 'text-warning';
             break;
         case 2:
+            color = 'text-info';
+            break;
+        case 3:
             color = 'text-success';
+            break;
+        case 4:
+            color = 'text-default';
             break;
         default:
             color = 'text-warning';

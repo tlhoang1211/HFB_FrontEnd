@@ -16,8 +16,8 @@
                                     data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"
                                     style="margin: 0px;">
-                                    <a class="dropdown-item active" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
-                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
+                                    <a class="dropdown-item active" onclick="onChangeOrderByRequest(this, 'asc')">From a-z</a>
+                                    <a class="dropdown-item" onclick="onChangeOrderByRequest(this, 'desc')">From z-a</a>
                                 </div>
                             </div>
                         </div>
@@ -26,10 +26,12 @@
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Status</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                                    <a class="dropdown-item active" onclick="filterStatus(this)">All</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '1')">Pending</a>
-                                    <a class="dropdown-item" onclick="filterStatus(this, '2')">Active</a>
+                                    <a class="dropdown-item active" onclick="filterStatusRequest(this)">All</a>
+                                    <a class="dropdown-item" onclick="filterStatusRequest(this, '0')">Deactive</a>
+                                    <a class="dropdown-item" onclick="filterStatusRequest(this, '1')">Pending</a>
+                                    <a class="dropdown-item" onclick="filterStatusRequest(this, '2')">Confirmed</a>
+                                    <a class="dropdown-item" onclick="filterStatusRequest(this, '3')">Done</a>
+                                    <a class="dropdown-item" onclick="filterStatusRequest(this, '4')">Expired</a>
                                 </div>
                             </div>
                         </div>
@@ -54,11 +56,14 @@
             <table class="table align-middle mb-0 table-striped">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" class="check-all form-check-input"></th>
                         <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Expiration date</th>
+                        <th>Food Name</th>
+                        <th>Message</th>
+                        <th>Supplier Name</th>
+                        <th>Recipient Name</th>
+                        <th>Recipient Phone</th>
+                        <th>Recipient Address</th>
                         <th>Status</th>
                         <th>Create at</th>
                         <th>Action</th>
@@ -72,91 +77,6 @@
         </div>
         <div class="axbox-footer mt-2 float-end">
             <div id="nextpage"></div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="modalAddRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content bg-secondary">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new Request</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form addform" role="form">
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Request Name</label>
-                        <input id="nameRequest" class="form-control" type="text" placeholder="Enter Request Name" />
-                        <span class="form-message"></span>
-                    </div>
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Image Request</label>
-                        <br />
-                        <button type="button" id="upload_image_Request" class="upload-btn btn btn-info btn-round">
-                            <i class="fa fa-download"></i>
-                            Upload image
-                        </button>
-                        <div class="thumbnails" id="Request_thumbnails">
-                        </div>
-                        <input type="hidden" id="imageRequests">
-                        <span class="form-message"></span>
-                    </div>
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Category</label>
-                        <select name="category" id="category" class="form-control required">
-                            <option selected disabled>Select</option>
-                            <option value="1">Drinks</option>
-                            <option value="2">Noodle</option>
-                            <option value="3">Bread</option>
-                            <option value="4">
-                                Rice
-                            </option>
-                            <option value="5">
-                                Meat
-                            </option>
-                            <option value="6">
-                                SeaRequest
-                            </option>
-                            <option value="7">
-                                Vegetables
-                            </option>
-                            <option value="8">
-                                Vegetarian
-                                Request
-                            </option>
-                            <option value="9">
-                                Fruit
-                            </option>
-                            <option value="10">
-                                Fast
-                                Request
-                            </option>
-                            <option value="11">
-                                Snacks
-                            </option>
-                            <option value="12">
-                                Others
-                            </option>
-                        </select>
-                        <span class="form-message"></span>
-                    </div>
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Expiration Date</label>
-                        <input id="expirationDate" class="form-control" type="date" />
-                        <span class="form-message"></span>
-                    </div>
-                    <div class="form-group pt-1">
-                        <label for="name" class="form-label">Description</label>
-                        <textarea id="description" class="form-control" rows="4" style="resize: vertical"
-                            placeholder="Enter Description"></textarea>
-                        <span class="form-message"></span>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveUpdateRequest()">Save</button>
-            </div>
         </div>
     </div>
 </div>

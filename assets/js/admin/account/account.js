@@ -1,6 +1,13 @@
 
 var orderByAccount = 'asc', statusAccount = null, searchName_Account;
-
+function formNewAccount() {
+    var pageContent = document.getElementsByClassName('page-content');
+    if (pageContent.item(0)) {
+		pageContent.item(0).remove();
+	}
+	localStorage.setItem('page', 'newFood');
+	loadHtml( '../../../inc/layout/admin/content/account/newAccount.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/account/newAccount.js');
+}
 function onChangeOrderBy(e, type) {
     orderByAccount = type;
     addActive(e);
