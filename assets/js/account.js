@@ -126,25 +126,7 @@ function showTabPanel(e) {
   }
 }
 
-// update profile
-function updateAccount() {
-  // var obj = {
-  // }
-  // fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentName}`,{
-  //   method: 'GET',
-  //   headers: {
-  //     "Authorization":`Bearer ${isToken}`
-  //   }
-  // })
-  // .then(response => response.json())
-  // .then(account => {
-  //   if (account && account.data) {
-  //     objAccount = account.data;
-  //     bindDataAccount(account.data);
-  //   }
-  // })
-  // .catch(error => console.log(error));
-}
+
 
 // format category
 function formatCategory(id) {

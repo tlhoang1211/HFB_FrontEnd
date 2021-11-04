@@ -258,11 +258,7 @@
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="username-register" type="text" name="username-register" placeholder="User Name" />
-                    <span class="form-message"></span>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="E-mail-register" type="text" name="email-register" placeholder="Email" />
+                    <input class="form-control" id="E-mail-register" type="text" name="email-register" placeholder="User Name - Email" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
@@ -401,19 +397,18 @@
       
       function btnRegister(){
         var fullnameregister = document.getElementById('fullname-register').value;
-        var usernameregister = document.getElementById('username-register').value;
         var emailregister = document.getElementById('E-mail-register').value;
         var phoneregister = document.getElementById('phone-register').value;
         var addressregister = document.getElementById('address-register').value;
         var passwordregister = document.getElementById('password-register').value;
-        if(!fullnameregister == false && !usernameregister == false && !emailregister == false && !phoneregister == false && !addressregister == false && !passwordregister == false){
+        if(!fullnameregister == false && !emailregister == false && !phoneregister == false && !addressregister == false && !passwordregister == false){
           fetch(registerAPI, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              "username": usernameregister,
+              "username": emailregister,
               "phone": phoneregister,
               "address": addressregister,
               "avatar": "v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg",
@@ -426,7 +421,11 @@
           .then(function (data) {
             console.log("aaaaaaaaaaaaaaaa");
             if (data.status == 200) {
-              login(usernameregister, passwordregister);
+              swal("Success!", `Register success!`, "success");
+              setTimeout(function(){
+                login(usernameregister, passwordregister);
+              }, 3000);
+              
             } else if(data.status == 501){
               swal("Error!", `${data.message}!`, "error");
             }else{
@@ -479,7 +478,6 @@
         errorSelector: ".form-message",
         rules: [
           Validator.isRequired("#fullname-register", "This field cannot be left blank"),
-          Validator.isRequired("#username-register", "This field cannot be left blank"),
           Validator.isRequired("#E-mail-register", "This field cannot be left blank"),
           Validator.isEmail("#E-mail-register", "Please enter correct email format"),
           Validator.isRequired("#phone-register","This field cannot be left blank"),

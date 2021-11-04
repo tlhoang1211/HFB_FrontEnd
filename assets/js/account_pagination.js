@@ -46,6 +46,106 @@ function bindDataAccount(data) {
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
+
+// update profile
+var imgAvatar;
+function updateAccount() {
+  var account_nameUpdate = document.querySelector('#account_name').value;
+  var account_emailUpdate = document.querySelector('#account_email').value;
+  var account_phoneUpdate = document.querySelector('#account_phone').value;
+  var account_addressUpdate = document.querySelector('#account_address').value;
+  if(account_nameUpdate == objAccount.name && account_emailUpdate == objAccount.email && account_phoneUpdate == objAccount.phone && account_addressUpdate == objAccount.address && imgAvatar == undefined){
+    swal("Warning!", "You don't update your account!", "warning");
+  }else{
+    if(imgAvatar == null || imgAvatar == "" || imgAvatar == undefined){
+      imgAvatar = objAccount.avatar;
+    }
+    fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${objAccount.id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "name" : account_nameUpdate,
+        "username" : account_emailUpdate,
+        "phone" : account_phoneUpdate,
+        "address" : account_addressUpdate,
+        "avatar" : imgAvatar,
+        "updatedBy" : objAccount.id,
+        "status": 1
+      }),
+    })
+    .then(response => response.json())
+    .then(account => {
+      if (account && account.data) {
+        swal("Success!", "Update account success!", "success");
+        objAccount = account.data;
+        currentName = objAccount.username;
+        console.log(currentName);
+        bindDataAccount(objAccount);
+      }
+    })
+    .catch(error => console.log(error));
+  }
+}
+
+var myWidgetAccount = cloudinary.createUploadWidget(
+  {
+    cloudName: "vernom",
+    uploadPreset: "fn5rpymu",
+    multiple: false,
+    form: "#update-account-form",
+    folder: "hanoi_food_bank_project/users_avatar",
+    fieldName: "thumbnails[]",
+    thumbnails: ".thumbnails",
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      imgAvatar = result.info.path
+      console.log(imgAvatar);
+      console.log("Done! Here is the image info: ", result.info.url);
+    }
+  }
+);
+
+document.getElementById("upload_avatar").addEventListener(
+  "click",
+  function () {
+    myWidgetAccount.open();
+  },
+  false
+);
+
+// change password
+function changpassword() {
+  var newPassword = document.querySelector('#newPassword').value;
+  var changepasswordAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/change-password/${objAccount.id}`;
+  if(newPassword){
+    fetch(changepasswordAPI,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "password" : newPassword
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == 200){
+        swal("Success!", "Change password success!", "success");
+      }
+    })
+    .catch(error => console.log(error))
+  }else{
+    swal("Warning!", "You don't change the password!", "warning");
+  }
+}
+
 // end
 
 // hoangtl2 - 01/11/2021 - food list pagination on account page
@@ -92,7 +192,7 @@ function getListFoodActive() {
   })
     .then((response) => response.json())
     .then((foodList) => {
-      renderListFood(foodList.data.content);
+      renderListFoodActive(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
@@ -125,7 +225,51 @@ function renderListFood(listFood) {
         dataHtml +=
           `<tr id="food-row-${e.id}">
         <td>${foodCount}</td>
-        <td>${e.name || ""}</td>
+        <td>${e.name || ""}</a></td>
+        <td>${formatCategory(e.categoryId)}</td>
+        <td>${e.expirationDate}</td>
+        <td>${e.createdAt}</td>
+        <td>${
+          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+        }</td>
+        <td onclick="formUpdateFood(${
+          e.id
+        })"><i class="fa fa-pencil-square-o"></i></td>` +
+          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
+      });
+
+      dataHtml += "</div>";
+      $("#list-food").html(dataHtml);
+    },
+  });
+
+  var foodDataTable = document.getElementById("food-data-table");
+
+  if (foodCount == 0) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-food-noti")
+      .setAttribute("style", "text-align: center;");
+  }
+}
+function renderListFoodActive(listFood) {
+  foodCount = 0;
+  let container = $(".pagination1");
+  container.pagination({
+    dataSource: listFood,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        foodCount++;
+        dataHtml +=
+          `<tr id="food-row-${e.id}">
+        <td>${foodCount}</td>
+        <td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;"> ${e.name || ""}</a></td>
         <td>${formatCategory(e.categoryId)}</td>
         <td>${e.expirationDate}</td>
         <td>${e.createdAt}</td>

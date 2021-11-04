@@ -182,13 +182,7 @@
                         href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
                         title="Avatar"
                       >
-                        <img
-                          id="abc"
-                          src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-                          alt=""
-                          class="abc"
-                          style="min-height: 163px"
-                        />
+                        <img id="abc" src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="abc" style="min-height: 163px" />
                         <div class="gallery-caption">
                           <div class="gallery-icon">
                             <span class="icon-magnifying-glass"></span>
@@ -244,6 +238,10 @@
                       <a href="#profile" data-toggle="tab"> Information</a>
                     </li>
 
+                    <li class="tab-account changepassword">
+                      <a href="#changepassword" data-toggle="tab"> Change Password</a>
+                    </li>
+
                     <li class="tab-account listFood d-none">
                       <a onclick="listfood()" data-toggle="tab"> List All</a>
                     </li>
@@ -288,65 +286,32 @@
                   <div class="tab-content">
                     <!-- profile -->
                     <div class="tab-pane active" id="profile">
-                      <form
-                        class="form registerform"
-                        id="update-account-form"
-                        role="form"
+                      <form class="form registerform" id="update-account-form" role="form"
                       >
                         <div class="form-group">
-                          <input
-                            id="account_id"
-                            class="form-control"
-                            type="text"
-                            style="display: none"
-                          />
+                          <input id="account_id" class="form-control" type="text" style="display: none" />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
-                          <input
-                            id="account_name"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter name"
-                            autocomplete="off"
-                          />
+                          <input id="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">User Name - Email</label>
+                          <input id="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label class="form-label">Phone</label>
                           <input
-                            id="account_phone"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter phone"
-                            autocomplete="off"
-                          />
+                            id="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
-                          <label for="account_email" class="form-label"
-                            >Email</label
-                          >
+                          <label for="account_address" class="form-label"> 
+                            Address</label>
                           <input
-                            id="account_email"
-                            class="form-control"
-                            type="email"
-                            placeholder="Enter email"
-                            autocomplete="off"
-                          />
-                          <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                          <label for="account_address" class="form-label"
-                            >Address</label
-                          >
-                          <input
-                            id="account_address"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter address"
-                            autocomplete="off"
-                          />
+                            id="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
@@ -354,11 +319,7 @@
                         <div class="form-group">
                           <label for="name" class="form-label">Avatar</label>
                           <br />
-                          <button
-                            type="button"
-                            id="upload_avatar"
-                            class="upload-btn btn btn-round"
-                          >
+                          <button type="button" id="upload_avatar" class="upload-btn btn btn-round">
                             <i class="fa fa-download"></i>
                             Upload image
                           </button>
@@ -366,10 +327,21 @@
                           <input type="hidden" id="avatar_account" />
                           <span class="form-message"></span>
                         </div>
-                        <button
-                          type="submit"
-                          class="btn btn-b btn-round btnSubmitProfile pull-right"
-                        >
+                        <button type="button" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                          <i class="fa fa-save"></i>
+                          Save
+                        </button>
+                      </form>
+                    </div>
+                    <!-- changepassword -->
+                    <div class="tab-pane" id="changepassword">
+                      <form class="form registerform" id="changepassword-form" role="form">
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">New Password</label>
+                          <input id="newPassword" class="form-control" type="password" placeholder="Enter new password" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <button type="button" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-save"></i>
                           Save
                         </button>
@@ -810,78 +782,6 @@
       if (!tokenaccount) {
         location.replace("../login_register.html");
       }
-
-      // var listFood = document.querySelector('#listFood');
-      // var listFoodPost = document.querySelector('#listFoodPost');
-      // var listFoodPending = document.querySelector('#listFoodPending');
-      // function listfood(e){
-      //   switch (e) {
-      //     case "listFood":
-      //       listFood.classList.forEach(
-      //         function(value) {
-      //           if(value !== 'active'){
-      //             listFood.classList.add('active');
-      //           }
-      //         });
-      //       listFoodPost.classList.forEach(
-      //         function(value) {
-      //           if(value == 'active'){
-      //             listFoodPost.classList.remove('active');
-      //           }
-      //         });
-      //       listFoodPending.classList.forEach(
-      //         function(value) {
-      //           if(value == 'active'){
-      //             listFoodPending.classList.remove('active');
-      //           }
-      //         });
-      //       break;
-      //     case "listFoodPost":
-      //       listFood.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFood.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPost.classList.forEach(
-      //           function(value) {
-      //             if(value !== 'active'){
-      //               listFoodPost.classList.add('active');
-      //               listFoodPost.classList.remove('d-none');
-      //             }
-      //           });
-      //         listFoodPending.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFoodPending.classList.remove('active');
-      //             }
-      //           });
-      //       break;
-      //     case "listFoodPending":
-      //       listFood.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFood.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPost.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFoodPost.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPending.classList.forEach(
-      //           function(value) {
-      //             if(value !== 'active'){
-      //               listFoodPending.classList.add('active');
-      //               listFoodPending.classList.remove('d-none');
-      //             }
-      //           });
-      //       break;
-      //     default:
-      //       break;
-      //     }
-      //   }
     </script>
   </body>
 </html>
