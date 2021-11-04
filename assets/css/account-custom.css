@@ -44,3 +44,13 @@ td {
   color: red;
   cursor: pointer;
 }
+
+.fa-search:hover,
+.fa-search:focus {
+  color: darkturquoise;
+  cursor: pointer;
+}
+
+.swal-text {
+  text-align: center;
+}

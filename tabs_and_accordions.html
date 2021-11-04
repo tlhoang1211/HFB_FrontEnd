@@ -262,7 +262,11 @@
                     </li> -->
 
                     <li class="tab-account listRequest d-none">
-                      <a href="#listRequest" data-toggle="tab">
+                      <a
+                        href="#listRequest"
+                        onclick="clickListRequest()"
+                        data-toggle="tab"
+                      >
                         List of requests</a
                       >
                     </li>
@@ -271,13 +275,18 @@
                         Details request</a
                       >
                     </li>
-                    <li class="tab-account listFoodRequest d-none">
+                    <li class="tab-account listActiveFood d-none">
                       <a
-                        href="#listFoodRequest"
-                        onclick="listFoodRequests()"
+                        href="#listActiveFood"
+                        onclick="clickListActiveFood()"
                         data-toggle="tab"
                       >
-                        List requests for your food</a
+                        List of foods that someone requests for</a
+                      >
+                    </li>
+                    <li class="tab-account listUsersRequest d-none">
+                      <a href="#listUsersRequest" data-toggle="tab">
+                        List of your users request food</a
                       >
                     </li>
                     <li class="tab-account feedback d-none">
@@ -375,7 +384,7 @@
                         </button>
                       </form>
                     </div>
-                    <!-- List of food -->
+                    <!-- list of food -->
                     <div class="tab-pane" id="listFood">
                       <div class="card radius-10 listFoodPagination">
                         <div class="card-body" id="center-food-noti">
@@ -596,7 +605,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- list request -->
+                    <!-- list of requests -->
                     <div class="tab-pane" id="listRequest">
                       <div class="card radius-10">
                         <div class="card-body" id="center-request-noti">
@@ -683,6 +692,90 @@
                             </div>
                           </div>
                           <div class="row mb-20 row-btn"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- list of active food -->
+                    <div class="tab-pane" id="listActiveFood">
+                      <div class="card radius-10 listActiveFoodPagination">
+                        <div class="card-body" id="center-food-noti">
+                          <span id="no-food-noti" style="display: none"
+                            >You haven't uploaded any food yet!</span
+                          >
+                          <div
+                            class="table-responsive"
+                            id="food-active-data-table"
+                          >
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
+                              <thead class="table-light">
+                                <tr>
+                                  <th>#</th>
+                                  <th>Food Name</th>
+                                  <th>Expiration Date</th>
+                                  <th>Uploaded Date</th>
+                                  <th>Status</th>
+                                  <th>Requests On Food</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                class="row multi-columns-row"
+                                id="list-active-food"
+                              ></tbody>
+                            </table>
+                            <div class="row" id="pagination-button">
+                              <div class="col-sm-12">
+                                <div class="pagination3 font-alt"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- list of users requests for food -->
+                    <div class="tab-pane" id="listUsersRequest">
+                      <div class="row">
+                        <div
+                          class="table-responsive"
+                          id="users-request-for-food-data-table"
+                        >
+                          <table
+                            class="table align-middle mb-0 table-striped table-bordered"
+                          >
+                            <thead class="table-light">
+                              <tr>
+                                <th>#</th>
+                                <th>User Name</th>
+                                <th>Message</th>
+                                <th>Sent Date</th>
+                                <th id="checkAllCell">
+                                  Check All:
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="checkAll"
+                                    name="checkAll"
+                                    onclick="checkAll(this)"
+                                  />
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody
+                              class="row multi-columns-row"
+                              id="list-users-request"
+                            ></tbody>
+                          </table>
+                          <div
+                            class="row"
+                            id="button-on-users-request-page"
+                            style="margin-top: 15px"
+                          ></div>
+                          <div class="row" id="pagination-button">
+                            <div class="col-sm-12">
+                              <div class="pagination4 font-alt"></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
