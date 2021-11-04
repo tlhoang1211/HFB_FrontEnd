@@ -50,8 +50,9 @@ if (token === null || token === undefined || token === NaN || token === "") {
   notifycation.style.display = "block";
 
   var viewAccount = document.querySelector(".navbar__user");
-  var userName = document.querySelector(".hi-name");
-  fetch(getDetailFood, {
+  var userName = document.getElementById("hi-name");
+
+  fetch(getDetailAccount, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -60,20 +61,17 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .then((response) => response.json())
     .then((account) => {
       objAccount = account.data;
-      // if (objAccount.avatar == "") {
-      var htmlsItem = `
+      if (objAccount.avatar == "") {
+        var htmlsItem = `
         <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-          src="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg" alt="" class="navbar__user-img">
-        `;
-      // } else {
-      //   var htmlsItem = `
-      //   <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-      //     src="${objAccount.avatar}" alt="" class="navbar__user-img">
-      //   `;
-      // }
-      // var htmlHiName = `<span>Hi ${objAccount.name}</span>`;
+          src="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg" alt="" class="navbar__user-img">`;
+      } else {
+        var htmlsItem = `
+        <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
+          src="${objAccount.avatar}" alt="" class="navbar__user-img">`;
+      }
 
-      // userName.innerHTML = htmlHiName;
+      userName.innerHTML = "Hi " + objAccount.name + "!";
       viewAccount.innerHTML = htmlsItem;
 
       Notification.show(account.data.id, function (listNotify) {
@@ -131,34 +129,45 @@ $(document).on("click", ".header__notify-item", function () {
   var categoryNoti;
   var foodIdNoti;
   var usernameAccount;
+  var title;
+  var messageNoti;
 
   let notificationPromise = new Promise(function (myResolve) {
     Notification.update(idAccount, idNoti, {
       idNotify: idNoti,
     });
-    console.log('idNotify: ' + idNoti)
+    console.log("idNotify: " + idNoti);
     Notification.show(idAccount, function (listNotify) {
       listNotify.forEach(function (child) {
         if (child.val().idNotify == idNoti) {
           categoryNoti = child.val().category;
           foodIdNoti = child.val().foodid;
           usernameAccount = child.val().usernameaccount;
+          title = child.val().title;
+          messageNoti = child.val().message
         }
       });
     });
-    console.log(categoryNoti, foodIdNoti, usernameAccount)
+
+    console.log(
+      "category: " + categoryNoti,
+      "FoodIdNoti:" + foodIdNoti,
+      "UsernameAccount: " + usernameAccount,
+      "Title" + title
+    );
     myResolve();
   });
 
   notificationPromise.then(function () {
     console.log("start notification");
     if (categoryNoti == "request") {
-      console.log("start notification");
+      console.log("start notification request");
       Notification.update(idAccount, idNoti, {
         status: 0,
       });
     }
     if (categoryNoti == "food") {
+      console.log("start notification food");
       fetch(
         `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/roles?username=${usernameAccount}`,
         {
@@ -170,6 +179,7 @@ $(document).on("click", ".header__notify-item", function () {
       )
         .then((response) => response.json())
         .then((listRole) => {
+          console.log("start notification food role user");
           var listRoles;
           let notificationPromise2 = new Promise(function (myResolve) {
             listRoles = listRole.data;
@@ -177,8 +187,10 @@ $(document).on("click", ".header__notify-item", function () {
           });
 
           notificationPromise2.then(function () {
+            console.log("start notification food role user 222");
             listRoles.map(function (role) {
               if (role.name == "ROLE_ADMIN") {
+                console.log("start notification food role ADMIN");
                 fetch(
                   `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
                   {
@@ -191,24 +203,24 @@ $(document).on("click", ".header__notify-item", function () {
                   .then((response) => response.json())
                   .then((listAdmin) => {
                     var listAdmins;
-                    let notificationPromise3 = new Promise(function (
-                      myResolve
-                    ) {
+                    console.log("start notification food role ADMIN 222");
+                    let notificationPromise3 = new Promise(function (myResolve) {
                       listAdmins = listAdmin.data;
                       myResolve();
                     });
 
                     notificationPromise3.then(function () {
+                      console.log("start notification food role ADMIN 333");
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
-                            listNotifyAdmin.forEach(function (child) {
-                              if (child.val().foodid == foodIdNoti) {
-                                var idNotiAdmin = child.val().idNotify;
-                                Notification.update(admin.id, idNotiAdmin, {
-                                  status: 0,
-                                });
-                              }
-                            });
+                          listNotifyAdmin.forEach(function (child) {
+                            if (child.val().foodid == foodIdNoti && child.val().title == title && child.val().message == messageNoti){
+                              var idNotiAdmin = child.val().idNotify;
+                              Notification.update(admin.id, idNotiAdmin, {
+                                  "status": 0
+                              });
+                            }
+                          });
                         });
                       });
                     });
@@ -218,10 +230,12 @@ $(document).on("click", ".header__notify-item", function () {
                   });
               }
             });
-          });}).catch(error => console.log(error))
+          });
+        })
+        .catch((error) => console.log(error));
     }
-  })
-})
+  });
+});
 
 // validate form
 $("#addformModal").validate({
@@ -283,10 +297,10 @@ function newFoodModal() {
   ) {
     if (listImageFood.length == 0) {
       swal("Warning!", "You need more image!", "warning");
-    } else if(listImageFood.length > 3){
+    } else if (listImageFood.length > 3) {
       swal("Warning!", "You should only add a maximum of 3 images!", "warning");
-      console.log(listImageFood.length);
-    } else {
+    }
+     else {
       var dataPost = {
         name: nameFood || "",
         avatar: listImageFood[0],
@@ -340,18 +354,16 @@ function newFoodModal() {
                   today.getMinutes() +
                   ":" +
                   today.getSeconds();
-                console.log(time);
                 myResolve();
               });
               notifyFoodPromise.then(function () {
                 listAdmin2.map(function (admin) {
-
                   Notification.send(admin.id, {
                     "idNotify": "",
                     "usernameaccount": admin.username,
                     "foodid": idFood,
                     "avatar": avatarFood,
-                    "title": "User add new food",
+                    "title": "User " + objAccount.name + " add new food",
                     "message": "Time request: " + time,
                     "category": "food",
                     "status": 1,
@@ -359,16 +371,21 @@ function newFoodModal() {
                 });
               });
             })
-            .catch(error => console.log(error));
+            .catch((error) => console.log(error));
+          modal1.style.display = "none";
+          var frm = document.getElementsByName("upload_new_food_form")[0];
+          frm.reset();
+          var image1 = document.getElementsByClassName("cloudinary-thumbnails");
+          image1.parentNode.removeChild(image1);
           swal("Success!", "Add Food success!", "success");
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     }
   }
 }
 
 // food
-var myWidgetFood = cloudinary.createUploadWidget(
+var myWidgetFoodModal = cloudinary.createUploadWidget(
   {
     cloudName: "vernom",
     uploadPreset: "fn5rpymu",
@@ -395,7 +412,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
 document.getElementById("upload_image_foodModal").addEventListener(
   "click",
   function () {
-    myWidgetFood.open();
+    myWidgetFoodModal.open();
   },
   false
 );
@@ -418,10 +435,10 @@ $("body").on("click", ".cloudinary-delete", function () {
     splittedImg[splittedImg.length - 2] +
     "/" +
     splittedImg[splittedImg.length - 1];
-    
+
   for (let i = 0; i < listImageFood.length; i++) {
-    if(listImageFood[i] == imgName2){
-       listImageFood.splice(i, 1);
+    if (listImageFood[i] == imgName2) {
+      listImageFood.splice(i, 1);
     }
   }
   $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
@@ -521,7 +538,7 @@ $(document).ready(function () {
       .removeClass("selected");
     var selectedCategory = $(this).children("option:selected").text();
     console.log(selectedCategory);
-    myWidgetFood.update({
+    myWidgetFoodModal.update({
       folder: "hanoi_food_bank_project/uploaded_food/" + selectedCategory,
     });
   });
@@ -535,4 +552,68 @@ $(function () {
   });
 });
 
+// paypal
+var donatorName = document.getElementById("donatorName");
+var donatorPhoneNumber = document.getElementById("donatorPhoneNumber");
+var amount = document.getElementById("amount");
+var contentDonate = document.getElementById("contentDonate");
+var newDonate = document.getElementById("newDonate");
+
+paypal.Button.render(
+  {
+    env: "sandbox", // Or 'production'
+    // Set up the payment:
+    // 1. Add a payment callback
+    payment: function (data, actions) {
+      // 2. Make a request to your server
+      return actions.request
+        .post(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay?name=${donatorName.value}&phone=${donatorPhoneNumber.value}&amount=${amount.value}&content=${contentDonate.value}`
+        )
+        .then(function (res) {
+          // 3. Return res.id from the response
+          return res.id;
+        })
+        .catch((error) => {
+          console.log(error);
+          swal(
+            "Error!",
+            "Payment failure! \nYou need to enter the donation amount",
+            "error"
+          );
+        });
+    },
+    // Execute the payment:
+    // 1. Add an onAuthorize callback
+    onAuthorize: function (data, actions) {
+      // 2. Make a request to your server
+      return actions.request
+        .get(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/pay/success?paymentId=${data.paymentID}&PayerID=${data.payerID}`
+        )
+        .then(function (res) {
+          // 3. Show the buyer a confirmation message.
+          if (res.id == data.paymentID) {
+            // success
+            swal("Success!", "Thank you for your contribution!", "success");
+          } else {
+            swal("Error!", "Payment failure!", "error");
+          }
+          modal2.style.display = "none";
+          console.log(res.id);
+          console.log(data.paymentID);
+          console.log(data.payerID);
+        })
+        .catch((error) => {
+          console.log(error);
+          swal(
+            "Error!",
+            "Payment failure! \nYou need to enter the donation amount",
+            "error"
+          );
+        });
+    },
+  },
+  "#newDonate"
+);
 //end

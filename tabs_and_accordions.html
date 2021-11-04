@@ -142,6 +142,10 @@
     <link rel="stylesheet" href="assets/css/account-custom.css" />
 
     <link rel="stylesheet" href="./assets/css/repository.css" />
+
+    <!-- paypal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ARfjvhupmZbesvNCgtE5AJV8zCxdME-gej0ajX-4aBkkIpdstLDqPA1dqw3oZIozjICO5A78qlEIw1OL&components=buttons"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
   </head>
 
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
@@ -239,19 +243,41 @@
                     <li class="tab-account profile active">
                       <a href="#profile" data-toggle="tab"> Information</a>
                     </li>
-                    <!-- <li class="tab-account addFood d-none">
-										<a href="#formAddFood" data-toggle="tab">
-											New food</a>
-									</li> -->
+
                     <li class="tab-account listFood d-none">
-                      <a href="#listFood" data-toggle="tab"> List of food</a>
+                      <a onclick="listfood()" data-toggle="tab"> List All</a>
                     </li>
+                    <li class="tab-account listFoodPost d-none">
+                      <a onclick="listFoodPost()" data-toggle="tab">
+                        List posted foods</a
+                      >
+                    </li>
+                    <li class="tab-account listFoodPending d-none">
+                      <a onclick="listFoodPending()" data-toggle="tab">
+                        List pending food</a
+                      >
+                    </li>
+                    <!-- <li class="tab-account listFoodPending d-none">
+                      <a onclick="listFoodPending()"  data-toggle="tab"> List expired food</a>
+                    </li> -->
+
                     <li class="tab-account listRequest d-none">
-                      <a href="#listRequest" data-toggle="tab"> Requests</a>
+                      <a href="#listRequest" data-toggle="tab">
+                        List of requests</a
+                      >
                     </li>
                     <li class="tab-account detailRequest d-none">
                       <a href="#detailRequest" data-toggle="tab">
                         Details request</a
+                      >
+                    </li>
+                    <li class="tab-account listFoodRequest d-none">
+                      <a
+                        href="#listFoodRequest"
+                        onclick="listFoodRequests()"
+                        data-toggle="tab"
+                      >
+                        List requests for your food</a
                       >
                     </li>
                     <li class="tab-account feedback d-none">
@@ -267,6 +293,14 @@
                         id="update-account-form"
                         role="form"
                       >
+                        <div class="form-group">
+                          <input
+                            id="account_id"
+                            class="form-control"
+                            type="text"
+                            style="display: none"
+                          />
+                        </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
                           <input
@@ -329,7 +363,7 @@
                             Upload image
                           </button>
                           <div class="thumbnails" id="avatar_thumbnails"></div>
-                          <!-- <input type="hidden" id="avatar_account"> -->
+                          <input type="hidden" id="avatar_account" />
                           <span class="form-message"></span>
                         </div>
                         <button
@@ -341,99 +375,222 @@
                         </button>
                       </form>
                     </div>
-                    <!-- Add new food -->
-                    <!-- <div class="tab-pane" id="formAddFood">
-										<form class="form addform" id="new-food-form" role="form">
-											<div class="form-group">
-												<label for="name" class="form-label">Food
-													Name</label>
-												<input id="nameFood" class="form-control" type="text"
-													placeholder="Enter Food Name" />
-												<span class="form-message"></span>
-											</div>
-											<div class="form-group">
-												<label for="name" class="form-label">Category</label>
-												<select name="category" id="category" class="form-control required">
-													<option selected disabled>Select</option>
-													<option value="1">Drinks</option>
-													<option value="2">Noodle</option>
-													<option value="3">Bread</option>
-													<option value="4">Rice</option>
-													<option value="5">Meat</option>
-													<option value="6">Seafood</option>
-													<option value="7">Vegetables</option>
-													<option value="8">Vegetarian Food</option>
-													<option value="9">Fruit</option>
-													<option value="10">Fast Food</option>
-													<option value="11">Snacks</option>
-													<option value="12">Others</option>
-												</select>
-												<span class="form-message"></span>
-											</div>
-											<div class="form-group">
-												<label for="name" class="form-label">Image
-													Food</label>
-												<br />
-												<button type="button" id="upload_image_food"
-													class="upload-btn btn btn-round">
-													<i class="fa fa-download"></i>
-													Upload image
-												</button>
-												<div class="thumbnails" id="food_thumbnails">
-												</div>
-												<input type="hidden" id="imageFoods">
-												<span class="form-message"></span>
-											</div>
-											<div class="form-group">
-												<label for="name" class="form-label">Expiration
-													Date</label>
-												<input id="expirationDate" class="form-control" type="date" />
-												<span class="form-message"></span>
-											</div>
-											<div class="form-group">
-												<label for="name" class="form-label">Description</label>
-												<textarea id="description" class="form-control" rows="4"
-													style="resize: vertical" placeholder="Enter Description"></textarea>
-												<span class="form-message"></span>
-											</div>
-											<div>
-												<button id="newFood" type="button"
-													class="btn btn-success btn-round btnSubmit">
-													<i class="fa fa-plus"></i>
-													Add
-												</button>
-											</div>
-										</form>
-									</div> -->
                     <!-- List of food -->
                     <div class="tab-pane" id="listFood">
-                      <div class="card radius-10">
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table align-middle mb-0">
+                      <div class="card radius-10 listFoodPagination">
+                        <div class="card-body" id="center-food-noti">
+                          <span id="no-food-noti" style="display: none"
+                            >You haven't uploaded any food yet!</span
+                          >
+                          <div class="table-responsive" id="food-data-table">
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
                               <thead class="table-light">
                                 <tr>
                                   <th>#</th>
-                                  <th>Name</th>
-                                  <th>Image</th>
+                                  <th>Food Name</th>
                                   <th>Category</th>
                                   <th>Expiration Date</th>
+                                  <th>Uploaded Date</th>
                                   <th>Status</th>
-                                  <th>Created At</th>
-                                  <th></th>
-                                  <th></th>
+                                  <th>Edit</th>
+                                  <th>Delete</th>
                                 </tr>
                               </thead>
-                              <tbody class="list-food-item"></tbody>
                               <tbody
                                 class="row multi-columns-row"
                                 id="list-food"
                               ></tbody>
                             </table>
-                            <div class="row">
+                            <div class="row" id="pagination-button">
                               <div class="col-sm-12">
-                                <div class="pagination font-alt"></div>
+                                <div class="pagination1 font-alt"></div>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="editUser">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <button
+                              onclick="backToFoodList()"
+                              type="button"
+                              class="btn btn-b btn-round btnSubmit"
+                            >
+                              <i class="fa fa-angle-double-left"></i> Back to
+                              list
+                            </button>
+                          </div>
+                          <div class="col-sm-6">
+                            <div
+                              class="row"
+                              style="top: 34px; position: absolute"
+                            >
+                              <div class="col-sm-11 view-image-product"></div>
+                              <div
+                                class="col-sm-11 view-info-product"
+                                style="max-height: 200px; padding: 0"
+                              ></div>
+                              <div
+                                class="col-sm-11 view-info-des-content"
+                              ></div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="tab-pane">
+                              <h4>Edit Food</h4>
+                              <form
+                                class="form"
+                                onsubmit="return false"
+                                id="editformEdit"
+                                role="form"
+                              >
+                                <div class="form-group">
+                                  <label for="nameFoodEdit" class="form-label"
+                                    >Food Name</label
+                                  >
+                                  <input
+                                    id="nameFoodEdit"
+                                    name="nameFoodEdit"
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Enter Food Name"
+                                  />
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-sm-6 category_col">
+                                    <div class="form-group">
+                                      <label
+                                        for="categoryEdit"
+                                        class="form-label"
+                                        >Category</label
+                                      >
+                                      <select
+                                        name="categoryEdit"
+                                        id="categoryEdit"
+                                        class="form-control required"
+                                      >
+                                        <option selected disabled value="">
+                                          Select
+                                        </option>
+                                        <option value="1">Drinks</option>
+                                        <option value="2">Noodle</option>
+                                        <option value="3">Bread</option>
+                                        <option value="4">Rice</option>
+                                        <option value="5">Meat</option>
+                                        <option value="6">Seafood</option>
+                                        <option value="7">Vegetables</option>
+                                        <option value="8">
+                                          Vegetarian Food
+                                        </option>
+                                        <option value="9">Fruit</option>
+                                        <option value="10">Fast Food</option>
+                                        <option value="11">Snacks</option>
+                                        <option value="12">Others</option>
+                                      </select>
+                                      <span class="form-message"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6 date_col">
+                                    <div class="form-group">
+                                      <label
+                                        for="expirationDateEdit"
+                                        class="form-label"
+                                        >Expiration Date</label
+                                      >
+                                      <input
+                                        id="expirationDateEdit"
+                                        name="expirationDateEdit"
+                                        class="form-control"
+                                        type="date"
+                                      />
+                                      <span class="form-message"></span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="name" class="form-label"
+                                    >Image Food</label
+                                  >
+                                  <br />
+                                  <button
+                                    type="button"
+                                    id="upload_image_foodEdit"
+                                    class="upload-btn btn btn-round"
+                                  >
+                                    <i class="fa fa-download"></i> Upload image
+                                  </button>
+
+                                  <div class="thumbnailsFoodEdit">
+                                    <ul class="cloudinary-thumbnails">
+                                      <li
+                                        class="cloudinary-thumbnail"
+                                        data-cloudinary=""
+                                      >
+                                        <img
+                                          src=""
+                                          style="width: 300px; height: 300px"
+                                        />
+                                        <a
+                                          href="#"
+                                          class="cloudinary-delete-edit"
+                                          >x</a
+                                        >
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <input
+                                    type="hidden"
+                                    name="imageFoodsEdit"
+                                    id="imageFoodsEdit"
+                                  />
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label
+                                    for="descriptionEdit"
+                                    class="form-label"
+                                    >Description</label
+                                  >
+                                  <textarea
+                                    id="descriptionEdit"
+                                    name="descriptionEdit"
+                                    class="form-control"
+                                    rows="2"
+                                    style="resize: vertical"
+                                    placeholder="Enter Description"
+                                  ></textarea>
+                                  <span class="form-message"></span>
+                                </div>
+                                <div class="form-group">
+                                  <label for="contentEdit" class="form-label"
+                                    >Content</label
+                                  >
+                                  <textarea
+                                    id="contentEdit"
+                                    name="contentEdit"
+                                    class="form-control"
+                                    rows="5"
+                                    style="resize: vertical"
+                                    placeholder="Enter Description"
+                                  ></textarea>
+                                  <span class="form-message"></span>
+                                </div>
+                                <div>
+                                  <button
+                                    onclick="newFoodEdit()"
+                                    type="submit"
+                                    class="btn btn-success btn-round btnSubmit"
+                                    style="margin-bottom: 10px"
+                                  >
+                                    <i class="fa fa-arrow-circle-o-up"></i>
+                                    Update
+                                  </button>
+                                </div>
+                              </form>
                             </div>
                           </div>
                         </div>
@@ -442,21 +599,34 @@
                     <!-- list request -->
                     <div class="tab-pane" id="listRequest">
                       <div class="card radius-10">
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table align-middle mb-0">
+                        <div class="card-body" id="center-request-noti">
+                          <span id="no-request-noti" style="display: none"
+                            >You haven't received any request yet!</span
+                          >
+                          <div class="table-responsive" id="request-data-table">
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
                               <thead class="table-light">
                                 <tr>
                                   <th>#</th>
-                                  <th>Name</th>
-                                  <th>Message</th>
+                                  <th>Food Name</th>
                                   <th>Supplier Name</th>
-                                  <th></th>
-                                  <th></th>
+                                  <th>Status</th>
+                                  <th>Detail</th>
+                                  <th>Delete</th>
                                 </tr>
                               </thead>
-                              <tbody id="list-request"></tbody>
+                              <tbody
+                                class="row multi-columns-row"
+                                id="list-request"
+                              ></tbody>
                             </table>
+                            <div class="row" id="pagination-button">
+                              <div class="col-sm-12">
+                                <div class="pagination2 font-alt"></div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -471,7 +641,7 @@
                                 <div class="slider-info-food">
                                   <img
                                     id="image_food_detail_request"
-                                    src="https://res.cloudinary.com/vernom/image/upload/v1633964280/hanoi_food_bank_project/uploaded_food/Fruit/apple1.jpg"
+                                    src=""
                                     style="width: 100%; max-height: 450px"
                                   />
                                 </div>
@@ -485,19 +655,31 @@
                         >
                           <div class="row">
                             <div class="col-sm-12">
-                              <h1 class="product-title font-alt"></h1>
+                              <h1 class="font-alt" id="food-title"></h1>
                             </div>
                           </div>
                           <div class="row mb-20">
                             <div class="col-sm-12">
-                              <div class="description">
-                                <p></p>
+                              <div>
+                                Status: <span id="request-status"></span>
                               </div>
                             </div>
                           </div>
                           <div class="row mb-20">
                             <div class="col-sm-12">
-                              <div class="product_meta">Status: <a> </a></div>
+                              <div>
+                                Message to supplier:
+                                <textarea
+                                  id="message"
+                                  name="message"
+                                  rows="3"
+                                  style="
+                                    resize: vertical;
+                                    width: 100%;
+                                    max-height: 180px;
+                                  "
+                                ></textarea>
+                              </div>
                             </div>
                           </div>
                           <div class="row mb-20 row-btn"></div>
@@ -526,13 +708,25 @@
             <div class="modal-main">
               <div class="modal-container">
                 <div class="modal-body">
-                  <!-- Add new food -->
+                  <!-- Confirm Delete -->
                   <div class="tab-pane">
-                    <h4>Are you sure you want to delete this food?</h4>
-                    <button id="accept-button" class="btn btn-round btn-danger">
+                    <h4 class="text-center">
+                      Are you sure you want to delete this?
+                    </h4>
+                    <button
+                      type="button"
+                      id="accept-button"
+                      class="btn btn-round btn-danger"
+                      value=""
+                    >
                       I'm sure
                     </button>
-                    <button id="cancel-button" class="btn btn-round">
+                    <button
+                      type="button"
+                      id="cancel-button"
+                      class="btn btn-round"
+                      onclick="cancelModal()"
+                    >
                       Cancel
                     </button>
                   </div>
@@ -595,6 +789,13 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"
     />
 
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+      integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <script src="./assets/js/account_pagination.js"></script>
 
     <script>
@@ -605,13 +806,82 @@
       }
     </script>
     <script>
-      function started() {
-        var tokenaccount = document.cookie;
-        // if (tokenaccount) {
-        //   location.replace("../login_register.html");
-        // }
+      var tokenaccount = document.cookie;
+      if (!tokenaccount) {
+        location.replace("../login_register.html");
       }
-      started();
+
+      // var listFood = document.querySelector('#listFood');
+      // var listFoodPost = document.querySelector('#listFoodPost');
+      // var listFoodPending = document.querySelector('#listFoodPending');
+      // function listfood(e){
+      //   switch (e) {
+      //     case "listFood":
+      //       listFood.classList.forEach(
+      //         function(value) {
+      //           if(value !== 'active'){
+      //             listFood.classList.add('active');
+      //           }
+      //         });
+      //       listFoodPost.classList.forEach(
+      //         function(value) {
+      //           if(value == 'active'){
+      //             listFoodPost.classList.remove('active');
+      //           }
+      //         });
+      //       listFoodPending.classList.forEach(
+      //         function(value) {
+      //           if(value == 'active'){
+      //             listFoodPending.classList.remove('active');
+      //           }
+      //         });
+      //       break;
+      //     case "listFoodPost":
+      //       listFood.classList.forEach(
+      //           function(value) {
+      //             if(value == 'active'){
+      //               listFood.classList.remove('active');
+      //             }
+      //           });
+      //         listFoodPost.classList.forEach(
+      //           function(value) {
+      //             if(value !== 'active'){
+      //               listFoodPost.classList.add('active');
+      //               listFoodPost.classList.remove('d-none');
+      //             }
+      //           });
+      //         listFoodPending.classList.forEach(
+      //           function(value) {
+      //             if(value == 'active'){
+      //               listFoodPending.classList.remove('active');
+      //             }
+      //           });
+      //       break;
+      //     case "listFoodPending":
+      //       listFood.classList.forEach(
+      //           function(value) {
+      //             if(value == 'active'){
+      //               listFood.classList.remove('active');
+      //             }
+      //           });
+      //         listFoodPost.classList.forEach(
+      //           function(value) {
+      //             if(value == 'active'){
+      //               listFoodPost.classList.remove('active');
+      //             }
+      //           });
+      //         listFoodPending.classList.forEach(
+      //           function(value) {
+      //             if(value !== 'active'){
+      //               listFoodPending.classList.add('active');
+      //               listFoodPending.classList.remove('d-none');
+      //             }
+      //           });
+      //       break;
+      //     default:
+      //       break;
+      //     }
+      //   }
     </script>
   </body>
 </html>

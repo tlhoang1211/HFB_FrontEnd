@@ -144,6 +144,10 @@
     />
     <link rel="stylesheet" href="./assets/css/validator.css" />
     <link rel="stylesheet" href="./assets/css/repository.css" />
+
+    <!-- paypal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ARfjvhupmZbesvNCgtE5AJV8zCxdME-gej0ajX-4aBkkIpdstLDqPA1dqw3oZIozjICO5A78qlEIw1OL&components=buttons"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -154,7 +158,7 @@
       <div class="main">
         <section
           class="module bg-dark-30"
-          data-background="assets/images/section-4.jpg"
+          data-background="assets/images/gallery/bg/bg4.jpg"
         >
           <div class="container">
             <div class="row">
@@ -250,67 +254,35 @@
                 <hr class="divider-w mb-10" />
                 <form class="form" id="form-register">
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="fullname"
-                      type="text"
-                      name="fullname"
-                      placeholder="Full Name"
-                    />
+                    <input class="form-control" id="fullname-register" type="text" name="fullname-register" placeholder="Full Name" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="E-mail"
-                      type="text"
-                      name="email"
-                      placeholder="Email"
-                    />
+                    <input class="form-control" id="username-register" type="text" name="username-register" placeholder="User Name" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="phone-register"
-                      type="text"
-                      name="phone-register"
-                      placeholder="Phone Number"
-                    />
+                    <input class="form-control" id="E-mail-register" type="text" name="email-register" placeholder="Email" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="address"
-                      type="text"
-                      name="address"
-                      placeholder="Address"
-                    />
+                    <input class="form-control" id="phone-register" type="text" name="phone-register" placeholder="Phone Number" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="password"
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                    />
+                    <input class="form-control" id="address-register" type="text" name="address-register" placeholder="Address" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input
-                      class="form-control"
-                      id="re-password"
-                      type="password"
-                      name="re-password"
-                      placeholder="Re-enter Password"
-                    />
+                    <input class="form-control" id="password-register" type="password" name="password-register" placeholder="Password" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-block btn-round btn-b">
+                    <input class="form-control" id="re-password-register" type="password" name="re-password-register" placeholder="Re-enter Password" />
+                    <span class="form-message"></span>
+                  </div>
+                  <div class="form-group">
+                    <button onclick="btnRegister()" class="btn btn-block btn-round btn-b">
                       Register
                     </button>
                   </div>
@@ -384,19 +356,15 @@
       }
 
       // Login
-
-      var contactAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/login";
-
+      var loginAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/login";
       function btnLogin() {
-        var username = document.querySelector('input[name="username-login"]')
-          .value;
-        var password = document.querySelector('input[name="password-login"]')
-          .value;
+        var username = document.querySelector('input[name="username-login"]').value;
+        var password = document.querySelector('input[name="password-login"]').value;
         var formData = {
           username: username,
           password: password,
         };
-        fetch(contactAPI, {
+        fetch(loginAPI, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -425,6 +393,20 @@
           });
       }
 
+      // Register
+      var registerAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/users";
+      
+      function btnRegister(){
+        var fullnameregister = document.getElementById('fullname-register');
+        var usernameregister = document.getElementById('username-register');
+        var emailregister = document.getElementById('E-mail-register');
+        var phoneregister = document.getElementById('phone-register');
+        var addressregister = document.getElementById('address-register');
+        var passwordregister = document.getElementById('password-register');
+        if(!fullnameregister.value == false && !usernameregister.value == false && !emailregister.value == false && !phoneregister.value == false && !addressregister.value == false && !passwordregister.value == false){
+          
+        }
+      }
       // Validator Forgot
       Validator({
         form: "#form-forgot",
@@ -464,31 +446,18 @@
         formGroupSelector: ".form-group",
         errorSelector: ".form-message",
         rules: [
-          Validator.isRequired("#fullname", "This field cannot be left blank"),
-          Validator.isRequired("#E-mail", "This field cannot be left blank"),
-          Validator.isEmail("#E-mail", "Please enter correct email format"),
-          Validator.isRequired(
-            "#phone-register",
-            "This field cannot be left blank"
-          ),
-          Validator.isPhone(
-            "#phone-register",
-            "Please enter correct phone number format"
-          ),
-          Validator.isRequired("#address", "This field cannot be left blank"),
-          Validator.minLength(
-            "#password",
-            3,
-            "Please enter at least 3 characters"
-          ),
-          Validator.isRequired(
-            "#re-password",
-            "This field cannot be left blank"
-          ),
-          Validator.isConfirmed(
-            "#re-password",
+          Validator.isRequired("#fullname-register", "This field cannot be left blank"),
+          Validator.isRequired("#username-register", "This field cannot be left blank"),
+          Validator.isRequired("#E-mail-register", "This field cannot be left blank"),
+          Validator.isEmail("#E-mail-register", "Please enter correct email format"),
+          Validator.isRequired("#phone-register","This field cannot be left blank"),
+          Validator.isPhone("#phone-register", "Please enter correct phone number format"),
+          Validator.isRequired("#address-register", "This field cannot be left blank"),
+          Validator.minLength("#password-register",3,"Please enter at least 3 characters"),
+          Validator.isRequired("#re-password-register","This field cannot be left blank"),
+          Validator.isConfirmed("#re-password-register",
             function () {
-              return document.querySelector("#form-register #password").value;
+              return document.querySelector("#form-register #password-register").value;
             },
             "Re-entered password is incorrect"
           ),

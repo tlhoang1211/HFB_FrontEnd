@@ -144,6 +144,10 @@
     />
 
     <link rel="stylesheet" href="./assets/css/repository.css" />
+
+    <!-- paypal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ARfjvhupmZbesvNCgtE5AJV8zCxdME-gej0ajX-4aBkkIpdstLDqPA1dqw3oZIozjICO5A78qlEIw1OL&components=buttons"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
   </head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
     <main>
@@ -154,16 +158,14 @@
       <div class="main">
         <section
           class="module bg-dark-60 shop-page-header"
-          data-background="assets/images/shop/product-page-bg.jpg"
+          data-background="./assets/images/gallery/bg/bg1.jpg"
         >
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Shop Products</h2>
+                <h2 class="module-title font-alt">Food List</h2>
                 <div class="module-subtitle font-serif">
-                  A wonderful serenity has taken possession of my entire soul,
-                  like these sweet mornings of spring which I enjoy with my
-                  whole heart.
+                  Find and ask for the food you lack, you need. Don't be greedy!
                 </div>
               </div>
             </div>
@@ -344,7 +346,7 @@
         search.innerHTML = sortByFoodName;
       }
 
-      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1';
+      var shopitemAPI = 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2';
 			var shopItem = document.querySelector('.list-shop-item');
       function getListItem(){
 				fetch(shopitemAPI,{
@@ -363,7 +365,7 @@
       function searchNameCategory1(){
         var nameSearchNameCategory = document.querySelector('#nameSearchNameCategory');
         var categorySearchNameCategory = document.querySelector('#categorySearchNameCategory');
-        var searchNameCategoryUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?name=${nameSearchNameCategory.value}&categoryId=${categorySearchNameCategory.value}&status=1`
+        var searchNameCategoryUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?name=${nameSearchNameCategory.value}&categoryId=${categorySearchNameCategory.value}&status=2`
 				fetch(searchNameCategoryUrl,{
           method: 'GET'
         })
@@ -377,7 +379,7 @@
 
       function searchExpirationDate1(){
         var expirationDateSearchExpirationDate = document.querySelector('#expirationDateSearchExpirationDate');
-        var searchExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?expirationDate=${expirationDateSearchExpirationDate.value}&status=1`
+        var searchExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?expirationDate=${expirationDateSearchExpirationDate.value}&status=2`
 				fetch(searchExpirationDateUrl,{
           method: 'GET'
         })
@@ -390,7 +392,7 @@
       }
 
       function sortByExpirationDate1(){
-        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=expirationDate&status=1`
+        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=expirationDate&status=2`
 				fetch(sortByExpirationDateUrl,{
           method: 'GET'
         })
@@ -403,7 +405,7 @@
       }
 
       function sortByExpirationDate2(){
-        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=expirationDate&status=1`
+        var sortByExpirationDateUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=expirationDate&status=2`
 				fetch(sortByExpirationDateUrl,{
           method: 'GET'
         })
@@ -416,7 +418,7 @@
       }
 
       function sortByName1(){
-        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=name&status=1`
+        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=asc&sortBy=name&status=2`
 				fetch(sortByNameUrl,{
           method: 'GET'
         })
@@ -429,7 +431,7 @@
       }
 
       function sortByName2(){
-        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=name&status=1`
+        var sortByNameUrl = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?order=dsc&sortBy=name&status=2`
 				fetch(sortByNameUrl,{
           method: 'GET'
         })

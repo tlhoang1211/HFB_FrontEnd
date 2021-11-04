@@ -55,7 +55,6 @@
 
 #user-account {
   margin-top: -5px;
-  margin-left: 10px;
 }
 
 .navbar-custom .dropdown-toggle:after {
@@ -91,4 +90,10 @@
 
 .navbar-custom .nav li > a {
   font-weight: 600;
+}
+
+#hi-name {
+  pointer-events: none;
+  color: white;
+  background-color: black;
 }
