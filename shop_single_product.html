@@ -498,7 +498,6 @@
             listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
             let myPromise = new Promise(function (myResolve) {
               var listItemImages = listItems.data.images.split(",");
-              console.log(listItemImages);
               var htmlsItem = `
             <div class="row multi-columns-row" >
                   <div class="slider-image">`;
@@ -613,7 +612,6 @@
 
             // tai day
             var relatedProducts = document.querySelector(".related-products");
-            console.log(listFoodCategory);
             fetch(listFoodCategory)
               .then((response) => response.json())
               .then((listFood) => {
@@ -624,7 +622,7 @@
                     <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
                       <div class="shop-item">
                         <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                        <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><span class="icon-basket">View Details</span></a></div>
+                        <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><i class="fa fa-eye"/> View Details</a></div>
                         </div>
                         <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
                         <p>Expiration Date: ${item.expirationDate}</p>
@@ -648,24 +646,26 @@
                       var timeRest = tet - now;
                       if (timeRest <= 0) {
                         clearInterval(countDown);
-                        document.querySelector(`#shop-item-${item2.id}`).style.display = "none";
+                        document.querySelector(
+                          `#shop-item-${item2.id}`
+                        ).style.display = "none";
 
                         var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
-                            fetch(urlUpdateStatus, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${token}`,
-                            },
-                            body: JSON.stringify({
-                                status: 0
-                            }),
-                            })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                getListItem();
-                            })
-                            .catch(error => console.log(error));
+                        fetch(urlUpdateStatus, {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({
+                            status: 0,
+                          }),
+                        })
+                          .then((response) => response.json())
+                          .then((data) => {
+                            getListItem();
+                          })
+                          .catch((error) => console.log(error));
                       }
                     }
                   });
@@ -699,9 +699,6 @@
           })
             .then((response) => response.json())
             .then((itemFood) => {
-              console.log(itemFood);
-              console.log(getDetailFood);
-
               idUserFood = itemFood.data.createdBy;
               avatarFood = itemFood.data.avatar;
 
@@ -718,8 +715,6 @@
                 })
                   .then((response) => response.json())
                   .then((itemRequest) => {
-                    console.log(itemRequest.status);
-                    console.log(getRequestById);
                     if (itemRequest.status == 200) {
                       modalsinglefood.style.display = "none";
                       swal(
@@ -781,7 +776,6 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log(data);
               var today = new Date();
               var time =
                 today.getDate() +

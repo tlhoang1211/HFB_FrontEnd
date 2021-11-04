@@ -108,7 +108,7 @@ function showTabPanel(e) {
       break;
     case "myrequest":
       document
-        .getElementsByClassName("listFoodRequest")[0]
+        .getElementsByClassName("listActiveFood")[0]
         .classList.remove("d-none");
       document.getElementsByClassName("listRequest")[0].classList.add("active");
       document.getElementById("listRequest").classList.add("active");
