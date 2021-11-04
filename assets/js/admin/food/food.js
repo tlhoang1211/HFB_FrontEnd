@@ -261,3 +261,49 @@ function renderDropdowFilterCategory(){
     $('.filter-category .dropdown-menu').append(html);
 }
 renderDropdowFilterCategory();
+var dataFindFood;
+function formUpdateFood(e, id){
+    $('#modalAddFood').modal('show');
+    getConnectAPI('GET', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/' + id, null, function(result){
+        if (result && result.status == 200) {
+            console.log(result)
+            dataFindFood = result;
+        }
+    },
+        function(errorThrown){}
+    );
+}
+function saveUpdateFood(){
+    // var name = document.getElementById("nameFood").value;
+    // var categoryId = document.getElementById("category").value;
+    // var expirationDate = document.getElementById("expirationDate").value;
+    // var description = document.getElementById("description").value;
+    // if (!expirationDate) {
+    //     $(".alert-danger").alert();
+    //     return false;
+    //   }
+    //   if (listImageFood.length == 0) {
+    //     $(".alert-danger").alert();
+    //     return false;
+    //   }
+    var expirationDate = $('#expirationDate').val();
+    var dataPost = {
+        name: name,
+        avatar: dataFindFood.avatar,
+        images: dataFindFood.images,
+        expirationDate: expirationDate,
+        updatedBy: objAccount.id,
+        categoryId: dataFindFood.categoryId,
+        description: dataFindFood.bootstrapPaginatordescription,
+        manufactureDate: '',
+        status: 1,
+    }
+    getConnectAPI('POST', 'http://localhost:8080/api/v1/hfb/foods/' + id, JSON.stringify(dataPost), function(result){
+        if (result && result.status == 200) {
+            $('#modalAddFood').modal('hide');
+            console.log(result)
+        }
+    },
+        function(errorThrown){}
+    );
+}
