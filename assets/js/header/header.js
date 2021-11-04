@@ -68,7 +68,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
       } else {
         var htmlsItem = `
         <img style="width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.1);"
-          src="${objAccount.avatar}" alt="" class="navbar__user-img">`;
+          src="https://res.cloudinary.com/vernom/image/upload/${objAccount.avatar}" alt="" class="navbar__user-img">`;
       }
 
       userName.innerHTML = "Hi " + objAccount.name + "!";

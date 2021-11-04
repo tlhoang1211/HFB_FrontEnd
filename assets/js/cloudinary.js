@@ -1,34 +1,7 @@
 // hoangtl2 - 28/10
 // start
 
-// avatar
-var myWidget = cloudinary.createUploadWidget(
-  {
-    cloudName: "vernom",
-    uploadPreset: "fn5rpymu",
-    multiple: false,
-    form: "#update-account-form",
-    folder: "hanoi_food_bank_project/users_avatar",
-    fieldName: "thumbnails[]",
-    thumbnails: ".thumbnails",
-  },
-  (error, result) => {
-    if (!error && result && result.event === "success") {
-      console.log("Done! Here is the image info: ", result.info.url);
-      var avatarInput = document.querySelectorAll('input[name="thumbnails"]');
-      avatarInput.value = avatarInput.getAttribute("data-cloudinary");
-      console.log(avatarInput.value);
-    }
-  }
-);
 
-document.getElementById("upload_avatar").addEventListener(
-  "click",
-  function () {
-    myWidget.open();
-  },
-  false
-);
 
 // add class "selected" to chosen option
 // $(document).ready(function () {

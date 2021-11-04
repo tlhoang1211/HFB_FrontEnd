@@ -258,11 +258,7 @@
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <input class="form-control" id="username-register" type="text" name="username-register" placeholder="User Name" />
-                    <span class="form-message"></span>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="E-mail-register" type="text" name="email-register" placeholder="Email" />
+                    <input class="form-control" id="E-mail-register" type="text" name="email-register" placeholder="User Name - Email" />
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
@@ -282,7 +278,7 @@
                     <span class="form-message"></span>
                   </div>
                   <div class="form-group">
-                    <button onclick="btnRegister()" class="btn btn-block btn-round btn-b">
+                    <button onclick="btnRegister()" type="button" class="btn btn-block btn-round btn-b">
                       Register
                     </button>
                   </div>
@@ -357,12 +353,10 @@
 
       // Login
       var loginAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/login";
-      function btnLogin() {
-        var username = document.querySelector('input[name="username-login"]').value;
-        var password = document.querySelector('input[name="password-login"]').value;
+      function login(usernamelogin, passwordlogin){
         var formData = {
-          username: username,
-          password: password,
+          username: usernamelogin,
+          password: passwordlogin,
         };
         fetch(loginAPI, {
           method: "POST",
@@ -392,19 +386,56 @@
             console.log(error);
           });
       }
+      function btnLogin() {
+        var username = document.querySelector('input[name="username-login"]').value;
+        var password = document.querySelector('input[name="password-login"]').value;
+        login(username, password);
+      }
 
       // Register
       var registerAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/users";
       
       function btnRegister(){
-        var fullnameregister = document.getElementById('fullname-register');
-        var usernameregister = document.getElementById('username-register');
-        var emailregister = document.getElementById('E-mail-register');
-        var phoneregister = document.getElementById('phone-register');
-        var addressregister = document.getElementById('address-register');
-        var passwordregister = document.getElementById('password-register');
-        if(!fullnameregister.value == false && !usernameregister.value == false && !emailregister.value == false && !phoneregister.value == false && !addressregister.value == false && !passwordregister.value == false){
-          
+        var fullnameregister = document.getElementById('fullname-register').value;
+        var emailregister = document.getElementById('E-mail-register').value;
+        var phoneregister = document.getElementById('phone-register').value;
+        var addressregister = document.getElementById('address-register').value;
+        var passwordregister = document.getElementById('password-register').value;
+        if(!fullnameregister == false && !emailregister == false && !phoneregister == false && !addressregister == false && !passwordregister == false){
+          fetch(registerAPI, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "username": emailregister,
+              "phone": phoneregister,
+              "address": addressregister,
+              "avatar": "v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg",
+              "email": emailregister,
+              "name": fullnameregister,
+              "password": passwordregister
+            }),
+          })
+          .then((response) => response.json())
+          .then(function (data) {
+            console.log("aaaaaaaaaaaaaaaa");
+            if (data.status == 200) {
+              swal("Success!", `Register success!`, "success");
+              setTimeout(function(){
+                login(usernameregister, passwordregister);
+              }, 3000);
+              
+            } else if(data.status == 501){
+              swal("Error!", `${data.message}!`, "error");
+            }else{
+              swal("Error!", "Register fail!", "error");
+            }
+          })
+          .catch(function (error) {
+            swal("Error!", "Register fail!", "error");
+            console.log(error);
+          });
         }
       }
       // Validator Forgot
@@ -447,7 +478,6 @@
         errorSelector: ".form-message",
         rules: [
           Validator.isRequired("#fullname-register", "This field cannot be left blank"),
-          Validator.isRequired("#username-register", "This field cannot be left blank"),
           Validator.isRequired("#E-mail-register", "This field cannot be left blank"),
           Validator.isEmail("#E-mail-register", "Please enter correct email format"),
           Validator.isRequired("#phone-register","This field cannot be left blank"),
