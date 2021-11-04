@@ -1,9 +1,10 @@
-function formAddFood() {
-    document.getElementById('modalAddFood').classList.add('show');
+var orderByRequest = 'asc', statusRequest = null, searchName_Request, filter_Category;
+function formAddRequest() {
+    document.getElementById('modalAddRequest').classList.add('show');
 }
-// save food
-function saveFood(){
-    var name = document.getElementById("nameFood").value;
+// save Request
+function saveRequest(){
+    var name = document.getElementById("nameRequest").value;
     var categoryId = document.getElementById("category").value;
     var expirationDate = document.getElementById("expirationDate").value;
     var description = document.getElementById("description").value;
@@ -11,43 +12,50 @@ function saveFood(){
         $(".alert-danger").alert();
         return false;
       }
-      if (listImageFood.length == 0) {
+      if (listImageRequest.length == 0) {
         $(".alert-danger").alert();
         return false;
       }
     
     var dataPost = {
         name: name,
-        avatar: listImageFood[0],
-        images: listImageFood.join(","),
+        avatar: listImageRequest[0],
+        images: listImageRequest.join(","),
         expirationDate: expirationDate,
         createdBy: objAccount.id,
         categoryId: categoryId,
         description: description
     }
-    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/Requests', JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            getListFood();
-            $('#modalAddFood').modal('hide');
+            getListRequest();
+            $('#modalAddRequest').modal('hide');
         }
     },
         function(errorThrown){}
     );
 }
 var pageSize = 10, pageIndex = 0;
-// get data food
-function getListFood(pageIndex) {
+// get data Request
+function getListRequest(pageIndex) {
     if (!pageIndex) {
         pageIndex = 0;
     }
     var optionUrl = '';
-    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&page=' + pageIndex + '&limit=' + (pageIndex === 0 ? pageSize : (pageIndex * pageSize)), null, function(result){
+    if (statusRequest) {
+        optionUrl += '&status=' + parseInt(statusRequest);
+    }
+    if (orderByRequest) {
+        optionUrl += '&order=' + orderByRequest;
+    }
+    optionUrl += '&sortBy=id';
+    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {
-                if (document.querySelectorAll("#table-food tbody").lastElementChild) {
-                    document.querySelectorAll("#table-food tbody").item(0).innerHTML = '';
+                if (document.querySelectorAll("#table-Request tbody").lastElementChild) {
+                    document.querySelectorAll("#table-Request tbody").item(0).innerHTML = '';
                 }
-                document.querySelectorAll("#table-food tbody").item(0).innerHTML = renderListFood(result.data.content);
+                document.querySelectorAll("#table-Request tbody").item(0).innerHTML = renderListRequest(result.data.content);
                 var total = 0;
                 total = result.data.totalElements;
                 var pageNumber = Math.ceil(total / pageSize);
@@ -61,7 +69,7 @@ function getListFood(pageIndex) {
                     size: 'normal',
                     alignment: 'right',
                     onPageClicked: function (e, originalEvent, click, page) {
-                        getListFood(page - 1);
+                        getListRequest(page - 1);
                     }
                 }
                 $('#nextpage').bootstrapPaginator(options);
@@ -72,8 +80,8 @@ function getListFood(pageIndex) {
         function(errorThrown){}
     );
 }
-getListFood();
-function renderListFood(data) {
+getListRequest();
+function renderListRequest(data) {
     var count = 0;
     var html = data.map(function (e) {
         count++;
@@ -85,17 +93,17 @@ function renderListFood(data) {
             <td></td>
             <td>${e.expirationDate}</td>
             <td>
-                <div class="d-flex align-items-center ${colorStatusFood(e.status)}">
+                <div class="d-flex align-items-center ${colorStatusRequest(e.status)}">
                     <i class='bx bx-radio-circle-marked bx-burst bx-rotate-90 align-middle font-18 me-1'></i>
-					<span>${convertStatusFood(e.status)}</span>
+					<span>${convertStatusRequest(e.status)}</span>
                 </div>
             </td>
             <td>${e.createdAt}</td>
             <td >
                 <div class="d-flex order-actions">
-                    <a onclick="formUpdateFood(this, ${e.id})"><i class='bx bx-edit' ></i></a>`
-                    + "<a onclick=\"approvalFood(this, '" + e.id +"', '" + e.createdBy + "', '" + e.avatar + '\')" class="ms-4"><i class="bx bx-check"></i></a>'
-                    + "<a onclick=\"deleteFood(this, '" + e.id +"', '" + e.name +"', '"
+                    <a onclick="formUpdateRequest(this, ${e.id})"><i class='bx bx-edit' ></i></a>`
+                    + "<a onclick=\"approvalRequest(this, '" + e.id +"', '" + e.createdBy + "', '" + e.avatar + '\')" class="ms-4"><i class="bx bx-check"></i></a>'
+                    + "<a onclick=\"deleteRequest(this, '" + e.id +"', '" + e.name +"', '"
                     + e.categoryId + "', '" + e.avatar + "', '" + e.images + "', '" + e.description + "', '" 
                     + e.content + "', '" + e.expirationDate + '\')" class="ms-4"><i class="bx bxs-trash"></i></a>' +
                 `</div>
@@ -110,36 +118,37 @@ function onChangeOrderBy(e, type){
     e.classList.add('active')
 }
 var idApproval;
-function approvalFood(e, id, createdBy, avatar){
+function approvalRequest(e, id, createdBy, avatar){
     idApproval = {
         ele: e.parentElement.parentElement.parentElement,
         id: id,
         createdBy: createdBy,
         avatar: avatar
     }
-    $('#approvalFood').modal('show');
+    $('#approvalRequest').modal('show');
 }
-function onBrowseFood(){
+function onBrowseRequest(){
     var dataPost = {
         status: 2
     };
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${idApproval.id}`, JSON.stringify(dataPost), function(result){
+    http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/4/5
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Requests/status/${idApproval.id}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             Notification.send(parseInt(idApproval.createdBy), {
                 sender: objAccount.id,
                 idNotify: "",
                 usernameaccount: "",
-                foodid: parseInt(idApproval.id),
+                Requestid: parseInt(idApproval.id),
                 avatar: idApproval.avatar,
                 title: "Admin approved",
                 message: "Time request: " + time,
-                category: "food",
+                category: "Request",
                 status: 1,
             });
-            $('#approvalFood').modal('hide');
-            getListFood();
+            $('#approvalRequest').modal('hide');
+            getListRequest();
             
         }
     },
@@ -147,7 +156,7 @@ function onBrowseFood(){
     );
 }
 var objDelete;
-function deleteFood(e, id, name, cateID, avatar, images, description, content, expirationDate) {
+function deleteRequest(e, id, name, cateID, avatar, images, description, content, expirationDate) {
     objDelete = {
         ele: e.parentElement.parentElement.parentElement,
         id: id,
@@ -159,9 +168,9 @@ function deleteFood(e, id, name, cateID, avatar, images, description, content, e
         content: content,
         expirationDate: expirationDate
     }
-    $('#deleteFood').modal('show');
+    $('#deleteRequest').modal('show');
 }
-function onDeleteFood(){
+function onDeleteRequest(){
     var dataPost = {
         name: objDelete.name,
         updatedBy: objAccount.id,
@@ -173,18 +182,18 @@ function onDeleteFood(){
         content: objDelete.content,
         expirationDate: objDelete.expirationDate
     };
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${objDelete.id}`, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Requests/${objDelete.id}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             objDelete.ele.remove();
-            $('#deleteFood').modal('hide');
-            getListFood();
+            $('#deleteRequest').modal('hide');
+            getListRequest();
         }
     },
         function(errorThrown){}
     );
 }
 
-function convertStatusFood(status){
+function convertStatusRequest(status){
     var text = '';
     switch (status) {
         case 0:
@@ -203,7 +212,7 @@ function convertStatusFood(status){
     return text;
 }
 
-function colorStatusFood(status){
+function colorStatusRequest(status){
     var color = '';
     switch (status) {
         case 0:

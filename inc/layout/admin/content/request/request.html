@@ -1,27 +1,22 @@
 <div class="card">
     <div class="card-body">
         <div class="row align-items-center">
-            <div class="col-lg-3 col-xl-2">
-                <a type="button" class="btn btn-light mb-3 mb-lg-0" onclick="formAddFood()" data-bs-toggle="modal"
-                    data-bs-target="#modalAddFood"><i class="bx bxs-plus-square"></i>New request</a>
-            </div>
-            <div class="col-lg-9 col-xl-10">
-                <form class="float-lg-end">
+            <div class="col-lg-12 col-xl-12">
+                <form class="float-lg-start">
                     <div class="row row-cols-lg-auto g-2">
                         <div class="col-12">
                             <div class="position-relative">
-                                <input type="text" class="form-control ps-5" placeholder="Search food..."> <span
-                                    class="position-absolute top-50 product-show translate-middle-y"><i
-                                        class="bx bx-search"></i></span>
+                                <input id="searchRequest" type="text" class="form-control ps-5" placeholder="Search Request...">
+                                <span class="position-absolute top-50 product-show translate-middle-y" onclick="searchNameRequest('#searchRequest')"><i class="bx bx-search"></i></span>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="btn-group float-start pe-2">
+                            <div class="btn-group float-start">
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"
                                     style="margin: 0px;">
-                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
+                                    <a class="dropdown-item active" onclick="onChangeOrderBy(this, 'asc')">From a-z</a>
                                     <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
                                 </div>
                             </div>
@@ -30,12 +25,12 @@
                             <div class="btn-group" role="group">
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Status</button>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item" onclick="filterStatus(this)">All</a></li>
-                                    <li><a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a></li>
-                                    <li><a class="dropdown-item" onclick="filterStatus(this, '1')">Pending</a></li>
-                                    <li><a class="dropdown-item" onclick="filterStatus(this, '2')">Active</a></li>
-                                </ul>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                    <a class="dropdown-item active" onclick="filterStatus(this)">All</a>
+                                    <a class="dropdown-item" onclick="filterStatus(this, '0')">Deactive</a>
+                                    <a class="dropdown-item" onclick="filterStatus(this, '1')">Pending</a>
+                                    <a class="dropdown-item" onclick="filterStatus(this, '2')">Active</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,20 +45,25 @@
             <div>
                 <h5 class="mb-0">Request list</h5>
             </div>
+            <div class="ms-auto">
+                <a type="button" class="btn btn-light mb-3 mb-lg-0 float-end" onclick="formAddRequest()"><i class="bx bxs-plus-square"></i>New Request</a>
+            </div>
         </div>
         <hr />
-        <div class="table-responsive" id="table-food">
+        <div class="table-responsive" id="table-Request">
             <table class="table align-middle mb-0 table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Food name</th>
-                        <th>Note</th>
+                        <th>Image</th>
+                        <th>Name</th>
                         <th>Category</th>
                         <th>Expiration date</th>
                         <th>Status</th>
                         <th>Create at</th>
                         <th>Action</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,30 +75,30 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modalAddFood" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAddRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-secondary">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new request</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add new Request</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form class="form addform" role="form">
                     <div class="form-group pt-1">
-                        <label for="name" class="form-label">Food Name</label>
-                        <input id="nameFood" class="form-control" type="text" placeholder="Enter Food Name" />
+                        <label for="name" class="form-label">Request Name</label>
+                        <input id="nameRequest" class="form-control" type="text" placeholder="Enter Request Name" />
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group pt-1">
-                        <label for="name" class="form-label">Image Food</label>
+                        <label for="name" class="form-label">Image Request</label>
                         <br />
-                        <button type="button" id="upload_image_food" class="upload-btn btn btn-info btn-round">
+                        <button type="button" id="upload_image_Request" class="upload-btn btn btn-info btn-round">
                             <i class="fa fa-download"></i>
                             Upload image
                         </button>
-                        <div class="thumbnails" id="food_thumbnails">
+                        <div class="thumbnails" id="Request_thumbnails">
                         </div>
-                        <input type="hidden" id="imageFoods">
+                        <input type="hidden" id="imageRequests">
                         <span class="form-message"></span>
                     </div>
                     <div class="form-group pt-1">
@@ -115,21 +115,21 @@
                                 Meat
                             </option>
                             <option value="6">
-                                Seafood
+                                SeaRequest
                             </option>
                             <option value="7">
                                 Vegetables
                             </option>
                             <option value="8">
                                 Vegetarian
-                                Food
+                                Request
                             </option>
                             <option value="9">
                                 Fruit
                             </option>
                             <option value="10">
                                 Fast
-                                Food
+                                Request
                             </option>
                             <option value="11">
                                 Snacks
@@ -155,20 +155,20 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveRequest()">Save</button>
+                <button type="button" class="btn btn-primary" onclick="saveUpdateRequest()">Save</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="deleteFood" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="deleteRequest" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content bg-secondary">
             <div class="modal-header" style="border-bottom: none;">
-                <h5 class="modal-title">Delete food</h5>
+                <h5 class="modal-title">Delete Request</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Do you want to delete this request?</p>
+                <p>Do you want to delete this dish?</p>
             </div>
             <div class="modal-footer" style="border-top: none;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -177,7 +177,7 @@
         </div>
     </div>
 </div>
-<!-- <div class="modal fade" id="approvalFood" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="approvalRequest" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content bg-secondary">
             <div class="modal-header" style="border-bottom: none;">
@@ -189,8 +189,8 @@
             </div>
             <div class="modal-footer" style="border-top: none;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" onclick="onBrowseFood()">Browse</button>
+                <button type="button" class="btn btn-success" onclick="onBrowseRequest()">Browse</button>
             </div>
         </div>
     </div>
-</div> -->
+</div>
