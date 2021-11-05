@@ -142,10 +142,12 @@
     <link rel="stylesheet" href="assets/css/account-custom.css" />
 
     <link rel="stylesheet" href="./assets/css/repository.css" />
+    <link rel="stylesheet" href="./assets/css/validator.css">
 
     <!-- paypal -->
     <script src="https://www.paypal.com/sdk/js?client-id=ARfjvhupmZbesvNCgtE5AJV8zCxdME-gej0ajX-4aBkkIpdstLDqPA1dqw3oZIozjICO5A78qlEIw1OL&components=buttons"></script>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
   </head>
 
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
@@ -177,12 +179,11 @@
                 <div class="col-sm-2 col-md-2">
                   <div class="gallery-item">
                     <div class="gallery-image gallery-avatar">
-                      <a
+                      <a id="avatarGallery"
                         class="gallery"
-                        href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
                         title="Avatar"
                       >
-                        <img id="abc" src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="abc" style="min-height: 163px" />
+                        <img id="avatarImg"  alt="" class="abc" style="min-height: 163px" />
                         <div class="gallery-caption">
                           <div class="gallery-icon">
                             <span class="icon-magnifying-glass"></span>
@@ -337,20 +338,25 @@
                           <span class="form-message"></span>
                         </div>
                         <button type="button" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
-                          <i class="fa fa-save"></i>
-                          Save
+                          <i class="fa fa-edit"></i>
+                          Update
                         </button>
                       </form>
                     </div>
                     <!-- changepassword -->
                     <div class="tab-pane" id="changepassword">
-                      <form class="form registerform" id="changepassword-form" role="form">
+                      <form class="form registerform" id="changepassword-form" onsubmit="return false" role="form">
                         <div class="form-group">
                           <label for="account_email" class="form-label">New Password</label>
                           <input id="newPassword" class="form-control" type="password" placeholder="Enter new password" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
-                        <button type="button" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">Confirm New Password</label>
+                          <input id="confirmNewPassword" class="form-control" type="password" placeholder="Confirm new password" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <button type="submit" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-save"></i>
                           Save
                         </button>

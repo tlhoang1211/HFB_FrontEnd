@@ -609,73 +609,76 @@
                   "  ";
               }
             });
-
-            // tai day
-            var relatedProducts = document.querySelector(".related-products");
-            fetch(listFoodCategory)
-              .then((response) => response.json())
-              .then((listFood) => {
-                let myPromise = new Promise(function (myResolve) {
-                  // console.log(listFood.data.content);
-                  var htmlsItem = listFood.data.content.map(function (item) {
-                    return `
-                    <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
-                      <div class="shop-item">
-                        <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                        <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><i class="fa fa-eye"/> View Details</a></div>
-                        </div>
-                        <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                        <p>Expiration Date: ${item.expirationDate}</p>
-                      </div>
-                    </div>
-                    `;
-                  });
-                  relatedProducts.innerHTML = htmlsItem.join("");
-                  myResolve(); // when successful
-                });
-
-                myPromise.then(function () {
-                  listFood.data.content.map(function (item2) {
-                    var tet = getTimeFromString2(item2.expirationDate);
-                    run();
-
-                    // Tổng số giây
-                    var countDown = setInterval(run, 1000);
-                    function run() {
-                      var now = new Date().getTime();
-                      var timeRest = tet - now;
-                      if (timeRest <= 0) {
-                        clearInterval(countDown);
-                        document.querySelector(
-                          `#shop-item-${item2.id}`
-                        ).style.display = "none";
-
-                        var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
-                        fetch(urlUpdateStatus, {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                          },
-                          body: JSON.stringify({
-                            status: 0,
-                          }),
-                        })
-                          .then((response) => response.json())
-                          .then((data) => {
-                            getListItem();
-                          })
-                          .catch((error) => console.log(error));
-                      }
-                    }
-                  });
-                });
-              })
-              .catch((error) => console.log(error));
           })
           .catch((error) => console.log(error));
       }
       getInfoFood();
+      listrelatedProducts();
+      // tai day
+      function listrelatedProducts(){
+              var relatedProducts = document.querySelector(".related-products");
+              fetch(listFoodCategory)
+                .then((response) => response.json())
+                .then((listFood) => {
+                  let myPromise = new Promise(function (myResolve) {
+                    // console.log(listFood.data.content);
+                    var htmlsItem = listFood.data.content.map(function (item) {
+                      return `
+                      <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
+                        <div class="shop-item">
+                          <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                          <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><i class="fa fa-eye"/> View Details</a></div>
+                          </div>
+                          <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
+                          <p>Expiration Date: ${item.expirationDate}</p>
+                        </div>
+                      </div>
+                      `;
+                    });
+                    relatedProducts.innerHTML = htmlsItem.join("");
+                    myResolve(); // when successful
+                  });
+
+                  myPromise.then(function () {
+                    listFood.data.content.map(function (item2) {
+                      var tet = getTimeFromString2(item2.expirationDate);
+                      run();
+
+                      // Tổng số giây
+                      var countDown = setInterval(run, 1000);
+                      function run() {
+                        var now = new Date().getTime();
+                        var timeRest = tet - now;
+                        if (timeRest <= 0) {
+                          clearInterval(countDown);
+                          document.querySelector(
+                            `#shop-item-${item2.id}`
+                          ).style.display = "none";
+
+                          var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                          fetch(urlUpdateStatus, {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${token}`,
+                            },
+                            body: JSON.stringify({
+                              status: 0,
+                            }),
+                          })
+                            .then((response) => response.json())
+                            .then((data) => {
+                              getListItem();
+                            })
+                            .catch((error) => console.log(error));
+                        }
+                      }
+                    });
+                  });
+                })
+                .catch((error) => console.log(error));
+            }
+            
 
       // Add To Cart
       var idUserFood;

@@ -2,18 +2,50 @@
 var objAccount = null;
 var listImageFood = [];
 // Validator register
+// Validator({
+//   form: "#addneworder",
+//   formGroupSelector: ".form-group",
+//   errorSelector: ".form-message",
+//   rules: [
+//     Validator.isRequired("#nameFood", "Food name is required!"),
+//     Validator.isRequired("#category", "Category is required!"),
+//     Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
+//     Validator.isRequired("#expirationDate", "Expiration Date is required!"),
+//     Validator.isRequired("#description", "Description is required!"),
+//   ],
+// });
+
+// Validator update account
 Validator({
-  form: "#addneworder",
+  form: "#update-account-form",
   formGroupSelector: ".form-group",
   errorSelector: ".form-message",
   rules: [
-    Validator.isRequired("#nameFood", "Food name is required!"),
-    Validator.isRequired("#category", "Category is required!"),
-    Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
-    Validator.isRequired("#expirationDate", "Expiration Date is required!"),
-    Validator.isRequired("#description", "Description is required!"),
+    Validator.isRequired("#account_name", "Name is required!"),
+    Validator.isRequired("#account_email", "Username is required!"),
+    Validator.isEmail("#account_email", "Email format is incorrect!"),
+    Validator.isRequired("#account_phone", "Phone is required!"),
+    Validator.isPhone("#account_phone", "Phone format is incorrect!"),
+    Validator.isRequired("#account_address", "Address is required!"),
   ],
 });
+
+// Validator change password
+Validator({
+  form: "#changepassword-form",
+  formGroupSelector: ".form-group",
+  errorSelector: ".form-message",
+  rules: [
+    Validator.isRequired("#newPassword", "New Password is required!"),
+    Validator.minLength('#password', 6),
+    Validator.isRequired("#confirmNewPassword", "Confirm Password is required!"),
+    Validator.isConfirmed('#confirmNewPassword', function(){
+        return document.querySelector('#changepassword-form #newPassword').value;
+    }, 'Re-enter incorrect password!')
+  ],
+});
+
+
 
 // document.getElementById("newFood").addEventListener(
 //   "click",
@@ -93,6 +125,8 @@ function showTabPanel(e) {
       document.getElementsByClassName("profile")[0].classList.add("active");
       document.getElementById("profile").classList.add("active");
       document.getElementsByClassName("profile")[0].classList.remove("d-none");
+
+      document.getElementsByClassName("changepassword")[0].classList.remove("d-none");
       getAccount();
       break;
     case "myfood":
