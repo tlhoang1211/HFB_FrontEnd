@@ -87,7 +87,7 @@ function renderListAccount(data) {
             htmld += '<td><img src="https://via.placeholder.com/110x110" style="width: 30px;height: 30px;"/></td>';
         }
         htmld += '<td>' + (e.name || '') + '</td>';
-        htmld += '<td>' + (e.email || '') + '</td>';
+        htmld += '<td>' + (e.username || '') + '</td>';
         htmld += '<td>' + (e.phone || '') + '</td>';
         htmld += '<td>' + (e.address || '') + '</td>';
         htmld += '<td>';
@@ -96,7 +96,7 @@ function renderListAccount(data) {
         htmld += '<span>' + convertStatusAccount(e.status) +'</span></div></td>';
         htmld += '<td>' + e.createdAt + '</td>';
         htmld += '<td><div class="d-flex order-actions">';
-        htmld += '<a onclick="formUpdateAccount(this, \'' + e.id + '\')"><i class="bx bx-edit"></i></a>';
+        htmld += '<a onclick="formUpdateAccount(this, \'' + e.username + '\')"><i class="bx bx-edit"></i></a>';
         htmld += '<a class="ms-4 ' + (e.status == 1 ? '' : 'd-none') + '" onclick="deleteAccount(this, \'' + e.id + '\')"><i class="bx bx-trash"></i></a>';
         htmld += '</td>';
         return htmld;
@@ -170,4 +170,14 @@ function colorStatusAccount(status) {
             break;
     }
     return color;
+}
+var usernameDetail;
+function formUpdateAccount(username) {
+    usernameDetail = username;
+    var pageContent = document.getElementsByClassName('page-content');
+    if (pageContent.item(0)) {
+		pageContent.item(0).remove();
+	}
+	localStorage.setItem('page', 'updateAccount');
+	loadHtml( '../../../inc/layout/admin/content/account/profile.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/account/profile.js');
 }
