@@ -1,13 +1,6 @@
 "use strict";
 // add method validate
-jQuery.validator.addMethod('valid_email', function (value) {
-  var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
-  return value.trim().match(regex);
-});
-jQuery.validator.addMethod('valid_phone', function (value) {
-  var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-  return value.trim().match(regex);
-});
+
 // validate function
 function emailValidate(value) {
   var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
