@@ -1,4 +1,22 @@
 "use strict";
+// add method validate
+jQuery.validator.addMethod('valid_email', function (value) {
+  var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
+  return value.trim().match(regex);
+});
+jQuery.validator.addMethod('valid_phone', function (value) {
+  var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  return value.trim().match(regex);
+});
+// validate function
+function emailValidate(value) {
+  var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
+  return value.trim().match(regex);}
+function phoneValidate(value) {
+  var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  return value.trim().match(regex);
+}
+
 var objAccount = null;
 var listImageFood = [];
 // Validator register
@@ -16,21 +34,67 @@ var listImageFood = [];
 // });
 
 // Validator update account
-Validator({
-  form: "#update-account-form",
-  formGroupSelector: ".form-group",
-  errorSelector: ".form-message",
-  rules: [
-    Validator.isRequired("#account_name", "Name is required!"),
-    Validator.isRequired("#account_email", "Username is required!"),
-    Validator.isEmail("#account_email", "Email format is incorrect!"),
-    Validator.isRequired("#account_phone", "Phone is required!"),
-    Validator.isPhone("#account_phone", "Phone format is incorrect!"),
-    Validator.isRequired("#account_address", "Address is required!"),
-  ],
+$("#update-account-form").validate({
+  onfocusout: false,
+  onkeyup: false,
+  onclick: false,
+  rules: {
+    account_name: {
+      required: true
+    },
+    account_email: {
+      required: true,
+      valid_email: true
+    },
+    account_phone: {
+      required: true,
+      valid_phone: true
+    },
+    account_address: {
+      required: true
+    }
+  },
+  messages: {
+    account_name: {
+      required: "Name is required!"
+    },
+    account_email: {
+      required: "Username is required!",
+      valid_email: "Email is invalid."
+    },
+    account_phone: {
+      required: "Phone is required!",
+      valid_phone: "Phone is invalid.",
+    },
+    account_address: {
+      required: "Address is required!"
+    }
+  },
 });
 
+
 // Validator change password
+$("#changepassword-form").validate({
+  onfocusout: false,
+  onkeyup: false,
+  onclick: false,
+  rules: {
+    newPassword: {
+      required: true
+    },
+    confirmNewPassword: {
+      required: true
+    }
+  },
+  messages: {
+    newPassword: {
+      required: "Name is required!"
+    },
+    confirmNewPassword: {
+      required: "Username is required!"
+    }
+  },
+});
 Validator({
   form: "#changepassword-form",
   formGroupSelector: ".form-group",

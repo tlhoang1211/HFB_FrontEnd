@@ -296,32 +296,32 @@
                   <div class="tab-content">
                     <!-- profile -->
                     <div class="tab-pane active" id="profile">
-                      <form class="form registerform" id="update-account-form" role="form"
+                      <form class="form registerform" id="update-account-form" onsubmit="return false" role="form"
                       >
                         <div class="form-group">
                           <input id="account_id" class="form-control" type="text" style="display: none" />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
-                          <input id="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
+                          <input id="account_name" name="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label for="account_email" class="form-label">User Name - Email</label>
-                          <input id="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
+                          <input id="account_email" name="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label class="form-label">Phone</label>
                           <input
-                            id="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
+                            id="account_phone" name="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label for="account_address" class="form-label"> 
                             Address</label>
                           <input
-                            id="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
+                            id="account_address" name="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
@@ -337,14 +337,14 @@
                           <input type="hidden" id="avatar_account" />
                           <span class="form-message"></span>
                         </div>
-                        <button type="button" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                        <button type="submit" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-edit"></i>
                           Update
                         </button>
                       </form>
                     </div>
                     <!-- changepassword -->
-                    <div class="tab-pane" id="changepassword">
+                    <div class="tab-pane" id="changepassword" onsubmit="return false">
                       <form class="form registerform" id="changepassword-form" onsubmit="return false" role="form">
                         <div class="form-group">
                           <label for="account_email" class="form-label">New Password</label>
