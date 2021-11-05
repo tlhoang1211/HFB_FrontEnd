@@ -83,31 +83,21 @@ $("#changepassword-form").validate({
       required: true
     },
     confirmNewPassword: {
-      required: true
+      required: true,
+      equalTo : "#newPassword"
     }
   },
   messages: {
     newPassword: {
-      required: "Name is required!"
+      required: "New Password is required!"
     },
     confirmNewPassword: {
-      required: "Username is required!"
+      required: "Comfirm Password is required!",
+      equalTo: "Password re-entered is incorrect!"
     }
   },
 });
-Validator({
-  form: "#changepassword-form",
-  formGroupSelector: ".form-group",
-  errorSelector: ".form-message",
-  rules: [
-    Validator.isRequired("#newPassword", "New Password is required!"),
-    Validator.minLength('#password', 6),
-    Validator.isRequired("#confirmNewPassword", "Confirm Password is required!"),
-    Validator.isConfirmed('#confirmNewPassword', function(){
-        return document.querySelector('#changepassword-form #newPassword').value;
-    }, 'Re-enter incorrect password!')
-  ],
-});
+
 
 
 
