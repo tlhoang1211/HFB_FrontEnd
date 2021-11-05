@@ -1,5 +1,4 @@
 var orderByRequest = 'asc', statusRequest = null, searchName_Request, filter_Category;
-console.log()
 function formAddRequest() {
     document.getElementById('modalAddRequest').classList.add('show');
 }
@@ -34,65 +33,10 @@ function saveRequest(){
         }
     },
         function(errorThrown){}
-    );
-}
 function onChangeOrderByRequest(e, type){
     orderByRequest = type;
     addActive(e);
     getListRequest();
-}
-function filterStatusRequest(e, type){
-    if (type) {
-        statusRequest = type;
-    } else {
-        statusRequest = null;
-    }
-    addActive(e);
-    getListRequest();
-}
-// get data Request
-function getListRequest(pageIndex) {
-    if (!pageIndex) {
-        pageIndex = 0;
-    }
-    var optionUrl = '';
-    if (statusRequest) {
-        optionUrl += '&status=' + parseInt(statusRequest);
-    }
-    if (orderByRequest) {
-        optionUrl += '&order=' + orderByRequest;
-    }
-    // optionUrl += '&sortBy=foodId';   
-    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
-        if (result && result.status == 200) {
-            if (result && result.data && result.data.content && result.data.content.length > 0) {
-                if (document.querySelectorAll("#table-Request tbody").lastElementChild) {
-                    document.querySelectorAll("#table-Request tbody").item(0).innerHTML = '';
-                }
-                document.querySelectorAll("#table-Request tbody").item(0).innerHTML = renderListRequest(result.data.content);
-                var total = 0;
-                total = result.data.totalElements;
-                var pageNumber = Math.ceil(total / pageSize);
-                if (pageNumber == 0){
-                    pageNumber = 1;
-                }
-                var options = {
-                    currentPage: pageIndex + 1,
-                    totalPages: pageNumber,
-                    totalCount: total,
-                    size: 'normal',
-                    alignment: 'right',
-                    onPageClicked: function (e, originalEvent, click, page) {
-                        getListRequest(page - 1);
-                    }
-                }
-                $('#nextpage').bootstrapPaginator(options);
-            }
-            
-        }
-    },
-        function(errorThrown){}
-    );
 }
 getListRequest();
 function renderListRequest(data) {
@@ -161,7 +105,6 @@ function onBrowseRequest(){
         status: 3,
         updatedBy: objAccount.id,
     };
-
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${idApprovalRequest.recipientId}/${idApprovalRequest.foodId}`, JSON.stringify(dataPost), function(result){
