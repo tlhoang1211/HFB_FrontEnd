@@ -240,7 +240,9 @@
                     </li>
 
                     <li class="tab-account changepassword">
-                      <a href="#changepassword" data-toggle="tab"> Change Password</a>
+                      <a href="#changepassword" data-toggle="tab">
+                        Change Password</a
+                      >
                     </li>
 
                     <li class="tab-account listFood d-none">
@@ -299,7 +301,12 @@
                       <form class="form registerform" id="update-account-form" onsubmit="return false" role="form"
                       >
                         <div class="form-group">
-                          <input id="account_id" class="form-control" type="text" style="display: none" />
+                          <input
+                            id="account_id"
+                            class="form-control"
+                            type="text"
+                            style="display: none"
+                          />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
@@ -318,8 +325,9 @@
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
-                          <label for="account_address" class="form-label"> 
-                            Address</label>
+                          <label for="account_address" class="form-label">
+                            Address</label
+                          >
                           <input
                             id="account_address" name="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                           <span class="form-message"></span>
@@ -329,7 +337,11 @@
                         <div class="form-group">
                           <label for="name" class="form-label">Avatar</label>
                           <br />
-                          <button type="button" id="upload_avatar" class="upload-btn btn btn-round">
+                          <button
+                            type="button"
+                            id="upload_avatar"
+                            class="upload-btn btn btn-round"
+                          >
                             <i class="fa fa-download"></i>
                             Upload image
                           </button>
@@ -347,8 +359,16 @@
                     <div class="tab-pane" id="changepassword" onsubmit="return false">
                       <form class="form registerform" id="changepassword-form" onsubmit="return false" role="form">
                         <div class="form-group">
-                          <label for="account_email" class="form-label">New Password</label>
-                          <input id="newPassword" class="form-control" type="password" placeholder="Enter new password" autocomplete="off" />
+                          <label for="account_email" class="form-label"
+                            >New Password</label
+                          >
+                          <input
+                            id="newPassword"
+                            class="form-control"
+                            type="password"
+                            placeholder="Enter new password"
+                            autocomplete="off"
+                          />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
@@ -727,8 +747,8 @@
                                 <th>User Name</th>
                                 <th>Message</th>
                                 <th>Sent Date</th>
+                                <th>Phone Number</th>
                                 <th id="checkAllCell">
-                                  Check All:
                                   <input
                                     class="form-check-input"
                                     type="checkbox"
