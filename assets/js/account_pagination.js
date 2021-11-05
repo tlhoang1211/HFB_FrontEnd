@@ -1331,7 +1331,6 @@ function confirmation(foodId) {
     );
   }
 }
-
 // update stautus for approved request and send notify to selected user
 function acceptRequest(foodId) {
   var confirmDataPost = {

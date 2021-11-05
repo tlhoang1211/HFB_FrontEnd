@@ -638,7 +638,6 @@
                     relatedProducts.innerHTML = htmlsItem.join("");
                     myResolve(); // when successful
                   });
-
                   myPromise.then(function () {
                     listFood.data.content.map(function (item2) {
                       var tet = getTimeFromString2(item2.expirationDate);
