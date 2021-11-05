@@ -182,13 +182,7 @@
                         href="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
                         title="Avatar"
                       >
-                        <img
-                          id="abc"
-                          src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg"
-                          alt=""
-                          class="abc"
-                          style="min-height: 163px"
-                        />
+                        <img id="abc" src="https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg" alt="" class="abc" style="min-height: 163px" />
                         <div class="gallery-caption">
                           <div class="gallery-icon">
                             <span class="icon-magnifying-glass"></span>
@@ -244,6 +238,10 @@
                       <a href="#profile" data-toggle="tab"> Information</a>
                     </li>
 
+                    <li class="tab-account changepassword">
+                      <a href="#changepassword" data-toggle="tab"> Change Password</a>
+                    </li>
+
                     <li class="tab-account listFood d-none">
                       <a onclick="listfood()" data-toggle="tab"> List All</a>
                     </li>
@@ -262,7 +260,11 @@
                     </li> -->
 
                     <li class="tab-account listRequest d-none">
-                      <a href="#listRequest" data-toggle="tab">
+                      <a
+                        href="#listRequest"
+                        onclick="clickListRequest()"
+                        data-toggle="tab"
+                      >
                         List of requests</a
                       >
                     </li>
@@ -271,13 +273,18 @@
                         Details request</a
                       >
                     </li>
-                    <li class="tab-account listFoodRequest d-none">
+                    <li class="tab-account listActiveFood d-none">
                       <a
-                        href="#listFoodRequest"
-                        onclick="listFoodRequests()"
+                        href="#listActiveFood"
+                        onclick="clickListActiveFood()"
                         data-toggle="tab"
                       >
-                        List requests for your food</a
+                        List of foods that someone requests for</a
+                      >
+                    </li>
+                    <li class="tab-account listUsersRequest d-none">
+                      <a href="#listUsersRequest" data-toggle="tab">
+                        List of your users request food</a
                       >
                     </li>
                     <li class="tab-account feedback d-none">
@@ -288,65 +295,32 @@
                   <div class="tab-content">
                     <!-- profile -->
                     <div class="tab-pane active" id="profile">
-                      <form
-                        class="form registerform"
-                        id="update-account-form"
-                        role="form"
+                      <form class="form registerform" id="update-account-form" role="form"
                       >
                         <div class="form-group">
-                          <input
-                            id="account_id"
-                            class="form-control"
-                            type="text"
-                            style="display: none"
-                          />
+                          <input id="account_id" class="form-control" type="text" style="display: none" />
                         </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
-                          <input
-                            id="account_name"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter name"
-                            autocomplete="off"
-                          />
+                          <input id="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">User Name - Email</label>
+                          <input id="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label class="form-label">Phone</label>
                           <input
-                            id="account_phone"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter phone"
-                            autocomplete="off"
-                          />
+                            id="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
-                          <label for="account_email" class="form-label"
-                            >Email</label
-                          >
+                          <label for="account_address" class="form-label"> 
+                            Address</label>
                           <input
-                            id="account_email"
-                            class="form-control"
-                            type="email"
-                            placeholder="Enter email"
-                            autocomplete="off"
-                          />
-                          <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                          <label for="account_address" class="form-label"
-                            >Address</label
-                          >
-                          <input
-                            id="account_address"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter address"
-                            autocomplete="off"
-                          />
+                            id="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
@@ -354,11 +328,7 @@
                         <div class="form-group">
                           <label for="name" class="form-label">Avatar</label>
                           <br />
-                          <button
-                            type="button"
-                            id="upload_avatar"
-                            class="upload-btn btn btn-round"
-                          >
+                          <button type="button" id="upload_avatar" class="upload-btn btn btn-round">
                             <i class="fa fa-download"></i>
                             Upload image
                           </button>
@@ -366,16 +336,27 @@
                           <input type="hidden" id="avatar_account" />
                           <span class="form-message"></span>
                         </div>
-                        <button
-                          type="submit"
-                          class="btn btn-b btn-round btnSubmitProfile pull-right"
-                        >
+                        <button type="button" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-save"></i>
                           Save
                         </button>
                       </form>
                     </div>
-                    <!-- List of food -->
+                    <!-- changepassword -->
+                    <div class="tab-pane" id="changepassword">
+                      <form class="form registerform" id="changepassword-form" role="form">
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">New Password</label>
+                          <input id="newPassword" class="form-control" type="password" placeholder="Enter new password" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <button type="button" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                          <i class="fa fa-save"></i>
+                          Save
+                        </button>
+                      </form>
+                    </div>
+                    <!-- list of food -->
                     <div class="tab-pane" id="listFood">
                       <div class="card radius-10 listFoodPagination">
                         <div class="card-body" id="center-food-noti">
@@ -596,7 +577,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- list request -->
+                    <!-- list of requests -->
                     <div class="tab-pane" id="listRequest">
                       <div class="card radius-10">
                         <div class="card-body" id="center-request-noti">
@@ -683,6 +664,90 @@
                             </div>
                           </div>
                           <div class="row mb-20 row-btn"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- list of active food -->
+                    <div class="tab-pane" id="listActiveFood">
+                      <div class="card radius-10 listActiveFoodPagination">
+                        <div class="card-body" id="center-food-noti">
+                          <span id="no-food-noti" style="display: none"
+                            >You haven't uploaded any food yet!</span
+                          >
+                          <div
+                            class="table-responsive"
+                            id="food-active-data-table"
+                          >
+                            <table
+                              class="table align-middle mb-0 table-striped table-bordered"
+                            >
+                              <thead class="table-light">
+                                <tr>
+                                  <th>#</th>
+                                  <th>Food Name</th>
+                                  <th>Expiration Date</th>
+                                  <th>Uploaded Date</th>
+                                  <th>Status</th>
+                                  <th>Requests On Food</th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                class="row multi-columns-row"
+                                id="list-active-food"
+                              ></tbody>
+                            </table>
+                            <div class="row" id="pagination-button">
+                              <div class="col-sm-12">
+                                <div class="pagination3 font-alt"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- list of users requests for food -->
+                    <div class="tab-pane" id="listUsersRequest">
+                      <div class="row">
+                        <div
+                          class="table-responsive"
+                          id="users-request-for-food-data-table"
+                        >
+                          <table
+                            class="table align-middle mb-0 table-striped table-bordered"
+                          >
+                            <thead class="table-light">
+                              <tr>
+                                <th>#</th>
+                                <th>User Name</th>
+                                <th>Message</th>
+                                <th>Sent Date</th>
+                                <th id="checkAllCell">
+                                  Check All:
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="checkAll"
+                                    name="checkAll"
+                                    onclick="checkAll(this)"
+                                  />
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody
+                              class="row multi-columns-row"
+                              id="list-users-request"
+                            ></tbody>
+                          </table>
+                          <div
+                            class="row"
+                            id="button-on-users-request-page"
+                            style="margin-top: 15px"
+                          ></div>
+                          <div class="row" id="pagination-button">
+                            <div class="col-sm-12">
+                              <div class="pagination4 font-alt"></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -810,78 +875,6 @@
       if (!tokenaccount) {
         location.replace("../login_register.html");
       }
-
-      // var listFood = document.querySelector('#listFood');
-      // var listFoodPost = document.querySelector('#listFoodPost');
-      // var listFoodPending = document.querySelector('#listFoodPending');
-      // function listfood(e){
-      //   switch (e) {
-      //     case "listFood":
-      //       listFood.classList.forEach(
-      //         function(value) {
-      //           if(value !== 'active'){
-      //             listFood.classList.add('active');
-      //           }
-      //         });
-      //       listFoodPost.classList.forEach(
-      //         function(value) {
-      //           if(value == 'active'){
-      //             listFoodPost.classList.remove('active');
-      //           }
-      //         });
-      //       listFoodPending.classList.forEach(
-      //         function(value) {
-      //           if(value == 'active'){
-      //             listFoodPending.classList.remove('active');
-      //           }
-      //         });
-      //       break;
-      //     case "listFoodPost":
-      //       listFood.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFood.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPost.classList.forEach(
-      //           function(value) {
-      //             if(value !== 'active'){
-      //               listFoodPost.classList.add('active');
-      //               listFoodPost.classList.remove('d-none');
-      //             }
-      //           });
-      //         listFoodPending.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFoodPending.classList.remove('active');
-      //             }
-      //           });
-      //       break;
-      //     case "listFoodPending":
-      //       listFood.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFood.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPost.classList.forEach(
-      //           function(value) {
-      //             if(value == 'active'){
-      //               listFoodPost.classList.remove('active');
-      //             }
-      //           });
-      //         listFoodPending.classList.forEach(
-      //           function(value) {
-      //             if(value !== 'active'){
-      //               listFoodPending.classList.add('active');
-      //               listFoodPending.classList.remove('d-none');
-      //             }
-      //           });
-      //       break;
-      //     default:
-      //       break;
-      //     }
-      //   }
     </script>
   </body>
 </html>

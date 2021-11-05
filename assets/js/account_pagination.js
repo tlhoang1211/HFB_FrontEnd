@@ -1,5 +1,16 @@
 // hoangtl2 - 01/11/2021 - get data user
 // start
+var detailRequestID = document.getElementById("detailRequest");
+var detailRequestCN = document.getElementsByClassName("detailRequest")[0];
+var listUsersRequestID = document.getElementById("listUsersRequest");
+var listUsersRequestCN = document.getElementsByClassName("listUsersRequest")[0];
+var listRequestID = document.getElementById("listRequest");
+var listRequestCN = document.getElementsByClassName("listRequest")[0];
+var detailRequestID = document.getElementById("detailRequest");
+var detailRequestCN = document.getElementsByClassName("detailRequest")[0];
+var listActiveFoodID = document.getElementById("listActiveFood");
+var listActiveFoodCN = document.getElementsByClassName("listActiveFood")[0];
+
 var foodCount = 0;
 var requestCount = 0;
 
@@ -46,6 +57,106 @@ function bindDataAccount(data) {
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
+
+// update profile
+var imgAvatar;
+function updateAccount() {
+  var account_nameUpdate = document.querySelector('#account_name').value;
+  var account_emailUpdate = document.querySelector('#account_email').value;
+  var account_phoneUpdate = document.querySelector('#account_phone').value;
+  var account_addressUpdate = document.querySelector('#account_address').value;
+  if(account_nameUpdate == objAccount.name && account_emailUpdate == objAccount.email && account_phoneUpdate == objAccount.phone && account_addressUpdate == objAccount.address && imgAvatar == undefined){
+    swal("Warning!", "You don't update your account!", "warning");
+  }else{
+    if(imgAvatar == null || imgAvatar == "" || imgAvatar == undefined){
+      imgAvatar = objAccount.avatar;
+    }
+    fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${objAccount.id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "name" : account_nameUpdate,
+        "username" : account_emailUpdate,
+        "phone" : account_phoneUpdate,
+        "address" : account_addressUpdate,
+        "avatar" : imgAvatar,
+        "updatedBy" : objAccount.id,
+        "status": 1
+      }),
+    })
+    .then(response => response.json())
+    .then(account => {
+      if (account && account.data) {
+        swal("Success!", "Update account success!", "success");
+        objAccount = account.data;
+        currentName = objAccount.username;
+        console.log(currentName);
+        bindDataAccount(objAccount);
+      }
+    })
+    .catch(error => console.log(error));
+  }
+}
+
+var myWidgetAccount = cloudinary.createUploadWidget(
+  {
+    cloudName: "vernom",
+    uploadPreset: "fn5rpymu",
+    multiple: false,
+    form: "#update-account-form",
+    folder: "hanoi_food_bank_project/users_avatar",
+    fieldName: "thumbnails[]",
+    thumbnails: ".thumbnails",
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      imgAvatar = result.info.path
+      console.log(imgAvatar);
+      console.log("Done! Here is the image info: ", result.info.url);
+    }
+  }
+);
+
+document.getElementById("upload_avatar").addEventListener(
+  "click",
+  function () {
+    myWidgetAccount.open();
+  },
+  false
+);
+
+// change password
+function changpassword() {
+  var newPassword = document.querySelector('#newPassword').value;
+  var changepasswordAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/change-password/${objAccount.id}`;
+  if(newPassword){
+    fetch(changepasswordAPI,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "password" : newPassword
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.status == 200){
+        swal("Success!", "Change password success!", "success");
+      }
+    })
+    .catch(error => console.log(error))
+  }else{
+    swal("Warning!", "You don't change the password!", "warning");
+  }
+}
+
 // end
 
 // hoangtl2 - 01/11/2021 - food list pagination on account page
@@ -92,6 +203,7 @@ function getListFoodActive() {
   })
     .then((response) => response.json())
     .then((foodList) => {
+      foodCount = 0;
       renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
@@ -104,6 +216,7 @@ function getListFoodSending() {
   })
     .then((response) => response.json())
     .then((foodList) => {
+      foodCount = 0;
       renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
@@ -125,7 +238,51 @@ function renderListFood(listFood) {
         dataHtml +=
           `<tr id="food-row-${e.id}">
         <td>${foodCount}</td>
-        <td>${e.name || ""}</td>
+        <td>${e.name || ""}</a></td>
+        <td>${formatCategory(e.categoryId)}</td>
+        <td>${e.expirationDate}</td>
+        <td>${e.createdAt}</td>
+        <td>${
+          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+        }</td>
+        <td onclick="formUpdateFood(${
+          e.id
+        })"><i class="fa fa-pencil-square-o"></i></td>` +
+          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
+      });
+
+      dataHtml += "</div>";
+      $("#list-food").html(dataHtml);
+    },
+  });
+
+  var foodDataTable = document.getElementById("food-data-table");
+
+  if (foodCount == 0) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-food-noti")
+      .setAttribute("style", "text-align: center;");
+  }
+}
+function renderListFoodActive(listFood) {
+  foodCount = 0;
+  let container = $(".pagination1");
+  container.pagination({
+    dataSource: listFood,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        foodCount++;
+        dataHtml +=
+          `<tr id="food-row-${e.id}">
+        <td>${foodCount}</td>
+        <td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;"> ${e.name || ""}</a></td>
         <td>${formatCategory(e.categoryId)}</td>
         <td>${e.expirationDate}</td>
         <td>${e.createdAt}</td>
@@ -379,7 +536,6 @@ function newFoodEdit() {
         )
           .then((response) => response.json())
           .then(function (data1) {
-            console.log(data1.data);
             fetch(
               `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
               {
@@ -900,19 +1056,36 @@ function convertRequestStatus(status) {
 
 // back button
 function backToRequestList() {
-  document
-    .getElementsByClassName("detailRequest")[0]
-    .classList.remove("active");
-  document.getElementsByClassName("detailRequest")[0].classList.add("d-none");
-  document.getElementById("detailRequest").classList.remove("active");
-  document.getElementsByClassName("listRequest")[0].classList.add("active");
-  document.getElementById("listRequest").classList.add("active");
-  document.getElementsByClassName("listRequest")[0].classList.remove("d-none");
+  detailRequestCN.classList.remove("active");
+  detailRequestCN.classList.add("d-none");
+  detailRequestID.classList.remove("active");
+  listRequestCN.classList.add("active");
+  listRequestCN.classList.remove("d-none");
+  listRequestID.classList.add("active");
 }
 // end
 
-function listFoodRequests() {
-  document.getElementById("listRequest").classList.remove("active");
+// hoangtl2 - 03/11/2021 - confirm user request on food
+// start
+function clickListRequest() {
+  detailRequestCN.classList.remove("active");
+  detailRequestCN.classList.add("d-none");
+  detailRequestID.classList.remove("active");
+  listUsersRequestCN.classList.remove("active");
+  listUsersRequestCN.classList.add("d-none");
+  listUsersRequestID.classList.remove("active");
+  getFoodActive();
+}
+
+function clickListActiveFood() {
+  listRequestCN.classList.remove("active");
+  listRequestID.classList.remove("active");
+  detailRequestCN.classList.remove("active");
+  detailRequestCN.classList.add("d-none");
+  detailRequestID.classList.remove("active");
+  listUsersRequestCN.classList.remove("active");
+  listUsersRequestCN.classList.add("d-none");
+  listUsersRequestID.classList.remove("active");
   getFoodActive();
 }
 
@@ -923,7 +1096,316 @@ function getFoodActive() {
   })
     .then((response) => response.json())
     .then((foodList) => {
-      renderListFood(foodList.data.content);
+      renderListActiveFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
+
+function renderListActiveFood(listFood) {
+  var foodRequestCount = 0;
+  let container = $(".pagination3");
+  container.pagination({
+    dataSource: listFood,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        foodRequestCount++;
+        dataHtml += `<tr>
+        <td>${foodRequestCount}</td>
+        <td>${e.name}</td>
+        <td>${e.expirationDate}</td>
+        <td>${e.createdAt}</td>
+        <td>active</td>
+        <td onclick="viewUsersRequestFood(${e.id})"><i class="fa fa-search"></i></td>`;
+      });
+
+      dataHtml += "</div>";
+      $("#list-active-food").html(dataHtml);
+    },
+  });
+
+  var foodRequestDataTable = document.getElementById("food-active-data-table");
+
+  if (foodRequestCount == 0) {
+    foodRequestDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-food-noti")
+      .setAttribute("style", "text-align: center;");
+  }
+}
+
+function viewUsersRequestFood(foodID) {
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?foodId=${foodID}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${isToken}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((requests) => {
+      if (
+        requests &&
+        requests.data &&
+        requests.data.content &&
+        requests.data.content.length > 0
+      ) {
+        listActiveFoodCN.classList.remove("active");
+        listActiveFoodID.classList.remove("active");
+        listUsersRequestCN.classList.remove("d-none");
+        listUsersRequestCN.classList.add("active");
+        listUsersRequestID.classList.add("active");
+        renderUserRequests(requests.data.content);
+      } else {
+        swal("Info", "No one has asked for this food yet", "info");
+      }
+    })
+    .catch((error) => console.log(error));
+}
+
+function renderUserRequests(listUserRequests) {
+  var userRequestCount = 0;
+  let container = $(".pagination4");
+  container.pagination({
+    dataSource: listUserRequests,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      var buttonsHtml;
+      $.each(data, function (index, e) {
+        userRequestCount++;
+        if (e.status != 1) {
+          dataHtml += `<tr>
+        <td>${userRequestCount}</td>
+        <td>${e.recipientName}</td>
+        <td>${e.message}</td>
+        <td>${e.createdAt}</td>
+        <td>${e.recipientPhone}</td>`;
+
+          buttonsHtml = `<div class="col-sm-6" style="padding-left: unset"><button
+        type="button"
+        onclick="backToFoodRequestList()"
+        class="btn btn-b btn-round btnSubmit"
+        style="float: left">Back</button></div><div class="col-sm-6"><button
+        type="button"
+        onclick="confirmation(${e.foodId})" id="confirm-button"
+        class="btn btn-success btn-round btnSubmit">Finish</button></div>`;
+
+          document.getElementById("checkAllCell").innerText = "Phone Number";
+        } else {
+          dataHtml += `<tr>
+        <td>${userRequestCount}</td>
+        <td>${e.recipientName}</td>
+        <td>${e.message}</td>
+        <td>${e.createdAt}</td>
+        <td><input class="form-check-input" id="${userRequestCount} flexCheckChecked" type="checkbox" value="${e.recipientId}" name="feature[]"></td>`;
+
+          buttonsHtml = `<div class="col-sm-6" style="padding-left: unset"><button
+        type="button"
+        onclick="backToFoodRequestList()"
+        class="btn btn-b btn-round btnSubmit"
+        style="float: left">Back</button></div>
+        <div class="col-sm-6"><button
+        type="button"
+        onclick="confirmation(${e.foodId})" id="confirm-button"
+        class="btn btn-success btn-round btnSubmit">Confirm</button></div>`;
+        }
+      });
+
+      dataHtml += "</div>";
+      $("#list-users-request").html(dataHtml);
+
+      $("#button-on-users-request-page").html(buttonsHtml);
+    },
+  });
+}
+
+function checkAll(source) {
+  var checkboxes = document.querySelectorAll(
+    '#list-users-request input[type="checkbox"]'
+  );
+  for (var i = 0, n = checkboxes.length; i < n; i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
+function confirmation(foodId) {
+  if (listCheckedValue.length == 0) {
+    swal(
+      "You have not selected any recipients. \n Do you want to abort this request?",
+      {
+        title: "Alert!",
+        icon: "warning",
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+        buttons: {
+          confirm: true,
+          cancel: true,
+        },
+      }
+    ).then((result) => {
+      console.log(result.isConfirmed);
+      if (result.isConfirmed) {
+        denyRequest(foodId);
+      }
+    });
+  } else {
+    acceptRequest(foodId);
+    denyRequest(foodId);
+    swal(
+      "Success!",
+      "Successfully confirms. Please wait for contact from the approved recipients or contact them immediately!",
+      "success"
+    );
+  }
+
+  // Event listeners for reload
+  const reloadButton = document.querySelector(".swal-button--confirm");
+  reloadButton.addEventListener("click", backToFoodRequestList, false);
+}
+
+var listCheckedValue = [];
+var listUncheckedValue = [];
+$('#list-users-request input[type="checkbox"]:checked').each(function () {
+  listCheckedValue.push($(this).val());
+});
+$('#list-users-request input[type="checkbox"]:not(:checked)').each(function () {
+  listUncheckedValue.push($(this).val());
+});
+
+// update stautus for approved request and send notify to selected user
+function acceptRequest(foodId) {
+  var confirmDataPost = {
+    status: 2,
+    updatedBy: objAccount.id,
+  };
+  listCheckedValue.forEach((checkedValue) => {
+    fetch(
+      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${checkedValue}/
+        ${foodId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+        body: JSON.stringify(confirmDataPost),
+      }
+    )
+      .then((response) => response.json())
+      .then(function (request1) {
+        console.log(request1.data);
+        var avatarFood;
+        var time;
+        var requestData = request1.data;
+        let notifyRequestPromise = new Promise(function (myResolve) {
+          avatarFood = requestData.foodDTO.avatar;
+          var today = new Date();
+          time =
+            today.getDate() +
+            "-" +
+            (today.getMonth() + 1) +
+            "-" +
+            today.getFullYear() +
+            " " +
+            today.getHours() +
+            ":" +
+            today.getMinutes() +
+            ":" +
+            today.getSeconds();
+          myResolve();
+        });
+        notifyRequestPromise.then(function () {
+          Notification.send(checkedValue, {
+            idNotify: "",
+            usernameaccount: "",
+            foodid: foodId,
+            avatar: avatarFood,
+            title: "User " + objAccount.name + " agreed to give you food",
+            message: "Time request: " + time,
+            category: "request",
+            status: 1,
+          });
+        });
+      })
+      .catch((error) => console.log(error));
+  });
+}
+
+// update stautus for unapproved request and send notify to unselected user
+function denyRequest(foodId) {
+  var denyDataPost = {
+    status: 0,
+    updatedBy: objAccount.id,
+  };
+  listUncheckedValue.forEach((uncheckedValue) => {
+    fetch(
+      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${uncheckedValue}/
+        ${foodId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+        body: JSON.stringify(denyDataPost),
+      }
+    )
+      .then((response) => response.json())
+      .then(function (request2) {
+        var avatarFood;
+        var time;
+        var requestData = request2.data;
+        let notifyRequestPromise = new Promise(function (myResolve) {
+          avatarFood = requestData.foodDTO.avatar;
+          var today = new Date();
+          time =
+            today.getDate() +
+            "-" +
+            (today.getMonth() + 1) +
+            "-" +
+            today.getFullYear() +
+            " " +
+            today.getHours() +
+            ":" +
+            today.getMinutes() +
+            ":" +
+            today.getSeconds();
+          myResolve();
+        });
+        notifyRequestPromise.then(function () {
+          Notification.send(uncheckedValue, {
+            idNotify: "",
+            usernameaccount: "",
+            foodid: foodId,
+            avatar: avatarFood,
+            title: `I'm sorry I couldn't send you food this time. Try again another time!\n Dear, ${objAccount.name}!`,
+            message: "Time request: " + time,
+            category: "request",
+            status: 1,
+          });
+        });
+      })
+      .catch((error) => console.log(error));
+  });
+}
+
+function backToFoodRequestList() {
+  listActiveFoodCN.classList.add("active");
+  listActiveFoodID.classList.add("active");
+  listUsersRequestCN.classList.add("d-none");
+  listUsersRequestCN.classList.remove("active");
+  listUsersRequestID.classList.remove("active");
+}
+
+// end
