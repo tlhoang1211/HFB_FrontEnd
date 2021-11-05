@@ -142,10 +142,12 @@
     <link rel="stylesheet" href="assets/css/account-custom.css" />
 
     <link rel="stylesheet" href="./assets/css/repository.css" />
+    <link rel="stylesheet" href="./assets/css/validator.css">
 
     <!-- paypal -->
     <script src="https://www.paypal.com/sdk/js?client-id=ARfjvhupmZbesvNCgtE5AJV8zCxdME-gej0ajX-4aBkkIpdstLDqPA1dqw3oZIozjICO5A78qlEIw1OL&components=buttons"></script>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
   </head>
 
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
@@ -177,17 +179,11 @@
                 <div class="col-sm-2 col-md-2">
                   <div class="gallery-item">
                     <div class="gallery-image gallery-avatar">
-                      <a
-                        id="a_account_avatar"
-                        href="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg"
+                      <a id="avatarGallery"
+                        class="gallery"
                         title="Avatar"
                       >
-                        <img
-                          id="img_account_avatar"
-                          src="https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg"
-                          alt="Your Avatar"
-                          style="min-height: 130px"
-                        />
+                        <img id="avatarImg"  alt="" class="abc" style="min-height: 163px" />
                         <div class="gallery-caption">
                           <div class="gallery-icon">
                             <span class="icon-magnifying-glass"></span>
@@ -302,10 +298,7 @@
                   <div class="tab-content">
                     <!-- profile -->
                     <div class="tab-pane active" id="profile">
-                      <form
-                        class="form registerform"
-                        id="update-account-form"
-                        role="form"
+                      <form class="form registerform" id="update-account-form" onsubmit="return false" role="form"
                       >
                         <div class="form-group">
                           <input
@@ -317,37 +310,18 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Name</label>
-                          <input
-                            id="account_name"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter name"
-                            autocomplete="off"
-                          />
+                          <input id="account_name" name="account_name" class="form-control" type="text" placeholder="Enter name" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
-                          <label for="account_email" class="form-label"
-                            >User Name - Email</label
-                          >
-                          <input
-                            id="account_email"
-                            class="form-control"
-                            type="email"
-                            placeholder="Enter email"
-                            autocomplete="off"
-                          />
+                          <label for="account_email" class="form-label">User Name - Email</label>
+                          <input id="account_email" name="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                           <label class="form-label">Phone</label>
                           <input
-                            id="account_phone"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter phone"
-                            autocomplete="off"
-                          />
+                            id="account_phone" name="account_phone" class="form-control" type="text" placeholder="Enter phone" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
@@ -355,12 +329,7 @@
                             Address</label
                           >
                           <input
-                            id="account_address"
-                            class="form-control"
-                            type="text"
-                            placeholder="Enter address"
-                            autocomplete="off"
-                          />
+                            id="account_address" name="account_address" class="form-control" type="text" placeholder="Enter address" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <!-- hoangtl2 _ 23/10/2021 _ cloudinary button  -->
@@ -380,23 +349,15 @@
                           <input type="hidden" id="avatar_account" />
                           <span class="form-message"></span>
                         </div>
-                        <button
-                          type="button"
-                          onclick="updateAccount()"
-                          class="btn btn-b btn-round btnSubmitProfile pull-right"
-                        >
-                          <i class="fa fa-save"></i>
-                          Save
+                        <button type="submit" onclick="updateAccount()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                          <i class="fa fa-edit"></i>
+                          Update
                         </button>
                       </form>
                     </div>
                     <!-- changepassword -->
-                    <div class="tab-pane" id="changepassword">
-                      <form
-                        class="form registerform"
-                        id="changepassword-form"
-                        role="form"
-                      >
+                    <div class="tab-pane" id="changepassword" onsubmit="return false">
+                      <form class="form registerform" id="changepassword-form" onsubmit="return false" role="form">
                         <div class="form-group">
                           <label for="account_email" class="form-label"
                             >New Password</label
@@ -410,11 +371,12 @@
                           />
                           <span class="form-message"></span>
                         </div>
-                        <button
-                          type="button"
-                          onclick="changpassword()"
-                          class="btn btn-b btn-round btnSubmitProfile pull-right"
-                        >
+                        <div class="form-group">
+                          <label for="account_email" class="form-label">Confirm New Password</label>
+                          <input id="confirmNewPassword" class="form-control" type="password" placeholder="Confirm new password" autocomplete="off" />
+                          <span class="form-message"></span>
+                        </div>
+                        <button type="submit" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-save"></i>
                           Save
                         </button>

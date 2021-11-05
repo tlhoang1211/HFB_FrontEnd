@@ -1,97 +1,62 @@
 $(document).ready(function () {
     Notification.config();
 });
-var listImageFood = [];
+var orderBy = 'asc', statusFood = 1, searchName, filter_Category;
 function formAddFood() {
-    document.getElementById('modalAddFood').classList.add('show');
+    var pageContent = document.getElementsByClassName('page-content');
+    if (pageContent.item(0)) {
+		pageContent.item(0).remove();
+	}
+	localStorage.setItem('page', 'newFood');
+	loadHtml( '../../../inc/layout/admin/content/food/newFood.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/food/newFood.js');
 }
-// food
-var myWidgetFood = cloudinary.createUploadWidget(
-    {
-      cloudName: "vernom",
-      uploadPreset: "fn5rpymu",
-      form: "#new-food-form",
-      folder: "hanoi_food_bank_project/uploaded_food",
-      fieldName: "thumbnails[]",
-      thumbnails: ".thumbnails",
-    },
-    (error, result) => {
-      if (!error && result && result.event === "success") {
-        listImageFood.push(result.info.path);
-        var arrayThumnailInputs = document.querySelectorAll(
-          'input[name="thumbnails[]"]'
-        );
-        for (let i = 0; i < arrayThumnailInputs.length; i++) {
-          arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
-            "data-cloudinary-public-id"
-          );
-        }
-      }
-    }
-  );
-  
-  document.getElementById("upload_image_food").addEventListener(
-    "click",
-    function () {
-      myWidgetFood.open();
-    },
-    false
-  );
-  
-  // delete image
-  $("body").on("click", ".cloudinary-delete", function () {
-    var splittedImg = $(this).parent().find("img").attr("src").split("/");
-    var imgName =
-      splittedImg[splittedImg.length - 3] +
-      "/" +
-      splittedImg[splittedImg.length - 2] +
-      "/" +
-      splittedImg[splittedImg.length - 1];
-    var publicId = $(this).parent().attr("data-cloudinary");
-    $(this).parent().remove();
-    $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
-  });
-// save food
-function saveFood(){
-    var name = document.getElementById("nameFood").value;
-    var categoryId = document.getElementById("category").value;
-    var expirationDate = document.getElementById("expirationDate").value;
-    var description = document.getElementById("description").value;
-    if (!expirationDate) {
-        $(".alert-danger").alert();
-        return false;
-      }
-      if (listImageFood.length == 0) {
-        $(".alert-danger").alert();
-        return false;
-      }
-    
-    var dataPost = {
-        name: name,
-        avatar: listImageFood[0],
-        images: listImageFood.join(","),
-        expirationDate: expirationDate,
-        createdBy: objAccount.id,
-        categoryId: categoryId,
-        description: description
-    }
-    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', JSON.stringify(dataPost), function(result){
-        if (result && result.status == 200) {
-            getListFood();
-            $('#modalAddFood').modal('hide');
-        }
-    },
-        function(errorThrown){}
-    );
+function onChangeOrderBy(e, type){
+    orderBy = type;
+    addActive(e);
+    getListFood();
 }
-var pageSize = 10, pageIndex = 0;
+function filterStatus(e, type){
+    if (type) {
+        statusFood = type;
+    } else {
+        statusFood = null;
+    }
+    addActive(e);
+    getListFood();
+}
+function filterCategory(e, id){
+    if (id) {
+        filter_Category = parseInt(id);
+    } else {
+        filter_Category = null;
+    }
+    addActive(e);
+    getListFood();
+}
+function searchNameFood(ele){
+    searchName = $(ele).val();
+    getListFood();
+}
 // get data food
 function getListFood(pageIndex) {
     if (!pageIndex) {
         pageIndex = 0;
     }
     var optionUrl = '';
-    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&page=' + pageIndex + '&limit=' + (pageIndex === 0 ? pageSize : (pageIndex * pageSize)), null, function(result){
+    if (statusFood) {
+        optionUrl += '&status=' + parseInt(statusFood);
+    }
+    if (orderBy) {
+        optionUrl += '&order=' + orderBy;
+    }
+    optionUrl += '&sortBy=name';
+    if (searchName) {
+        optionUrl += '&name=' + searchName;
+    }
+    if (filter_Category) {
+        optionUrl += '&categoryId=' + filter_Category;
+    }
+    getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {
                 if (document.querySelectorAll("#table-food tbody").lastElementChild) {
@@ -127,38 +92,44 @@ function renderListFood(data) {
     var count = 0;
     var html = data.map(function (e) {
         count++;
-        return (
-            `<tr>
-            <td>${count}</td>
-            <td>${e.name || ""}</td>
-            <td><img src="https://res.cloudinary.com/vernom/image/upload/${e.avatar}" style="width: 30px;height: 30px;"/></td>
-            <td></td>
-            <td>${e.expirationDate}</td>
-            <td>
-                <div class="d-flex align-items-center ${colorStatusFood(e.status)}">
-                    <i class='bx bx-radio-circle-marked bx-burst bx-rotate-90 align-middle font-18 me-1'></i>
-					<span>${convertStatusFood(e.status)}</span>
-                </div>
-            </td>
-            <td>${e.createdAt}</td>
-            <td >
-                <div class="d-flex order-actions">
-                    <a onclick="formUpdateFood(this, ${e.id})"><i class='bx bx-edit' ></i></a>`
-                    + "<a onclick=\"approvalFood(this, '" + e.id +"', '" + e.createdBy + "', '" + e.avatar + '\')" class="ms-4"><i class="bx bx-check"></i></a>'
-                    + "<a onclick=\"deleteFood(this, '" + e.id +"', '" + e.name +"', '"
-                    + e.categoryId + "', '" + e.avatar + "', '" + e.images + "', '" + e.description + "', '" 
-                    + e.content + "', '" + e.expirationDate + '\')" class="ms-4"><i class="bx bxs-trash"></i></a>' +
-                `</div>
-            </td></tr>`
-            );
-        });
+        var htmlS = '';
+        htmlS += '<tr>';
+        htmlS += '<td>' + count + '</td>';
+        htmlS += '<td><img src="https://res.cloudinary.com/vernom/image/upload/' + e.avatar + '" style="width: 30px;height: 30px;"/></td>';
+        htmlS += '<td>' + (e.name || "") + '</td>';
+        htmlS += '<td>' + convertCategory(e.categoryId) + '</td>';
+        htmlS += '<td>' + (e.expirationDate || "") + '</td>';
+        htmlS += '<td>';
+        htmlS += '<div class="d-flex align-items-center ' + colorStatusFood(e.status) + '">';
+        htmlS += '<i class="bx bx-radio-circle-marked bx-burst bx-rotate-90 align-middle font-18 me-1"></i>';
+        htmlS += '<span>' + convertStatusFood(e.status) +'</span>';
+        htmlS += '</div>';
+        htmlS += '</td>';
+        htmlS += '<td>' + e.createdAt +'</td>';
+        htmlS += '<td style="width: 55px;">';
+        htmlS += '<div class="d-flex order-actions">';
+        htmlS += '<a onclick="formUpdateFood(this, \'' + e.id + '\')"><i class="bx bx-edit"></i></a>';
+        htmlS += '</div>';
+        htmlS += '</td>';
+        htmlS += '<td style="width: 55px;">';
+        if (e.status == 1) {
+            htmlS += '<div class="d-flex order-actions">';
+            htmlS += "<a onclick=\"approvalFood(this, '" + e.id +"', '" + e.createdBy + "', '" + e.avatar + '\')"><i class="bx bx-check"></i></a>';
+            htmlS += '</div>';
+        }
+        htmlS += '</td>';
+        htmlS += '<td style="width: 55px;">';
+        if (e.status == 1) {
+            htmlS += '<div class="d-flex order-actions">';
+            htmlS += "<a onclick=\"deleteFood(this, '" + e.id +"', '" + e.name +"', '" + e.categoryId + "', '" + e.avatar + "', '" + e.images + "', '" + e.description + "', '" + e.content + "', '" + e.expirationDate + '\')" class="' + (e.status === 0 ? 'd-none' : '') + '"><i class="bx bxs-trash"></i></a>';
+            htmlS += '</div>';
+        }
+        htmlS += '</td></tr>';
+        return htmlS;
+    });
     return html.join("");
 }
-var orderBy = 'asc'
-function onChangeOrderBy(e, type){
-    orderBy = type;
-    e.classList.add('active')
-}
+
 var idApproval;
 function approvalFood(e, id, createdBy, avatar){
     idApproval = {
@@ -270,4 +241,72 @@ function colorStatusFood(status){
             break;
     }
     return color;
+}
+
+function convertCategory(id){
+    var text = '';
+    if (id && arrCategory) {
+        var find = arrCategory.find(function(e){return id == e.id});
+        if (find) {
+            text = find.name;
+        }
+    }
+    return text;
+}
+
+function renderDropdowFilterCategory(){
+    var html = '';
+    html += '<a class="dropdown-item active" onclick="filterCategory(this)">All</a>';
+    for (let index = 0; index < arrCategory.length; index++) {
+        var element = arrCategory[index];
+        html += '<a class="dropdown-item" onclick="filterCategory(this, \'' + element.id + '\')">'+ element.name +'</a>';
+    }
+    $('.filter-category .dropdown-menu').append(html);
+}
+renderDropdowFilterCategory();
+var dataFindFood;
+function formUpdateFood(e, id){
+    $('#modalAddFood').modal('show');
+    getConnectAPI('GET', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/' + id, null, function(result){
+        if (result && result.status == 200) {
+            console.log(result)
+            dataFindFood = result;
+        }
+    },
+        function(errorThrown){}
+    );
+}
+function saveUpdateFood(){
+    // var name = document.getElementById("nameFood").value;
+    // var categoryId = document.getElementById("category").value;
+    // var expirationDate = document.getElementById("expirationDate").value;
+    // var description = document.getElementById("description").value;
+    // if (!expirationDate) {
+    //     $(".alert-danger").alert();
+    //     return false;
+    //   }
+    //   if (listImageFood.length == 0) {
+    //     $(".alert-danger").alert();
+    //     return false;
+    //   }
+    var expirationDate = $('#expirationDate').val();
+    var dataPost = {
+        name: name,
+        avatar: dataFindFood.avatar,
+        images: dataFindFood.images,
+        expirationDate: expirationDate,
+        updatedBy: objAccount.id,
+        categoryId: dataFindFood.categoryId,
+        description: dataFindFood.bootstrapPaginatordescription,
+        manufactureDate: '',
+        status: 1,
+    }
+    getConnectAPI('POST', 'http://localhost:8080/api/v1/hfb/foods/' + id, JSON.stringify(dataPost), function(result){
+        if (result && result.status == 200) {
+            $('#modalAddFood').modal('hide');
+            console.log(result)
+        }
+    },
+        function(errorThrown){}
+    );
 }

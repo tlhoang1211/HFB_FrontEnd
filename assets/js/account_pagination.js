@@ -50,10 +50,14 @@ function bindDataAccount(data) {
   document.querySelector("#account_email").value = data.email;
   document.querySelector("#account_address").value = data.address;
   document.querySelector(".name-account").innerHTML = data.name;
-  document.querySelector("#img_account_avatar").src =
-    cloudinary_url + data.avatar;
-  document.querySelector("#img_account_avatar").parentElement.href =
-    cloudinary_url + data.avatar;
+  document.querySelector("#avatarGallery").setAttribute("href", `https://res.cloudinary.com/vernom/image/upload/${data.avatar}`);
+  document.querySelector("#avatarImg").setAttribute("src", `https://res.cloudinary.com/vernom/image/upload/${data.avatar}`);
+  document.querySelector("#avatar_account").src =
+    data.avatar ||
+    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
+  document.querySelector("#avatar_account").parentElement.href =
+    data.avatar ||
+    "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
 
 // update profile
@@ -209,7 +213,7 @@ function getListFoodActive() {
     .then((response) => response.json())
     .then((foodList) => {
       foodCount = 0;
-      renderListFood(foodList.data.content);
+      renderListFoodActive(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
@@ -596,8 +600,11 @@ function newFoodEdit() {
                 });
               })
               .catch((error) => console.log(error));
-            swal("Success!", "Successfully updated data!", "success");
+            swal("Success!", "Successfully updated food!", "success");
 
+            listfood();
+            listFoodPost();
+            listFoodPending();
             modal1.style.display = "none";
             var frm = document.getElementsByName("upload_new_food_form")[0];
             frm.reset();
@@ -954,8 +961,7 @@ function bindDataDetailRequest(data) {
     "image_food_detail_request"
   ).src = `${cloudinary_url}${data.foodDTO.avatar}`;
   document.getElementById("food-title").innerHTML = data.foodDTO.name;
-  var message = data.message;
-  document.getElementById("message").innerHTML = message;
+  document.getElementById("message").innerHTML = data.message;
   document.getElementById("request-status").innerHTML = convertRequestStatus(
     data.status
   );
@@ -963,7 +969,11 @@ function bindDataDetailRequest(data) {
     .getElementsByClassName("row-btn")
     .item(
       0
-    ).innerHTML = `<div class="col-sm-12"><input id="old-message" style="display:none" value="${message}"/><button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id})"><i class="fa fa-edit"></i> Update Message</button></div><div class="col-sm-12">
+    ).innerHTML = `<div class="col-sm-12">
+    <input id="old-message" style="display:none" value="${data.message}"/>
+    <button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id})">
+      <i class="fa fa-edit"></i> Update Message
+    </button></div><div class="col-sm-12">
     <a onclick="backToRequestList()" type="button" lass="btn btn-sm btn-round" style="padding: 6px 0px 0px 0px !important">
     <i class="fa fa-angle-double-left"></i> Back to list</a></div>`;
 }
@@ -1001,6 +1011,7 @@ function updateRequestMessage(foodID, supplierID) {
           var time;
           var requestData = request.data;
           let notifyRequestPromise = new Promise(function (myResolve) {
+
             idFood = requestData.foodId;
             avatarFood = requestData.foodDTO.avatar;
             var today = new Date();
@@ -1019,6 +1030,7 @@ function updateRequestMessage(foodID, supplierID) {
             myResolve();
           });
           notifyRequestPromise.then(function () {
+            formDetailRequest(idFood)
             Notification.send(supplierID, {
               idNotify: "",
               usernameaccount: "",
@@ -1032,6 +1044,7 @@ function updateRequestMessage(foodID, supplierID) {
             });
           });
           swal("Success!", "Successfully updated message!", "success");
+          getListRequest(objAccount.id);
         });
     }
   } else {
