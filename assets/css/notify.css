@@ -53,9 +53,9 @@
 }
 
 .header__notify-header h6 {
-  color: #999;
+  color: rgb(80, 80, 80);
   margin: 0 0 0 12px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 40px;
 }
 .header__notify-item {
@@ -109,11 +109,11 @@
   display: flex;
 }
 .header__notify-footer-btn {
-  color: #000;
+  color: #999999;
   padding: 6px 0;
   width: 100%;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 600;
   text-align: center;
 }
 

@@ -164,8 +164,7 @@ function onBrowseRequest(){
 
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    getConnectAPI('POST', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + idApprovalRequest.recipientId + '/' 
-    + idApprovalRequest.foodId, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${idApprovalRequest.recipientId}/${idApprovalRequest.foodId}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             Notification.send(parseInt(idApprovalRequest.recipientId), {
                 sender: objAccount.id,
@@ -180,7 +179,6 @@ function onBrowseRequest(){
             });
             $('#approvalRequest').modal('hide');
             getListRequest();
-            
         }
     },
         function(errorThrown){}
@@ -199,7 +197,7 @@ function onDeleteRequest(){
         updatedBy: objAccount.id,
         status: 0
     };
-    getConnectAPI('POST', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(objDelete.recipientId) + '/' + parseInt(objDelete.foodId), JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(objDelete.recipientId) + '/' + parseInt(objDelete.foodId), JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             objDelete.ele.remove();
             $('#deleteRequest').modal('hide');

@@ -1,19 +1,105 @@
 "use strict";
+// add method validate
+jQuery.validator.addMethod('valid_email', function (value) {
+  var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
+  return value.trim().match(regex);
+});
+jQuery.validator.addMethod('valid_phone', function (value) {
+  var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  return value.trim().match(regex);
+});
+// validate function
+function emailValidate(value) {
+  var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
+  return value.trim().match(regex);}
+function phoneValidate(value) {
+  var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+  return value.trim().match(regex);
+}
+
 var objAccount = null;
 var listImageFood = [];
 // Validator register
-Validator({
-  form: "#addneworder",
-  formGroupSelector: ".form-group",
-  errorSelector: ".form-message",
-  rules: [
-    Validator.isRequired("#nameFood", "Food name is required!"),
-    Validator.isRequired("#category", "Category is required!"),
-    Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
-    Validator.isRequired("#expirationDate", "Expiration Date is required!"),
-    Validator.isRequired("#description", "Description is required!"),
-  ],
+// Validator({
+//   form: "#addneworder",
+//   formGroupSelector: ".form-group",
+//   errorSelector: ".form-message",
+//   rules: [
+//     Validator.isRequired("#nameFood", "Food name is required!"),
+//     Validator.isRequired("#category", "Category is required!"),
+//     Validator.isRequired("#manufactureDate", "Manufacture Date is required!"),
+//     Validator.isRequired("#expirationDate", "Expiration Date is required!"),
+//     Validator.isRequired("#description", "Description is required!"),
+//   ],
+// });
+
+// Validator update account
+$("#update-account-form").validate({
+  onfocusout: false,
+  onkeyup: false,
+  onclick: false,
+  rules: {
+    account_name: {
+      required: true
+    },
+    account_email: {
+      required: true,
+      valid_email: true
+    },
+    account_phone: {
+      required: true,
+      valid_phone: true
+    },
+    account_address: {
+      required: true
+    }
+  },
+  messages: {
+    account_name: {
+      required: "Name is required!"
+    },
+    account_email: {
+      required: "Username is required!",
+      valid_email: "Email is invalid."
+    },
+    account_phone: {
+      required: "Phone is required!",
+      valid_phone: "Phone is invalid.",
+    },
+    account_address: {
+      required: "Address is required!"
+    }
+  },
 });
+
+
+// Validator change password
+$("#changepassword-form").validate({
+  onfocusout: false,
+  onkeyup: false,
+  onclick: false,
+  rules: {
+    newPassword: {
+      required: true
+    },
+    confirmNewPassword: {
+      required: true,
+      equalTo : "#newPassword"
+    }
+  },
+  messages: {
+    newPassword: {
+      required: "New Password is required!"
+    },
+    confirmNewPassword: {
+      required: "Comfirm Password is required!",
+      equalTo: "Password re-entered is incorrect!"
+    }
+  },
+});
+
+
+
 
 // document.getElementById("newFood").addEventListener(
 //   "click",
@@ -93,6 +179,8 @@ function showTabPanel(e) {
       document.getElementsByClassName("profile")[0].classList.add("active");
       document.getElementById("profile").classList.add("active");
       document.getElementsByClassName("profile")[0].classList.remove("d-none");
+
+      document.getElementsByClassName("changepassword")[0].classList.remove("d-none");
       getAccount();
       break;
     case "myfood":
