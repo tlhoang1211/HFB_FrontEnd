@@ -1,4 +1,5 @@
 var orderByRequest = 'asc', statusRequest = null, searchName_Request, filter_Category;
+console.log()
 function formAddRequest() {
     document.getElementById('modalAddRequest').classList.add('show');
 }
@@ -146,12 +147,15 @@ function renderListRequest(data) {
 }
 
 var idApprovalRequest;
+var recipientId, foodId;
 function approvalRequest(e, foodId, recipientId){
     idApprovalRequest = {
         status: 3,
-        recipientId: recipientId,
-        foodId: foodId,
+        recipientId: parseInt(recipientId),
+        foodId: parseInt(foodId),
     }
+    recipientId = parseInt(recipientId)
+    foodId = parseInt(foodId)
     $('#approvalRequest').modal('show');
 }
 function onBrowseRequest(){
@@ -160,23 +164,24 @@ function onBrowseRequest(){
         status: 3,
         updatedBy: objAccount.id,
     };
-    var today = new Date();
-    var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    getConnectAPI('POST', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(idApprovalRequest.recipientId) + '/' + parseInt(idApprovalRequest.foodId), JSON.stringify(dataPost), function(result){
+
+    // var today = new Date();
+    // var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    getConnectAPI('POST', `http://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${recipientId}/${foodId}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            Notification.send(parseInt(idApprovalRequest.recipientId), {
-                sender: objAccount.id,
-                idNotify: "",
-                usernameaccount: "",
-                Requestid: parseInt(idApprovalRequest.recipientId),
-                avatar: idApproval.avatar,
-                title: "Admin approved",
-                message: "Time request: " + time,
-                category: "Request",
-                status: 1,
-            });
-            $('#approvalRequest').modal('hide');
-            getListRequest();
+            // Notification.send(parseInt(idApprovalRequest.recipientId), {
+            //     sender: objAccount.id,
+            //     idNotify: "",
+            //     usernameaccount: "",
+            //     Requestid: parseInt(idApprovalRequest.recipientId),
+            //     avatar: idApproval.avatar,
+            //     title: "Admin approved",
+            //     message: "Time request: " + time,
+            //     category: "Request",
+            //     status: 1,
+            // });
+            // $('#approvalRequest').modal('hide');
+            // getListRequest();
             
         }
     },

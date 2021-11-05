@@ -1,6 +1,3 @@
-$(document).ready(function () {
-    Notification.config();
-});
 var listImageFood = [];
 // food
 var myWidgetFood = cloudinary.createUploadWidget(
@@ -27,7 +24,7 @@ var myWidgetFood = cloudinary.createUploadWidget(
     }
 );
   
-document.getElementById("upload_image_food").addEventListener("click", function () {
+document.getElementById("btn-upload").addEventListener("click", function () {
         myWidgetFood.open();
     },
     false
@@ -49,18 +46,22 @@ $("body").on("click", ".cloudinary-delete", function () {
 
 // save food
 function saveFood(){
-    var name = document.getElementById("nameFood").value;
-    var categoryId = document.getElementById("category").value;
-    var expirationDate = document.getElementById("expirationDate").value;
-    var description = document.getElementById("description").value;
+    var name = $('#nameFood').val();
+    var categoryId = $('#category_newFood').val();
+    var expirationDate = $('#expirationDate').val();
+    var description = $('#description').val();
+    if (!name) {
+        notification('warning', "Food name is required!");
+        return false;
+    }
     if (!expirationDate) {
-        $(".alert-danger").alert();
+        notification('warning', "Expiration Date is required!");
         return false;
-      }
-      if (listImageFood.length == 0) {
-        $(".alert-danger").alert();
+    }
+    if (listImageFood.length == 0) {
+        notification('warning', "Food pictures is required!");
         return false;
-      }
+    }
     
     var dataPost = {
         name: name,
@@ -73,9 +74,20 @@ function saveFood(){
     }
     getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods', JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
+            notification('success', "Successfully added new");
             goBack('food', 'food');
         }
     },
         function(errorThrown){}
     );
 }
+function renderOptionCategory(){
+    var htmlO = '';
+    for (let index = 0; index < arrCategory.length; index++) {
+        var element = arrCategory[index];
+        htmlO += '<option value="' + element.id + '">' + element.name + '</option>';
+    }
+    console.log(htmlO)
+    $('#category_newFood').append(htmlO);
+}
+renderOptionCategory();

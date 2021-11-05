@@ -32,8 +32,16 @@
                                 </div>
                                 <div class="imageuploadify-images-list text-center">
                                     <i class="bx bxs-cloud-upload"></i>
-                                    <button type="button" class="btn btn-default" onclick="upLoadFile()" style="background: rgb(58, 160, 255); color: white;">Select file to upload</button>
+                                    <button type="button" class="btn btn-default" id="btn-upload" onclick="upLoadFile()" style="background: rgb(58, 160, 255); color: white;">Select file to upload</button>
                                 </div>
+                            </div>
+                            <div class="thumbnails">
+                                <ul class="cloudinary-thumbnails">
+                                  <li class="cloudinary-thumbnail" data-cloudinary="">
+                                    <img src="" style="width: 300px; height: 300px"/>
+                                    <a href="#" class="cloudinary-delete-edit">x</a>
+                                  </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -43,12 +51,12 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <label for="category" class="form-label">Category</label>
-                                <select class="form-select" id="category">
+                                <select class="form-select" id="category_newFood">
                                 </select>
                             </div>
                             <div class="col-12">
                                 <label for="expirationDate" class="form-label">Expiration Date</label>
-                                <input type="text" class="form-control" id="expirationDate" placeholder="dd/MM/yyyy" autocomplete="off">
+                                <input type="date" class="form-control" id="expirationDate" placeholder="dd/MM/yyyy" autocomplete="off">
                             </div>
                             <div class="col-12">
                                 <div class="d-grid">

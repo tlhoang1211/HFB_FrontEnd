@@ -170,5 +170,33 @@
         localStorage.setItem('page', 'newFood');
         loadHtml( '../../../inc/layout/admin/content/'+ parentFile +'/' + file + '.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/'+ parentFile +'/'+ file +'.js');
     }
-    
+    function notification(type, message){
+        var icon;
+        switch (type) {
+            case 'info':
+                icon = 'bx bx-info-circle';
+                break;
+            case 'warning':
+                icon = 'bx bx-error';
+                break;
+            case 'error':
+                icon = 'bx bx-x-circle';
+                break;
+            case 'success':
+                icon = 'bx bx-check-circle';
+                break;
+            default:
+                break;
+        }
+        Lobibox.notify(type, {
+            pauseDelayOnHover: true,
+            size: 'mini',
+            rounded: true,
+            icon: icon,
+            delayIndicator: false,
+            continueDelayOnInactiveTab: false,
+            position: 'center top',
+            msg: message
+        });
+    }
 // });
