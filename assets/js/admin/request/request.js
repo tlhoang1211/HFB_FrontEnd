@@ -177,7 +177,10 @@ function onBrowseRequest(){
                 category: "Request",
                 status: 1,
             });
-            $('#approvalRequest').modal('hide');
+            setTimeout(() => {
+                $('#approvalRequest').modal('hide');
+            }, 0);
+           
             getListRequest();
         }
     },
@@ -199,8 +202,11 @@ function onDeleteRequest(){
     };
     getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + parseInt(objDelete.recipientId) + '/' + parseInt(objDelete.foodId), JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            objDelete.ele.remove();
-            $('#deleteRequest').modal('hide');
+            console.log(123123)
+            setTimeout(() => {
+                $('#deleteRequest').modal('hide');
+            }, 0);
+            
             getListRequest();
         }
     },
