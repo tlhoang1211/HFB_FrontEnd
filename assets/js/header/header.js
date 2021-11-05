@@ -123,6 +123,27 @@ if (token === null || token === undefined || token === NaN || token === "") {
     .catch((error) => console.log(error));
 }
 
+$(document).on("click", "#deleteNotify", function(){
+  var listnotification;
+  let notificationPromise = new Promise(function (myResolve) {
+    Notification.show(objAccount.id, function (listNotify) {
+      listnotification = listNotify;
+    })
+    myResolve();
+  })
+  notificationPromise.then(
+    function(){
+      listnotification.forEach(function (child) {
+        if(child.val().status == 0){
+          Notification.delete(objAccount.id, child.val().idNotify, {
+            
+          })
+          swal("Success!", "Delete notify successfully!", "success");
+        }
+      })
+  })
+})
+
 // status 0-deactive 1-active
 $(document).on("click", ".header__notify-item", function () {
   var idNoti = $(this).data("id");
@@ -136,7 +157,7 @@ $(document).on("click", ".header__notify-item", function () {
     Notification.update(idAccount, idNoti, {
       idNotify: idNoti,
     });
-    console.log("idNotify: " + idNoti);
+    // console.log("idNotify: " + idNoti);
     Notification.show(idAccount, function (listNotify) {
       listNotify.forEach(function (child) {
         if (child.val().idNotify == idNoti) {
@@ -149,25 +170,25 @@ $(document).on("click", ".header__notify-item", function () {
       });
     });
 
-    console.log(
-      "category: " + categoryNoti,
-      "FoodIdNoti:" + foodIdNoti,
-      "UsernameAccount: " + usernameAccount,
-      "Title" + title
-    );
+    // console.log(
+    //   "category: " + categoryNoti,
+    //   "FoodIdNoti:" + foodIdNoti,
+    //   "UsernameAccount: " + usernameAccount,
+    //   "Title" + title
+    // );
     myResolve();
   });
 
   notificationPromise.then(function () {
-    console.log("start notification");
+    // console.log("start notification");
     if (categoryNoti == "request") {
-      console.log("start notification request");
+      // console.log("start notification request");
       Notification.update(idAccount, idNoti, {
         status: 0,
       });
     }
     if (categoryNoti == "food") {
-      console.log("start notification food");
+      // console.log("start notification food");
       fetch(
         `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/roles?username=${usernameAccount}`,
         {
@@ -179,7 +200,7 @@ $(document).on("click", ".header__notify-item", function () {
       )
         .then((response) => response.json())
         .then((listRole) => {
-          console.log("start notification food role user");
+          // console.log("start notification food role user");
           var listRoles;
           let notificationPromise2 = new Promise(function (myResolve) {
             listRoles = listRole.data;
@@ -187,10 +208,10 @@ $(document).on("click", ".header__notify-item", function () {
           });
 
           notificationPromise2.then(function () {
-            console.log("start notification food role user 222");
+            // console.log("start notification food role user 222");
             listRoles.map(function (role) {
               if (role.name == "ROLE_ADMIN") {
-                console.log("start notification food role ADMIN");
+                // console.log("start notification food role ADMIN");
                 fetch(
                   `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users?role=ROLE_ADMIN`,
                   {
@@ -203,14 +224,14 @@ $(document).on("click", ".header__notify-item", function () {
                   .then((response) => response.json())
                   .then((listAdmin) => {
                     var listAdmins;
-                    console.log("start notification food role ADMIN 222");
+                    // console.log("start notification food role ADMIN 222");
                     let notificationPromise3 = new Promise(function (myResolve) {
                       listAdmins = listAdmin.data;
                       myResolve();
                     });
 
                     notificationPromise3.then(function () {
-                      console.log("start notification food role ADMIN 333");
+                      // console.log("start notification food role ADMIN 333");
                       listAdmins.map(function (admin) {
                         Notification.show(admin.id, function (listNotifyAdmin) {
                           listNotifyAdmin.forEach(function (child) {

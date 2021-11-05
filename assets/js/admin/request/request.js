@@ -107,8 +107,7 @@ function onBrowseRequest(){
     };
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/' + idApprovalRequest.recipientId + '/' 
-    + idApprovalRequest.foodId, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${idApprovalRequest.recipientId}/${idApprovalRequest.foodId}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             Notification.send(parseInt(idApprovalRequest.recipientId), {
                 sender: objAccount.id,
@@ -123,7 +122,6 @@ function onBrowseRequest(){
             });
             $('#approvalRequest').modal('hide');
             getListRequest();
-            
         }
     },
         function(errorThrown){}

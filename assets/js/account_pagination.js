@@ -50,6 +50,8 @@ function bindDataAccount(data) {
   document.querySelector("#account_email").value = data.email;
   document.querySelector("#account_address").value = data.address;
   document.querySelector(".name-account").innerHTML = data.name;
+  document.querySelector("#avatarGallery").setAttribute("href", `https://res.cloudinary.com/vernom/image/upload/${data.avatar}`);
+  document.querySelector("#avatarImg").setAttribute("src", `https://res.cloudinary.com/vernom/image/upload/${data.avatar}`);
   document.querySelector("#avatar_account").src =
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
@@ -61,44 +63,52 @@ function bindDataAccount(data) {
 // update profile
 var imgAvatar;
 function updateAccount() {
-  var account_nameUpdate = document.querySelector('#account_name').value;
-  var account_emailUpdate = document.querySelector('#account_email').value;
-  var account_phoneUpdate = document.querySelector('#account_phone').value;
-  var account_addressUpdate = document.querySelector('#account_address').value;
-  if(account_nameUpdate == objAccount.name && account_emailUpdate == objAccount.email && account_phoneUpdate == objAccount.phone && account_addressUpdate == objAccount.address && imgAvatar == undefined){
+  var account_nameUpdate = document.querySelector("#account_name").value;
+  var account_emailUpdate = document.querySelector("#account_email").value;
+  var account_phoneUpdate = document.querySelector("#account_phone").value;
+  var account_addressUpdate = document.querySelector("#account_address").value;
+  if (
+    account_nameUpdate == objAccount.name &&
+    account_emailUpdate == objAccount.email &&
+    account_phoneUpdate == objAccount.phone &&
+    account_addressUpdate == objAccount.address &&
+    imgAvatar == undefined
+  ) {
     swal("Warning!", "You don't update your account!", "warning");
-  }else{
-    if(imgAvatar == null || imgAvatar == "" || imgAvatar == undefined){
+  } else {
+    if (imgAvatar == null || imgAvatar == "" || imgAvatar == undefined) {
       imgAvatar = objAccount.avatar;
     }
-    fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${objAccount.id}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${isToken}`,
-      },
-      body: JSON.stringify({
-        "name" : account_nameUpdate,
-        "username" : account_emailUpdate,
-        "phone" : account_phoneUpdate,
-        "address" : account_addressUpdate,
-        "avatar" : imgAvatar,
-        "updatedBy" : objAccount.id,
-        "status": 1
-      }),
-    })
-    .then(response => response.json())
-    .then(account => {
-      if (account && account.data) {
-        swal("Success!", "Update account success!", "success");
-        objAccount = account.data;
-        currentName = objAccount.username;
-        console.log(currentName);
-        bindDataAccount(objAccount);
+    fetch(
+      `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${objAccount.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+        body: JSON.stringify({
+          name: account_nameUpdate,
+          username: account_emailUpdate,
+          phone: account_phoneUpdate,
+          address: account_addressUpdate,
+          avatar: imgAvatar,
+          updatedBy: objAccount.id,
+          status: 1,
+        }),
       }
-    })
-    .catch(error => console.log(error));
+    )
+      .then((response) => response.json())
+      .then((account) => {
+        if (account && account.data) {
+          swal("Success!", "Update account success!", "success");
+          objAccount = account.data;
+          currentName = objAccount.username;
+          console.log(currentName);
+          bindDataAccount(objAccount);
+        }
+      })
+      .catch((error) => console.log(error));
   }
 }
 
@@ -114,7 +124,7 @@ var myWidgetAccount = cloudinary.createUploadWidget(
   },
   (error, result) => {
     if (!error && result && result.event === "success") {
-      imgAvatar = result.info.path
+      imgAvatar = result.info.path;
       console.log(imgAvatar);
       console.log("Done! Here is the image info: ", result.info.url);
     }
@@ -131,28 +141,27 @@ document.getElementById("upload_avatar").addEventListener(
 
 // change password
 function changpassword() {
-  var newPassword = document.querySelector('#newPassword').value;
+  var newPassword = document.querySelector("#newPassword").value;
   var changepasswordAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/change-password/${objAccount.id}`;
-  if(newPassword){
-    fetch(changepasswordAPI,
-    {
+  if (newPassword) {
+    fetch(changepasswordAPI, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${isToken}`,
+        Authorization: `Bearer ${isToken}`,
       },
       body: JSON.stringify({
-        "password" : newPassword
+        password: newPassword,
       }),
     })
-    .then(response => response.json())
-    .then(data => {
-      if(data.status == 200){
-        swal("Success!", "Change password success!", "success");
-      }
-    })
-    .catch(error => console.log(error))
-  }else{
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status == 200) {
+          swal("Success!", "Change password success!", "success");
+        }
+      })
+      .catch((error) => console.log(error));
+  } else {
     swal("Warning!", "You don't change the password!", "warning");
   }
 }
@@ -204,7 +213,7 @@ function getListFoodActive() {
     .then((response) => response.json())
     .then((foodList) => {
       foodCount = 0;
-      renderListFood(foodList.data.content);
+      renderListFoodActive(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
@@ -282,7 +291,9 @@ function renderListFoodActive(listFood) {
         dataHtml +=
           `<tr id="food-row-${e.id}">
         <td>${foodCount}</td>
-        <td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;"> ${e.name || ""}</a></td>
+        <td><a href="./shop_single_product.html?id=${
+          e.id
+        }" style="color: blue;"> ${e.name || ""}</a></td>
         <td>${formatCategory(e.categoryId)}</td>
         <td>${e.expirationDate}</td>
         <td>${e.createdAt}</td>
@@ -589,8 +600,11 @@ function newFoodEdit() {
                 });
               })
               .catch((error) => console.log(error));
-            swal("Success!", "Successfully updated data!", "success");
+            swal("Success!", "Successfully updated food!", "success");
 
+            listfood();
+            listFoodPost();
+            listFoodPending();
             modal1.style.display = "none";
             var frm = document.getElementsByName("upload_new_food_form")[0];
             frm.reset();
@@ -789,7 +803,7 @@ function deleteFood(id) {
 // start
 function getListRequest(userID) {
   // console.log(userID);
-  var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&status=1`;
+  var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}`;
   // console.log(requestListAPI);
   fetch(requestListAPI, {
     method: "GET",
@@ -947,8 +961,7 @@ function bindDataDetailRequest(data) {
     "image_food_detail_request"
   ).src = `${cloudinary_url}${data.foodDTO.avatar}`;
   document.getElementById("food-title").innerHTML = data.foodDTO.name;
-  var message = data.message;
-  document.getElementById("message").innerHTML = message;
+  document.getElementById("message").innerHTML = data.message;
   document.getElementById("request-status").innerHTML = convertRequestStatus(
     data.status
   );
@@ -956,7 +969,11 @@ function bindDataDetailRequest(data) {
     .getElementsByClassName("row-btn")
     .item(
       0
-    ).innerHTML = `<div class="col-sm-12"><input id="old-message" style="display:none" value="${message}"/><button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id})"><i class="fa fa-edit"></i> Update Message</button></div><div class="col-sm-12">
+    ).innerHTML = `<div class="col-sm-12">
+    <input id="old-message" style="display:none" value="${data.message}"/>
+    <button type="button" class="btn btn-sm btn-block btn-warning" onclick="updateRequestMessage(${data.foodDTO.id})">
+      <i class="fa fa-edit"></i> Update Message
+    </button></div><div class="col-sm-12">
     <a onclick="backToRequestList()" type="button" lass="btn btn-sm btn-round" style="padding: 6px 0px 0px 0px !important">
     <i class="fa fa-angle-double-left"></i> Back to list</a></div>`;
 }
@@ -994,6 +1011,7 @@ function updateRequestMessage(foodID, supplierID) {
           var time;
           var requestData = request.data;
           let notifyRequestPromise = new Promise(function (myResolve) {
+
             idFood = requestData.foodId;
             avatarFood = requestData.foodDTO.avatar;
             var today = new Date();
@@ -1012,6 +1030,7 @@ function updateRequestMessage(foodID, supplierID) {
             myResolve();
           });
           notifyRequestPromise.then(function () {
+            formDetailRequest(idFood)
             Notification.send(supplierID, {
               idNotify: "",
               usernameaccount: "",
@@ -1025,6 +1044,7 @@ function updateRequestMessage(foodID, supplierID) {
             });
           });
           swal("Success!", "Successfully updated message!", "success");
+          getListRequest(objAccount.id);
         });
     }
   } else {
@@ -1170,6 +1190,9 @@ function viewUsersRequestFood(foodID) {
     .catch((error) => console.log(error));
 }
 
+var listCheckedValue = [];
+var listUncheckedValue = [];
+
 function renderUserRequests(listUserRequests) {
   var userRequestCount = 0;
   let container = $(".pagination4");
@@ -1184,41 +1207,51 @@ function renderUserRequests(listUserRequests) {
       var buttonsHtml;
       $.each(data, function (index, e) {
         userRequestCount++;
-        if (e.status != 1) {
+        if (e.status == 1) {
           dataHtml += `<tr>
-        <td>${userRequestCount}</td>
-        <td>${e.recipientName}</td>
-        <td>${e.message}</td>
-        <td>${e.createdAt}</td>
-        <td>${e.recipientPhone}</td>`;
+          <td>${userRequestCount}</td>
+          <td>${e.recipientName}</td>
+          <td>${e.message}</td>
+          <td>${e.createdAt}</td>
+          <td>${e.recipientPhone}</td>
+          <td><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="${e.recipientId}" name="${e.recipientId}"></td>`;
 
           buttonsHtml = `<div class="col-sm-6" style="padding-left: unset"><button
-        type="button"
-        onclick="backToFoodRequestList()"
-        class="btn btn-b btn-round btnSubmit"
-        style="float: left">Back</button></div><div class="col-sm-6"><button
-        type="button"
-        onclick="confirmation(${e.foodId})" id="confirm-button"
-        class="btn btn-success btn-round btnSubmit">Finish</button></div>`;
-
-          document.getElementById("checkAllCell").innerText = "Phone Number";
+          type="button"
+          onclick="backToFoodRequestList()"
+          class="btn btn-b btn-round btnSubmit"
+          style="float: left">Back</button></div>
+          <div class="col-sm-6"><button
+          type="button"
+          onclick="confirmation(${e.foodId})" id="confirm-button"
+          class="btn btn-success btn-round btnSubmit">Confirm</button></div>`;
         } else {
-          dataHtml += `<tr>
-        <td>${userRequestCount}</td>
-        <td>${e.recipientName}</td>
-        <td>${e.message}</td>
-        <td>${e.createdAt}</td>
-        <td><input class="form-check-input" id="${userRequestCount} flexCheckChecked" type="checkbox" value="${e.recipientId}" name="feature[]"></td>`;
-
           buttonsHtml = `<div class="col-sm-6" style="padding-left: unset"><button
-        type="button"
-        onclick="backToFoodRequestList()"
-        class="btn btn-b btn-round btnSubmit"
-        style="float: left">Back</button></div>
-        <div class="col-sm-6"><button
-        type="button"
-        onclick="confirmation(${e.foodId})" id="confirm-button"
-        class="btn btn-success btn-round btnSubmit">Confirm</button></div>`;
+            type="button"
+            onclick="backToFoodRequestList()"
+            class="btn btn-b btn-round btnSubmit"
+            style="float: left">Back</button></div><div class="col-sm-6"><button
+            type="button"
+            onclick="finish(${e.foodId})" id="finish-button"
+            class="btn btn-success btn-round btnSubmit">Finish</button></div>`;
+
+          dataHtml += `<tr>
+          <td>${userRequestCount}</td>
+          <td>${e.recipientName}</td>
+          <td>${e.message}</td>
+          <td>${e.createdAt}</td>
+          <td>${e.recipientPhone}</td>
+          <td><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="${e.recipientId}" name="${e.recipientId}"></td>`;
+
+          console.log(listCheckedValue);
+          var checked_cb = document.getElementsByName(listCheckedValue);
+          checked_cb.checked = true;
+          var checkboxes = document.querySelectorAll(
+            '#list-users-request input[type="checkbox"]'
+          );
+          for (var i = 0, n = checkboxes.length; i < n; i++) {
+            checkboxes[i].disabled = true;
+          }
         }
       });
 
@@ -1240,6 +1273,26 @@ function checkAll(source) {
 }
 
 function confirmation(foodId) {
+  $('#list-users-request input[type="checkbox"]:checked').each(function () {
+    listCheckedValue.push($(this).val());
+  });
+  $('#list-users-request input[type="checkbox"]:not(:checked)').each(
+    function () {
+      listUncheckedValue.push($(this).val());
+    }
+  );
+  var checkboxes = document.querySelectorAll(
+    '#list-users-request input[type="checkbox"]'
+  );
+  for (var i = 0, n = checkboxes.length; i < n; i++) {
+    checkboxes[i].disabled = true;
+  }
+  document.getElementById("checkAll").disabled = true;
+  var confirm_btn = document.getElementById("confirm-button");
+  confirm_btn.innerText = "Finish";
+  confirm_btn.id = "finish-button";
+  confirm_btn.setAttribute("onclick", `finish(${foodId})`);
+
   if (listCheckedValue.length == 0) {
     swal(
       "You have not selected any recipients. \n Do you want to abort this request?",
@@ -1249,13 +1302,22 @@ function confirmation(foodId) {
         closeOnClickOutside: false,
         closeOnEsc: false,
         buttons: {
-          confirm: true,
-          cancel: true,
+          confirm: {
+            text: "Continue",
+            value: true,
+            visible: true,
+            closeModal: true,
+          },
+          cancel: {
+            text: "Cancel",
+            value: false,
+            visible: true,
+            closeModal: true,
+          },
         },
       }
-    ).then((result) => {
-      console.log(result.isConfirmed);
-      if (result.isConfirmed) {
+    ).then(function (isConfirm) {
+      if (isConfirm) {
         denyRequest(foodId);
       }
     });
@@ -1268,21 +1330,7 @@ function confirmation(foodId) {
       "success"
     );
   }
-
-  // Event listeners for reload
-  const reloadButton = document.querySelector(".swal-button--confirm");
-  reloadButton.addEventListener("click", backToFoodRequestList, false);
 }
-
-var listCheckedValue = [];
-var listUncheckedValue = [];
-$('#list-users-request input[type="checkbox"]:checked').each(function () {
-  listCheckedValue.push($(this).val());
-});
-$('#list-users-request input[type="checkbox"]:not(:checked)').each(function () {
-  listUncheckedValue.push($(this).val());
-});
-
 // update stautus for approved request and send notify to selected user
 function acceptRequest(foodId) {
   var confirmDataPost = {
@@ -1304,7 +1352,6 @@ function acceptRequest(foodId) {
     )
       .then((response) => response.json())
       .then(function (request1) {
-        console.log(request1.data);
         var avatarFood;
         var time;
         var requestData = request1.data;
