@@ -2,6 +2,7 @@
     "use strict"
     // get token
     var token, pageContent, currentUserName, objAccount;
+    var pageSize = 20, pageIndex = 0;
     function startLoad(cookie){
         var getbackround = document.getElementsByClassName('bg-theme');
         if (cookie) {
@@ -23,10 +24,8 @@
             loadHtml('setBg.html', '.wrapper', 'div', 'switcher-wrapper', '', 'afterend', '../../../assets/js/admin/setBg.js');
             creaElement('div', 'page-wrapper', '', '.wrapper', 'afterbegin');
             loadHtml( '../../../inc/layout/admin/content/dashboard/dashboard.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/dashboard/dashboard.js');
-            // if (localStorage.getItem('backround')) {
-                
-            // }
             getAccount();
+            listCategory();
         } else {
             loadHtml('login.html', 'body', 'div', 'wrapper', '', 'afterbegin', '../../../assets/js/admin/login.js');
         }
@@ -103,7 +102,18 @@
         .catch(error => console.log(console.log(error)));
         
     }
-
+    function loadScript(arrSrc) {
+        if (arrSrc) {
+            if (arrSrc.length > 0) {
+                for (let index = 0; index < arrSrc.length; index++) {
+                    var newSrc = document.createElement('script');
+                    newSrc.src = arrSrc[index];
+                    $("body").append(newSrc);
+                }
+            }
+            
+        }
+    }
     function getConnectAPI(method, url, dataPost, successCallback, failCallback){
         fetch(url, {
             method: method,
@@ -121,6 +131,72 @@
         })
         .catch(function (error) {
             failCallback();
+        });
+    }
+
+    function addActive(ele){
+        // Get the parent node
+        var parent = ele.parentNode;
+        // Filter the children, exclude the element
+        var siblings = [].slice.call(parent.children).filter(function (child) {
+            return child !== ele;
+        });
+        if (siblings && siblings.length > 0) {
+            for (let index = 0, len = siblings.length; index < siblings.length; index++) {
+                var element = siblings[index].classList;
+                element.remove('active');
+            }
+        }
+        ele.classList.add('active');
+    }
+    var arrCategory = [];
+    function listCategory(){
+        getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/categories?status=1', null, function(result){
+            if (result && result.status == 200) {
+                if (result && result.data && result.data.content && result.data.content.length > 0) {
+                    arrCategory = result.data.content;
+                    
+                }
+            }
+        },
+            function(errorThrown){}
+        );
+    }
+    function goBack(parentFile, file){
+        var pageContent = document.getElementsByClassName('page-content');
+        if (pageContent.item(0)) {
+            pageContent.item(0).remove();
+        }
+        localStorage.setItem('page', 'newFood');
+        loadHtml( '../../../inc/layout/admin/content/'+ parentFile +'/' + file + '.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/'+ parentFile +'/'+ file +'.js');
+    }
+    function notification(type, message){
+        var icon;
+        switch (type) {
+            case 'info':
+                icon = 'bx bx-info-circle';
+                break;
+            case 'warning':
+                icon = 'bx bx-error';
+                break;
+            case 'error':
+                icon = 'bx bx-x-circle';
+                break;
+            case 'success':
+                icon = 'bx bx-check-circle';
+                break;
+            default:
+                break;
+        }
+        Lobibox.notify(type, {
+            pauseDelayOnHover: true,
+            size: 'mini',
+            rounded: true,
+            icon: icon,
+            delayIndicator: false,
+            continueDelayOnInactiveTab: false,
+            position: 'center top',
+            msg: message
         });
     }
 // });
