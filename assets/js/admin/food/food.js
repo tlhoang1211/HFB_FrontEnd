@@ -1,5 +1,5 @@
 
-var orderBy = 'asc', statusFood = 1, searchName, filter_Category;
+var orderBy = 'desc', statusFood = 1, searchName, filter_Category;
 function formAddFood() {
     var pageContent = document.getElementsByClassName('page-content');
     if (pageContent.item(0)) {
@@ -47,7 +47,7 @@ function getListFood(pageIndex) {
     if (orderBy) {
         optionUrl += '&order=' + orderBy;
     }
-    optionUrl += '&sortBy=name';
+    optionUrl += '&sortBy=createdAt';
     if (searchName) {
         optionUrl += '&name=' + searchName;
     }

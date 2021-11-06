@@ -1,4 +1,4 @@
-var orderByRequest = 'asc', statusRequest = null, searchName_Request, filter_Category;
+var orderByRequest = 'desc', statusRequest = null, searchName_Request, filter_Category;
 // function formAddRequest() {
 //     document.getElementById('modalAddRequest').classList.add('show');
 // }
@@ -61,7 +61,7 @@ function getListRequest(pageIndex) {
     if (orderByRequest) {
         optionUrl += '&order=' + orderByRequest;
     }
-    // optionUrl += '&sortBy=foodId';   
+    optionUrl += '&sortBy=createdAt'; 
     getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function(result){
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {

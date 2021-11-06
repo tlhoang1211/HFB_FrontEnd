@@ -1,4 +1,4 @@
-var orderBy = 'asc', statusFeedback = null, searchName_Feedback, objDetail;
+var orderBy = 'desc', statusFeedback = null, searchName_Feedback, objDetail;
 
 function onChangeOrderByFeedback(e, type){
     orderBy = type;
@@ -25,7 +25,7 @@ function getListFeedback(pageIndex) {
     if (orderBy) {
         optionUrl += '&order=' + orderBy;
     }
-    optionUrl += '&sortBy=id';
+    optionUrl += '&sortBy=createdAt';
     if (searchName_Feedback) {
         optionUrl += '&name=' + searchName_Feedback;
     }
