@@ -140,27 +140,32 @@ document.getElementById("upload_avatar").addEventListener(
 );
 
 // change password
-function changpassword() {
+function changepassword() {
   var newPassword = document.querySelector("#newPassword").value;
+  var confirmNewPassword = document.querySelector("#confirmNewPassword").value;
   var changepasswordAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/change-password/${objAccount.id}`;
   if (newPassword) {
-    fetch(changepasswordAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify({
-        password: newPassword,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status == 200) {
-          swal("Success!", "Change password success!", "success");
-        }
+    if(newPassword != confirmNewPassword){
+      swal("Warning!", "Password re-entered is incorrect!", "warning");
+    }else{
+      fetch(changepasswordAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+        body: JSON.stringify({
+          password: newPassword,
+        }),
       })
-      .catch((error) => console.log(error));
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status == 200) {
+            swal("Success!", "Change password success!", "success");
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   } else {
     swal("Warning!", "You don't change the password!", "warning");
   }
@@ -177,7 +182,10 @@ function listFoodPost() {
   getListFoodActive();
 }
 function listFoodPending() {
-  getListFoodSending();
+  getListFoodPending();
+}
+function listFoodExpired() {
+  getListFoodExpired();
 }
 
 function getListFoodAll() {
@@ -195,9 +203,34 @@ function getListFoodAll() {
             const index = listAllFood.indexOf(food);
             listAllFood.splice(index, 1);
           }
+
+
+          var tet = getTimeFromString2(food.expirationDate);
+          var now1 = new Date().getTime();
+          var timeRest1 = tet - now1;
+          if(timeRest1<= 0){
+            const index = listAllFood.indexOf(food);
+            listAllFood.splice(index, 1);
+            var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${food.id}`;
+                fetch(urlUpdateStatus, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${isToken}`,
+                  },
+                  body: JSON.stringify({
+                    status: 0,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                  })
+                  .catch((error) => console.log(error));
+          }
         });
         myResolve();
       });
+
       listFoodPromise.then(function () {
         renderListFood(listAllFood);
       });
@@ -213,12 +246,12 @@ function getListFoodActive() {
     .then((response) => response.json())
     .then((foodList) => {
       foodCount = 0;
-      renderListFoodActive(foodList.data.content);
+      renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
 
-function getListFoodSending() {
+function getListFoodPending() {
   var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&createdBy=${objAccount.id}`;
   fetch(foodListAPI, {
     method: "GET",
@@ -230,6 +263,20 @@ function getListFoodSending() {
     })
     .catch((error) => console.log(error));
 }
+
+function getListFoodExpired() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=0&createdBy=${objAccount.id}`;
+  fetch(foodListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((foodList) => {
+      foodCount = 0;
+      renderListFood(foodList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
+
 
 function renderListFood(listFood) {
   foodCount = 0;
@@ -244,66 +291,29 @@ function renderListFood(listFood) {
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
         foodCount++;
-        dataHtml +=
-          `<tr id="food-row-${e.id}">
-        <td>${foodCount}</td>
-        <td>${e.name || ""}</a></td>
-        <td>${formatCategory(e.categoryId)}</td>
-        <td>${e.expirationDate}</td>
-        <td>${e.createdAt}</td>
-        <td>${
-          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-        }</td>
-        <td onclick="formUpdateFood(${
-          e.id
-        })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
-      });
-
-      dataHtml += "</div>";
-      $("#list-food").html(dataHtml);
-    },
-  });
-
-  var foodDataTable = document.getElementById("food-data-table");
-
-  if (foodCount == 0) {
-    foodDataTable.style.display = "none";
-    document.getElementById("no-food-noti").removeAttribute("style");
-    document
-      .getElementById("center-food-noti")
-      .setAttribute("style", "text-align: center;");
-  }
-}
-function renderListFoodActive(listFood) {
-  foodCount = 0;
-  let container = $(".pagination1");
-  container.pagination({
-    dataSource: listFood,
-    pageSize: 5,
-    showGoInput: true,
-    showGoButton: true,
-    formatGoInput: "go to <%= input %>",
-    callback: function (data, pagination) {
-      var dataHtml = "<div>";
-      $.each(data, function (index, e) {
-        foodCount++;
-        dataHtml +=
-          `<tr id="food-row-${e.id}">
-        <td>${foodCount}</td>
-        <td><a href="./shop_single_product.html?id=${
-          e.id
-        }" style="color: blue;"> ${e.name || ""}</a></td>
-        <td>${formatCategory(e.categoryId)}</td>
-        <td>${e.expirationDate}</td>
-        <td>${e.createdAt}</td>
-        <td>${
-          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-        }</td>
-        <td onclick="formUpdateFood(${
-          e.id
-        })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
+          dataHtml +=
+            `<tr id="food-row-${e.id}">
+            <td>${foodCount}</td>`
+            if(e.status == 2 || e.status == 0){
+              dataHtml +=`<td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;">${e.name || ""}</a></td>`
+            }
+            if(e.status ==1){
+              dataHtml +=`<td>${e.name || ""}</td>`
+          
+            }
+          dataHtml +=`<td>${formatCategory(e.categoryId)}</td>
+            <td>${e.expirationDate}</td>
+            <td>${e.createdAt}</td>
+            <td>${
+              e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+            }</td>`
+            if(e.status == 0){
+              dataHtml += `<td><i class="fa fa-pencil-square-o" style="pointer-events: none; opacity: 0.5;"></i></td>`
+            }else{
+              dataHtml += `<td onclick="formUpdateFood(${e.id})"><i class="fa fa-pencil-square-o"></i></td>`
+            }
+            dataHtml += `<td onclick="confirmDeleteFood(${e.id})"><i class="fa fa-trash-o"></i></td></tr>`;
+        
       });
 
       dataHtml += "</div>";
@@ -331,6 +341,7 @@ var listFood1 = document.querySelector(".listFood");
 var listFoodPagination = document.querySelector(".listFoodPagination");
 var listFoodPost1 = document.querySelector(".listFoodPost");
 var listFoodPending1 = document.querySelector(".listFoodPending");
+var listFoodExpired1 = document.querySelector(".listFoodExpired");
 editUser.style.display = "none";
 var infoFoodDetail;
 function formUpdateFood(id) {
@@ -339,12 +350,13 @@ function formUpdateFood(id) {
   listFoodPending1.style.display = "none";
   listFoodPost1.style.display = "none";
   listFoodPagination.style.display = "none";
+  listFoodExpired1.style.display = "none";
 
   var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
   fetch(getDetailFood, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${isToken}`,
     },
   })
     .then((response) => response.json())
@@ -421,6 +433,7 @@ function backToFoodList() {
   listFoodPending1.style.display = "block";
   listFoodPost1.style.display = "block";
   listFoodPagination.style.display = "block";
+  listFoodExpired1.style.display = "block";
 }
 
 // validate form
@@ -540,7 +553,7 @@ function newFoodEdit() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${isToken}`,
             },
             body: JSON.stringify(dataPost),
           }
@@ -552,7 +565,7 @@ function newFoodEdit() {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${token}`,
+                  Authorization: `Bearer ${isToken}`,
                 },
               }
             )
@@ -605,6 +618,7 @@ function newFoodEdit() {
             listfood();
             listFoodPost();
             listFoodPending();
+            listFoodExpired();
             modal1.style.display = "none";
             var frm = document.getElementsByName("upload_new_food_form")[0];
             frm.reset();
@@ -766,6 +780,7 @@ function formatCategoryStringToInt(category) {
 
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");
+var modalfinish = document.querySelector(".modal-account-confirm-finish");
 function confirmDeleteFood(id) {
   modal3.style.display = "flex";
   var buttonValue = document.getElementById("accept-button");
@@ -845,12 +860,18 @@ function renderListRequest(listRequest) {
             e.supplierName
           }</td><td>${convertRequestStatus(
             e.status
-          )}</td><td onclick="formDetailRequest(${
-            e.foodId
-          })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteRequest(` +
-          e.foodId +
-          `)><i class="fa fa-trash-o"></i></td></tr>`;
+          )}</td>`
+          if(e.status == 2){
+            dataHtml1 +=`<td>
+              <button onclick="formConfirmRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;">Finish</button>
+            </td>`
+          }else if(e.status == 3){
+            dataHtml1 +=`<td><i class="fa fa-pencil-square-o" style="pointer-events: none; opacity: 0.5;"></i></td>`
+          }else{
+            dataHtml1 +=`<td onclick="formDetailRequest(${e.foodId})"><i class="fa fa-pencil-square-o"></i></td>`
+          }
+        
+        dataHtml1 +=`<td onclick=confirmDeleteRequest(` + e.foodId + `)><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
       dataHtml1 += "</div>";
@@ -860,7 +881,7 @@ function renderListRequest(listRequest) {
   });
 
   var requestDataTable = document.getElementById("request-data-table");
-
+    
   if (requestCount == 0) {
     requestDataTable.style.display = "none";
     document.getElementById("no-request-noti").removeAttribute("style");
@@ -914,6 +935,7 @@ function deleteRequest(foodId) {
 // start
 function cancelModal() {
   modal3.style.display = "none";
+  modalfinish.style.display = "none";
 }
 
 // close Modal by clicking "esc" button
@@ -923,6 +945,40 @@ $(document).keydown(function (event) {
     event.preventDefault();
   }
 });
+
+// confirm request
+var finishId;
+function formConfirmRequest(id){
+  modalfinish.style.display ="flex";
+  finishId = id;
+}
+
+function finishRequest(){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${objAccount.id}/${finishId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "status": 3,
+        "updatedBy": objAccount.id
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then(function (request) {
+      if(request.status == 200){
+        console.log('ok');
+        modalfinish.style.display ="none";
+        swal("Success!", "You haven't changed the message field!", "success");
+      }
+    })
+    .catch(error => console.log(error))
+}
+
 
 // detail request
 function formDetailRequest(id) {
@@ -1455,4 +1511,11 @@ function backToFoodRequestList() {
   listUsersRequestID.classList.remove("active");
 }
 
+function getTimeFromString2(strDate) {
+  var arrDate = strDate.split("/");
+  var year = parseInt(arrDate[2]);
+  var month = parseInt(arrDate[1]) - 1;
+  var date = parseInt(arrDate[0]);
+  return new Date(year, month, date).getTime();
+}
 // end

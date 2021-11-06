@@ -498,18 +498,18 @@
                 token =
                   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW93Iiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vaGZiLXQxMDk4ZS5oZXJva3VhcHAuY29tL2FwaS92MS9oZmIvbG9naW4iLCJleHAiOjE2MzYzNzUyMTR9._BQl5QtI4GbG-w0iUpSmlSafvjWQAGRGF6BFsgAL7gQ";
               }
-              // console.log(listItems.data.content);
+              
               var htmlsItem = listItems.data.content.map(function (item) {
                 return `
-                <div class="col-sm-6 col-md-3 col-lg-3" id="shop-item-${item.id}">
+                <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="shop-item-${item.id}">
                   <div class="shop-item">
                     <div class="shop-item-image">
                       <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                    </div>
-                    <div class="shop-item-detail">
-                      <a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}">
-                        <i class="fa fa-eye"></i> View Details
-                      </a>
+                      <div class="shop-item-detail">
+                        <a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}">
+                          <i class="fa fa-eye"></i> View Details
+                        </a>
+                      </div>
                     </div>
                     <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
                     <p>Expiration Date: ${item.expirationDate}</p>
@@ -554,6 +554,7 @@
                       .catch((error) => console.log(error));
                   }
                 }
+              
               });
             });
           })

@@ -555,7 +555,7 @@
                   </div>
                 </div>
                 <div class="row mb-20">
-                  <div class="col-sm-12"><a class="btn btn-lg btn-block btn-round btn-b" onclick="addToCart()">Ask for food</a></div>
+                  <div class="col-sm-12"><button class="btn btn-lg btn-block btn-round btn-b" type="button" id="addToCart" onclick="addToCart()">Ask for food</button></div>
                 </div>`;
               var htmlsInfoDes = `<p> ${listItems.data.description}</p>`;
 
@@ -567,14 +567,15 @@
 
             myPromise.then(function () {
               showSlides(1);
-
+              var p = document.querySelector(`#expirationdate`);
               var tet = getTimeFromString2(listItems.data.expirationDate);
-              run();
-
+              var now1 = new Date().getTime();
+              var timeRest1 = tet - now1;
+              if(timeRest1 > 0){
+                run();
+                var countDown = setInterval(run, 1000);
               // Tổng số giây
-              var countDown = setInterval(run, 1000);
               function run() {
-                var p = document.querySelector(`#expirationdate`);
                 var now = new Date().getTime();
                 //Số s đến thời gian hiện tại
                 var timeRest = tet - now;
@@ -593,9 +594,14 @@
                 // Số giây còn lại
                 if (timeRest <= 0) {
                   clearInterval(countDown);
-                  document.querySelector(
-                    `#shop-item-${item2.id}`
-                  ).style.display = "none";
+                  // document.querySelector(
+                  //   `#shop-item-${item2.id}`
+                  // ).style.display = "none";
+                  p.innerHTML = "Expired food";
+                  p.style.color = "#000"
+                  p.style.fontWeight = "900";
+                  p.style.fontSize = "16px";
+                  document.getElementById('addToCart').disabled = true;
                 }
                 p.innerHTML =
                   "TIME REMAINING: " +
@@ -608,6 +614,14 @@
                   sec +
                   "  ";
               }
+              } else{
+                p.innerHTML = "Expired food";
+                p.style.color = "#000";
+                p.style.fontWeight = "900";
+                p.style.fontSize = "16px";
+                document.getElementById('addToCart').disabled = true;
+              }
+              
             });
           })
           .catch((error) => console.log(error));
