@@ -214,7 +214,6 @@ function onBrowseRequest(status){
                 category: "Request",
                 status: 1,
             });
-            
         }
     },
         function(errorThrown){}

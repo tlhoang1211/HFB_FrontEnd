@@ -1,9 +1,11 @@
 
 "use strict";
-var toDate = null, fromDate = null;
+
 var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var toDate = new Date(y, m + 1, 0).getTime(), fromDate = new Date(y, m, 1).getTime();
 var firstDay = new Date(y, m, 1).toLocaleDateString("vi-VN");
 var lastDay = new Date(y, m + 1, 0).toLocaleDateString("vi-VN");
+var chartDonate = null, chartFood = null, chartRequest = null;
 var configchart = {
 	series: [{
 		name: "Charity Money",
@@ -66,47 +68,121 @@ var configchart = {
 // 	data: b_data
 //   }])
 function convertDate(d) {
-	var str = new Date(d).toLocaleDateString("vi-VN");
+	var str = moment(d).format('DD/MM/YYYY');
 	return str;
 }
 function drawChart() {
+	
 	var dataPost = {
-		"startDate": "2021-11-02",
-    	"endDate":"2021-11-03"
+		"startDate": moment(fromDate).format('YYYY-MM-DD'),
+    	"endDate": moment(toDate).format('YYYY-MM-DD')
 	}
 	// donate
 	getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/statistics/donation', JSON.stringify(dataPost), function (result) {
         if (result && result.status == 200) {
-            if (result.data) {
-                console.log(result)
+			var arrSeries = [], arrCategory = [], countDonate = 0;
+            if (result.data && result.data.length > 0) {
+				arrSeries = result.data.map(function(e){
+					countDonate += e[1];
+					return e[1];
+				});
+				arrCategory = result.data.map(function(e){
+					var splitdate = e[0].substring(0, 5);
+					return splitdate;
+				});
             }
+			configchart.series = [{
+				name: "Charity Money",
+				data: arrSeries
+			}]
+			configchart.colors = ["rgba(255, 255, 255, 0.60)"];
+			configchart.xaxis.categories = arrCategory;
+			renderCanvas('#chart_donate', configchart);
+			$('.countDonate').text('$'+ countDonate);
         }
     },
         function (errorThrown) { }
     );
+	var arrSeriesFood = [], arrCategoryFood = [], countFood = 0, arrSeriesRequest = [], arrCategoryRequest = [], countRequest = 0;
 	// food
 	getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/statistics/food', JSON.stringify(dataPost), function (result) {
         if (result && result.status == 200) {
-			// request
-			getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/statistics/request', JSON.stringify(dataPost), function (result) {
-				if (result && result.status == 200) {
-					if (result.data) {
-						console.log(result)
-					}
-
-				}
-			},
-				function (errorThrown) { }
-			);
+			if (result.data && result.data.length > 0) {
+				arrSeriesFood = result.data.map(function(e){
+					countFood += e[1];
+					return e[1];
+				});
+				arrCategoryFood = result.data.map(function(e){
+					var splitdate = e[0].substring(0, 5);
+					return splitdate;
+				});
+            }
+			configchart.series = [{
+				name: "Food",
+				data: arrSeriesFood
+			}]
+			configchart.colors = ["#fff"];
+			configchart.xaxis.categories = arrCategoryFood;
+			renderCanvas('#chart_food', configchart);
+			$('.countFood').text(''+ countFood);
         }
     },
         function (errorThrown) { }
     );
+	// request
+	getConnectAPI('POST', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/statistics/request', JSON.stringify(dataPost), function (result) {
+		if (result && result.status == 200) {
+			if (result.data) {
+				if (result.data && result.data.length > 0) {
+					arrSeriesRequest = result.data.map(function(e){
+						countRequest += e[1];
+						return e[1];
+					});
+					arrCategoryRequest = result.data.map(function(e){
+						var splitdate = e[0].substring(0, 5);
+						return splitdate;
+					});
+				}
+				configchart.series = [{
+					name: "Request",
+					data: arrSeriesRequest
+				}]
+				configchart.colors = ["rgba(255, 255, 255, 0.25)"];
+				configchart.xaxis.categories = arrCategoryRequest;
+				renderCanvas('#chart_request', configchart);
+				$('.countRequest').text(''+ countRequest);
+			}
+
+		}
+	},
+		function (errorThrown) { }
+	);
+}
+function renderCanvas(ele, configchart) {
+	if (ele == '#chart_donate') {
+		if (!chartDonate) {
+			chartDonate = new ApexCharts(document.querySelector(ele), configchart);
+			chartDonate.render();
+		} else {
+			chartDonate.updateOptions(configchart);
+		}
+	} else if (ele == '#chart_food') {
+		if (!chartFood) {
+			chartFood = new ApexCharts(document.querySelector(ele), configchart);
+			chartFood.render();
+		} else {
+			chartFood.updateOptions(configchart);
+		}
+	} else {
+		if (!chartRequest) {
+			chartRequest = new ApexCharts(document.querySelector(ele), configchart);
+			chartRequest.render();
+		} else {
+			chartRequest.updateOptions(configchart);
+		}
+	}
 	
 }
-
-new ApexCharts(document.querySelector("#chart_donate"), configchart).render();
-new ApexCharts(document.querySelector("#chart_food"), configchart).render();
 function initDaterangepicker(alwaysShowCalendars) {
 	$('#rs-date').daterangepicker({
 		parentEl: ".divDateRangePicker",
@@ -145,12 +221,13 @@ function initDaterangepicker(alwaysShowCalendars) {
 	});
 }
 function initPageDashboard() {
-	initDaterangepicker(false);
+	
 	if (fromDate && toDate) {
 		$('#rs-date').val(new Date(fromDate).toLocaleDateString("vi-VN") + ' - ' + new Date(toDate).toLocaleDateString("vi-VN"));
 	} else {
 		$('#rs-date').val(firstDay + " - " + lastDay);
 	}
+	initDaterangepicker(false);
 	drawChart();
 }
 initPageDashboard();
