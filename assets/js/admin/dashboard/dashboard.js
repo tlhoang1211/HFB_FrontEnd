@@ -60,13 +60,6 @@ var configchart = {
 		}
 	}
 };
-// chart.updateSeries([{
-// 	name: 'a',
-// 	data: a_data
-//   }, {
-// 	name: 'b',
-// 	data: b_data
-//   }])
 function convertDate(d) {
 	var str = moment(d).format('DD/MM/YYYY');
 	return str;
@@ -87,7 +80,7 @@ function drawChart() {
 					return e[1];
 				});
 				arrCategory = result.data.map(function(e){
-					var splitdate = e[0].substring(0, 5);
+					var splitdate = e[0].substring(0, 6);
 					return splitdate;
 				});
             }
@@ -113,7 +106,7 @@ function drawChart() {
 					return e[1];
 				});
 				arrCategoryFood = result.data.map(function(e){
-					var splitdate = e[0].substring(0, 5);
+					var splitdate = e[0].substring(0, 6);
 					return splitdate;
 				});
             }
@@ -139,7 +132,7 @@ function drawChart() {
 						return e[1];
 					});
 					arrCategoryRequest = result.data.map(function(e){
-						var splitdate = e[0].substring(0, 5);
+						var splitdate = e[0].substring(0, 6);
 						return splitdate;
 					});
 				}
@@ -158,6 +151,13 @@ function drawChart() {
 		function (errorThrown) { }
 	);
 }
+// function convertDateTime(date) {
+// 	var time = '';
+// 	var splitDate = date.split('-');
+// 	time = splitDate[2] + '/' + splitDate[1];
+// 	console.log(time)
+// 	return time
+// }
 function renderCanvas(ele, configchart) {
 	if (ele == '#chart_donate') {
 		if (!chartDonate) {

@@ -146,6 +146,12 @@ function onBrowseFood(){
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${idApproval.id}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
+            notification('success', result.message);
+            if (result.data) {
+                sendMail(result.data);
+            }
+            $('#approvalFood').modal('hide');
+            getListFood();
             Notification.send(parseInt(idApproval.createdBy), {
                 sender: objAccount.id,
                 idNotify: "",
@@ -157,9 +163,22 @@ function onBrowseFood(){
                 category: "food",
                 status: 1,
             });
-            $('#approvalFood').modal('hide');
-            getListFood();
-            
+        }
+    },
+        function(errorThrown){}
+    );
+}
+function sendMail(result) {
+    var dataPost = {
+        userId: objAccount.id,
+        foodName: result.name,
+        description: result.description,
+        urlDetail: "http://127.0.0.1:5500/shop_single_product.html?id=" + result.id,
+        urlImage: 'https://res.cloudinary.com/vernom/image/upload/' + result.avatar
+    }
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/mail/send`, JSON.stringify(dataPost), function(result){
+        if (result && result.status == 200) {
+            notification('success', "Successfully added new");
         }
     },
         function(errorThrown){}
@@ -194,7 +213,7 @@ function onDeleteFood(){
     };
     getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${objDelete.id}`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
-            objDelete.ele.remove();
+            notification('success', "Delete successfully!");
             $('#deleteFood').modal('hide');
             getListFood();
         }
