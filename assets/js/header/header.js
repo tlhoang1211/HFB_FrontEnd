@@ -394,11 +394,12 @@ function newFoodModal() {
             })
             .catch((error) => console.log(error));
           modal1.style.display = "none";
+          swal("Success!", "Add Food success!", "success");
           var frm = document.getElementsByName("upload_new_food_form")[0];
           frm.reset();
-          var image1 = document.getElementsByClassName("cloudinary-thumbnails");
-          image1.parentNode.removeChild(image1);
-          swal("Success!", "Add Food success!", "success");
+          // var image1 = document.getElementsByClassName("cloudinary-thumbnails");
+          // image1.parentNode.removeChild(image1);
+          
         })
         .catch((error) => console.log(error));
     }
