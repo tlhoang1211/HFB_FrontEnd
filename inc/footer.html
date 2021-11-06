@@ -14,21 +14,10 @@
       </div>
       <div class="col-sm-3">
         <div class="widget">
-          <h5 class="widget-title font-alt">Follow us on</h5>
-          <div>
-            <!-- <p><a href="#"><i style="font-size: 14px;" class="fa fa-facebook-square"></i> Facebook</a></p>
-            <p><a href="#"><i style="font-size: 14px;" class="fa fa-twitter"></i> Twitter</a></p>
-            <p><a href="#"><i style="font-size: 14px;" class="fa fa-dribbble"></i> Dribbble</a></p>
-            <p><a href="#"><i style="font-size: 14px;" class="fa fa-skype"></i> Skype</a></p> -->
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="widget">
           <h5 class="widget-title font-alt">Support us by</h5>
           <ul class="icon-list">
-            <li><a href="#">Donate</a></li>
-            <li><a href="#">Sign up for charity</a></li>
+            <li><a style="cursor: pointer;" onclick="donate()">Donate</a></li>
+            <li><a style="cursor: pointer;" onclick="addNewFood()">Sign up for charity</a></li>
           </ul>
         </div>
       </div>
@@ -53,6 +42,23 @@
           </ul>
         </div>
       </div>
+      <div class="col-sm-3">
+        <div class="widget">
+          <h5 class="widget-title font-alt">Pay</h5>
+          <div class="row">
+            <div class="col-sm-6">
+              <div style="width: 100%; margin-bottom: 5px; cursor: pointer;"><a onclick="donate()"><img src="/assets/images/gallery/pay/visa.png" alt=""></a></div>
+            </div>
+            <div class="col-sm-6">
+              <div style="width: 100%; margin-bottom: 5px; cursor: pointer;"><a onclick="donate()"><img src="/assets/images/gallery/pay/mastercard.jpg" alt=""></a></div>
+            </div>
+            <div class="col-sm-8">
+              <div style="width: 100%; margin-bottom: 5px; cursor: pointer;"><a onclick="donate()"><img src="/assets/images/gallery/pay/paypal.png" alt=""></a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </div>

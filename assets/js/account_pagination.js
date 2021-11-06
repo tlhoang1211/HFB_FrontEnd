@@ -182,7 +182,7 @@ function listFoodPost() {
   getListFoodActive();
 }
 function listFoodPending() {
-  getListFoodSending();
+  getListFoodPending();
 }
 function listFoodExpired() {
   getListFoodExpired();
@@ -246,12 +246,12 @@ function getListFoodActive() {
     .then((response) => response.json())
     .then((foodList) => {
       foodCount = 0;
-      renderListFoodActive(foodList.data.content);
+      renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
 
-function getListFoodSending() {
+function getListFoodPending() {
   var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=1&createdBy=${objAccount.id}`;
   fetch(foodListAPI, {
     method: "GET",
@@ -272,7 +272,7 @@ function getListFoodExpired() {
     .then((response) => response.json())
     .then((foodList) => {
       foodCount = 0;
-      renderListFoodExpired(foodList.data.content);
+      renderListFood(foodList.data.content);
     })
     .catch((error) => console.log(error));
 }
@@ -291,110 +291,29 @@ function renderListFood(listFood) {
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
         foodCount++;
-        dataHtml +=
-          `<tr id="food-row-${e.id}">
-        <td>${foodCount}</td>
-        <td>${e.name || ""}</a></td>
-        <td>${formatCategory(e.categoryId)}</td>
-        <td>${e.expirationDate}</td>
-        <td>${e.createdAt}</td>
-        <td>${
-          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-        }</td>
-        <td onclick="formUpdateFood(${
-          e.id
-        })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
-      });
-
-      dataHtml += "</div>";
-      $("#list-food").html(dataHtml);
-    },
-  });
-
-  var foodDataTable = document.getElementById("food-data-table");
-
-  if (foodCount == 0) {
-    foodDataTable.style.display = "none";
-    document.getElementById("no-food-noti").removeAttribute("style");
-    document
-      .getElementById("center-food-noti")
-      .setAttribute("style", "text-align: center;");
-  }
-}
-function renderListFoodActive(listFood) {
-  foodCount = 0;
-  let container = $(".pagination1");
-  container.pagination({
-    dataSource: listFood,
-    pageSize: 5,
-    showGoInput: true,
-    showGoButton: true,
-    formatGoInput: "go to <%= input %>",
-    callback: function (data, pagination) {
-      var dataHtml = "<div>";
-      $.each(data, function (index, e) {
-        foodCount++;
-        dataHtml +=
-          `<tr id="food-row-${e.id}">
-        <td>${foodCount}</td>
-        <td><a href="./shop_single_product.html?id=${
-          e.id
-        }" style="color: blue;"> ${e.name || ""}</a></td>
-        <td>${formatCategory(e.categoryId)}</td>
-        <td>${e.expirationDate}</td>
-        <td>${e.createdAt}</td>
-        <td>${
-          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-        }</td>
-        <td onclick="formUpdateFood(${
-          e.id
-        })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
-      });
-
-      dataHtml += "</div>";
-      $("#list-food").html(dataHtml);
-    },
-  });
-
-  var foodDataTable = document.getElementById("food-data-table");
-
-  if (foodCount == 0) {
-    foodDataTable.style.display = "none";
-    document.getElementById("no-food-noti").removeAttribute("style");
-    document
-      .getElementById("center-food-noti")
-      .setAttribute("style", "text-align: center;");
-  }
-}
-function renderListFoodExpired(listFood) {
-  foodCount = 0;
-  let container = $(".pagination1");
-  container.pagination({
-    dataSource: listFood,
-    pageSize: 5,
-    showGoInput: true,
-    showGoButton: true,
-    formatGoInput: "go to <%= input %>",
-    callback: function (data, pagination) {
-      var dataHtml = "<div>";
-      $.each(data, function (index, e) {
-        foodCount++;
-        dataHtml +=
-          `<tr id="food-row-${e.id}">
-        <td>${foodCount}</td>
-        <td><a href="./shop_single_product.html?id=${
-          e.id
-        }" style="color: blue;"> ${e.name || ""}</a></td>
-        <td>${formatCategory(e.categoryId)}</td>
-        <td>${e.expirationDate}</td>
-        <td>${e.createdAt}</td>
-        <td>${
-          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
-        }</td>
-        <td>no edit</td>` +
-          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
+          dataHtml +=
+            `<tr id="food-row-${e.id}">
+            <td>${foodCount}</td>`
+            if(e.status == 2 || e.status == 0){
+              dataHtml +=`<td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;">${e.name || ""}</a></td>`
+            }
+            if(e.status ==1){
+              dataHtml +=`<td>${e.name || ""}</td>`
+          
+            }
+          dataHtml +=`<td>${formatCategory(e.categoryId)}</td>
+            <td>${e.expirationDate}</td>
+            <td>${e.createdAt}</td>
+            <td>${
+              e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+            }</td>`
+            if(e.status == 0){
+              dataHtml += `<td><i class="fa fa-pencil-square-o" style="pointer-events: none; opacity: 0.5;"></i></td>`
+            }else{
+              dataHtml += `<td onclick="formUpdateFood(${e.id})"><i class="fa fa-pencil-square-o"></i></td>`
+            }
+            dataHtml += `<td onclick="confirmDeleteFood(${e.id})"><i class="fa fa-trash-o"></i></td></tr>`;
+        
       });
 
       dataHtml += "</div>";
@@ -699,6 +618,7 @@ function newFoodEdit() {
             listfood();
             listFoodPost();
             listFoodPending();
+            listFoodExpired();
             modal1.style.display = "none";
             var frm = document.getElementsByName("upload_new_food_form")[0];
             frm.reset();
@@ -860,6 +780,7 @@ function formatCategoryStringToInt(category) {
 
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");
+var modalfinish = document.querySelector(".modal-account-confirm-finish");
 function confirmDeleteFood(id) {
   modal3.style.display = "flex";
   var buttonValue = document.getElementById("accept-button");
@@ -939,12 +860,18 @@ function renderListRequest(listRequest) {
             e.supplierName
           }</td><td>${convertRequestStatus(
             e.status
-          )}</td><td onclick="formDetailRequest(${
-            e.foodId
-          })"><i class="fa fa-pencil-square-o"></i></td>` +
-          `<td onclick=confirmDeleteRequest(` +
-          e.foodId +
-          `)><i class="fa fa-trash-o"></i></td></tr>`;
+          )}</td>`
+          if(e.status == 2){
+            dataHtml1 +=`<td>
+              <button onclick="formConfirmRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;">Finish</button>
+            </td>`
+          }else if(e.status == 3){
+            dataHtml1 +=`<td><i class="fa fa-pencil-square-o" style="pointer-events: none; opacity: 0.5;"></i></td>`
+          }else{
+            dataHtml1 +=`<td onclick="formDetailRequest(${e.foodId})"><i class="fa fa-pencil-square-o"></i></td>`
+          }
+        
+        dataHtml1 +=`<td onclick=confirmDeleteRequest(` + e.foodId + `)><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
       dataHtml1 += "</div>";
@@ -954,7 +881,7 @@ function renderListRequest(listRequest) {
   });
 
   var requestDataTable = document.getElementById("request-data-table");
-
+    
   if (requestCount == 0) {
     requestDataTable.style.display = "none";
     document.getElementById("no-request-noti").removeAttribute("style");
@@ -1008,6 +935,7 @@ function deleteRequest(foodId) {
 // start
 function cancelModal() {
   modal3.style.display = "none";
+  modalfinish.style.display = "none";
 }
 
 // close Modal by clicking "esc" button
@@ -1017,6 +945,40 @@ $(document).keydown(function (event) {
     event.preventDefault();
   }
 });
+
+// confirm request
+var finishId;
+function formConfirmRequest(id){
+  modalfinish.style.display ="flex";
+  finishId = id;
+}
+
+function finishRequest(){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${objAccount.id}/${finishId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "status": 3,
+        "updatedBy": objAccount.id
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then(function (request) {
+      if(request.status == 200){
+        console.log('ok');
+        modalfinish.style.display ="none";
+        swal("Success!", "You haven't changed the message field!", "success");
+      }
+    })
+    .catch(error => console.log(error))
+}
+
 
 // detail request
 function formDetailRequest(id) {

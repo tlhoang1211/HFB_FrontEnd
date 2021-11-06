@@ -198,36 +198,20 @@
                   <h4 class="name-account">Name</h4>
                   <ul class="list-option">
                     <li class="list-action active">
-                      <a
-                        onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myaccount')"
-                        ><i class="custom-i fa fa-user"></i> My account</a
-                      >
+                      <a class="myAccountInfo" onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myaccount')" >
+                        <i class="custom-i fa fa-user"></i> My account</a>
                     </li>
                     <li class="list-action">
-                      <a
-                        onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfood')"
-                        ><i class="custom-i fa fa-cutlery"></i> My food</a
-                      >
+                      <a class="myFoodInfo" onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfood')">
+                        <i class="custom-i fa fa-cutlery"></i> My food</a>
                     </li>
                     <li class="list-action">
-                      <a
-                        onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myrequest')"
-                        ><i
-                          class="custom-i fa fa-file-text"
-                          aria-hidden="true"
-                        ></i>
-                        My requests</a
-                      >
+                      <a class="myRequestInfo" onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myrequest')">
+                        <i class="custom-i fa fa-file-text" aria-hidden="true"></i> My requests</a>
                     </li>
                     <li class="list-action">
-                      <a
-                        onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfeedback')"
-                        ><i
-                          class="custom-i fa fa-comments"
-                          aria-hidden="true"
-                        ></i>
-                        My feedback</a
-                      >
+                      <a class="myFeedbackInfo" onclick="onAddClassActive(this, 'list-action', 'parent');showTabPanel('myfeedback')">
+                        <i class="custom-i fa fa-comments" aria-hidden="true" ></i> My feedback</a>
                     </li>
                   </ul>
                   <!-- end -->
@@ -827,6 +811,45 @@
           </div>
         </div>
       </section>
+
+      <!-- Modal Confirm Delete -->
+      <section>
+        <div class="modal modal-account-confirm-finish">
+          <div class="modal-overlay"></div>
+          <div class="modal-dialog">
+            <div class="modal-main">
+              <div class="modal-container">
+                <div class="modal-body">
+                  <!-- Confirm Delete -->
+                  <div class="tab-pane">
+                    <h4 class="text-center">
+                      Have you received this food yet?
+                    </h4>
+                    <button
+                      type="button"
+                      id="accept-finish-button"
+                      onclick="finishRequest()"
+                      class="btn btn-round btn-danger"
+                      value=""
+                    >
+                      I'm sure
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-round"
+                      onclick="cancelModal()"
+                      style="float: right;"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
 
     <!-- // dat lai vi tri script -->
