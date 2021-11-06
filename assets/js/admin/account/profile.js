@@ -15,7 +15,7 @@ function getDetailAccount() {
         function (errorThrown) { }
     );
 }
-getListAccount();
+getDetailAccount();
 // save Account
 function saveChangeAccount() {
     var name = $('#name_account').val();

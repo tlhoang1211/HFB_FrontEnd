@@ -38,3 +38,6 @@
 .pagination ul li.prevContainer a, .pagination ul li.firstContainer a, .pagination ul li.nextContainer a, .pagination ul li.lastContainer a {
     padding: 10px;
 }
+.pagination ul a.pageDescription{
+    display: none !important;
+}

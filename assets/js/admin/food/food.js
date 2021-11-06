@@ -1,6 +1,4 @@
-$(document).ready(function () {
-    Notification.config();
-});
+
 var orderBy = 'asc', statusFood = 1, searchName, filter_Category;
 function formAddFood() {
     var pageContent = document.getElementsByClassName('page-content');
