@@ -1173,6 +1173,8 @@ function getFoodActive() {
     .then((response) => response.json())
     .then((foodList) => {
       renderListActiveFood(foodList.data.content);
+      console.log(foodList.data);
+      console.log(foodList);
     })
     .catch((error) => console.log(error));
 }
@@ -1187,15 +1189,17 @@ function renderListActiveFood(listFood) {
     showGoButton: true,
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
+      
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
+        console.log(e);
         foodRequestCount++;
         dataHtml += `<tr>
         <td>${foodRequestCount}</td>
         <td>${e.name}</td>
         <td>${e.expirationDate}</td>
         <td>${e.createdAt}</td>
-        <td>active</td>
+        <td> ${convertRequestStatus(e.status)}</td>
         <td onclick="viewUsersRequestFood(${e.id})"><i class="fa fa-search"></i></td>`;
       });
 
