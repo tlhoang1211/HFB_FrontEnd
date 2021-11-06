@@ -45,7 +45,6 @@ function getListAccount(pageIndex) {
     getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/search?page=' + pageIndex + '&limit=' + pageSize + optionUrl, null, function (result) {
         if (result && result.status == 200) {
             if (result && result.data && result.data.content && result.data.content.length > 0) {
-                console.log(result)
                 if (document.querySelectorAll("#table-Account tbody").lastElementChild) {
                     document.querySelectorAll("#table-Account tbody").item(0).innerHTML = '';
                 }
