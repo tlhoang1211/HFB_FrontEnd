@@ -258,9 +258,9 @@
                         List pending food</a
                       >
                     </li>
-                    <!-- <li class="tab-account listFoodPending d-none">
-                      <a onclick="listFoodPending()"  data-toggle="tab"> List expired food</a>
-                    </li> -->
+                    <li class="tab-account listFoodExpired d-none">
+                      <a onclick="listFoodExpired()"  data-toggle="tab"> List expired food</a>
+                    </li>
 
                     <li class="tab-account listRequest d-none">
                       <a
@@ -315,7 +315,7 @@
                         </div>
                         <div class="form-group">
                           <label for="account_email" class="form-label">User Name - Email</label>
-                          <input id="account_email" name="account_email" class="form-control" type="email" placeholder="Enter email" autocomplete="off" />
+                          <input id="account_email" name="account_email" class="form-control" type="text" placeholder="Enter email" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
                         <div class="form-group">
@@ -376,7 +376,7 @@
                           <input id="confirmNewPassword" class="form-control" type="password" placeholder="Confirm new password" autocomplete="off" />
                           <span class="form-message"></span>
                         </div>
-                        <button type="submit" onclick="changpassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
+                        <button type="submit" onclick="changepassword()"  class="btn btn-b btn-round btnSubmitProfile pull-right">
                           <i class="fa fa-save"></i>
                           Save
                         </button>
@@ -890,19 +890,7 @@
     <script src="./assets/js/account_pagination.js"></script>
 
     <script>
-      jQuery.validator.addMethod('valid_email', function (value) {
-        var regex = /^[a-z0-9]+([-._][a-z0-9]+)*@([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{1,5}$/;
-        return value.trim().match(regex);
-      });
-      jQuery.validator.addMethod('valid_phone', function (value) {
-        var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-        return value.trim().match(regex);
-      });
-      function guests(role) {
-        if (role == "guests") {
-          document.getElementById("addnew-food-donor").style.display = "none";
-        }
-      }
+      
     </script>
     <script>
       var tokenaccount = document.cookie;

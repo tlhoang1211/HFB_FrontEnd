@@ -140,27 +140,32 @@ document.getElementById("upload_avatar").addEventListener(
 );
 
 // change password
-function changpassword() {
+function changepassword() {
   var newPassword = document.querySelector("#newPassword").value;
+  var confirmNewPassword = document.querySelector("#confirmNewPassword").value;
   var changepasswordAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/change-password/${objAccount.id}`;
   if (newPassword) {
-    fetch(changepasswordAPI, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${isToken}`,
-      },
-      body: JSON.stringify({
-        password: newPassword,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status == 200) {
-          swal("Success!", "Change password success!", "success");
-        }
+    if(newPassword != confirmNewPassword){
+      swal("Warning!", "Password re-entered is incorrect!", "warning");
+    }else{
+      fetch(changepasswordAPI, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+        body: JSON.stringify({
+          password: newPassword,
+        }),
       })
-      .catch((error) => console.log(error));
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status == 200) {
+            swal("Success!", "Change password success!", "success");
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   } else {
     swal("Warning!", "You don't change the password!", "warning");
   }
@@ -179,6 +184,9 @@ function listFoodPost() {
 function listFoodPending() {
   getListFoodSending();
 }
+function listFoodExpired() {
+  getListFoodExpired();
+}
 
 function getListFoodAll() {
   var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?&createdBy=${objAccount.id}`;
@@ -195,9 +203,34 @@ function getListFoodAll() {
             const index = listAllFood.indexOf(food);
             listAllFood.splice(index, 1);
           }
+
+
+          var tet = getTimeFromString2(food.expirationDate);
+          var now1 = new Date().getTime();
+          var timeRest1 = tet - now1;
+          if(timeRest1<= 0){
+            const index = listAllFood.indexOf(food);
+            listAllFood.splice(index, 1);
+            var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${food.id}`;
+                fetch(urlUpdateStatus, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${isToken}`,
+                  },
+                  body: JSON.stringify({
+                    status: 0,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                  })
+                  .catch((error) => console.log(error));
+          }
         });
         myResolve();
       });
+
       listFoodPromise.then(function () {
         renderListFood(listAllFood);
       });
@@ -230,6 +263,20 @@ function getListFoodSending() {
     })
     .catch((error) => console.log(error));
 }
+
+function getListFoodExpired() {
+  var foodListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=0&createdBy=${objAccount.id}`;
+  fetch(foodListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((foodList) => {
+      foodCount = 0;
+      renderListFoodExpired(foodList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
+
 
 function renderListFood(listFood) {
   foodCount = 0;
@@ -321,6 +368,50 @@ function renderListFoodActive(listFood) {
       .setAttribute("style", "text-align: center;");
   }
 }
+function renderListFoodExpired(listFood) {
+  foodCount = 0;
+  let container = $(".pagination1");
+  container.pagination({
+    dataSource: listFood,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        foodCount++;
+        dataHtml +=
+          `<tr id="food-row-${e.id}">
+        <td>${foodCount}</td>
+        <td><a href="./shop_single_product.html?id=${
+          e.id
+        }" style="color: blue;"> ${e.name || ""}</a></td>
+        <td>${formatCategory(e.categoryId)}</td>
+        <td>${e.expirationDate}</td>
+        <td>${e.createdAt}</td>
+        <td>${
+          e.status == 0 ? "deactive" : e.status == 1 ? "pending" : "active"
+        }</td>
+        <td>no edit</td>` +
+          `<td onclick=confirmDeleteFood(${e.id})><i class="fa fa-trash-o"></i></td></tr>`;
+      });
+
+      dataHtml += "</div>";
+      $("#list-food").html(dataHtml);
+    },
+  });
+
+  var foodDataTable = document.getElementById("food-data-table");
+
+  if (foodCount == 0) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-food-noti")
+      .setAttribute("style", "text-align: center;");
+  }
+}
 
 // update food
 var editImageFood = document.querySelector(".view-image-product");
@@ -331,6 +422,7 @@ var listFood1 = document.querySelector(".listFood");
 var listFoodPagination = document.querySelector(".listFoodPagination");
 var listFoodPost1 = document.querySelector(".listFoodPost");
 var listFoodPending1 = document.querySelector(".listFoodPending");
+var listFoodExpired1 = document.querySelector(".listFoodExpired");
 editUser.style.display = "none";
 var infoFoodDetail;
 function formUpdateFood(id) {
@@ -339,12 +431,13 @@ function formUpdateFood(id) {
   listFoodPending1.style.display = "none";
   listFoodPost1.style.display = "none";
   listFoodPagination.style.display = "none";
+  listFoodExpired1.style.display = "none";
 
   var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
   fetch(getDetailFood, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${isToken}`,
     },
   })
     .then((response) => response.json())
@@ -421,6 +514,7 @@ function backToFoodList() {
   listFoodPending1.style.display = "block";
   listFoodPost1.style.display = "block";
   listFoodPagination.style.display = "block";
+  listFoodExpired1.style.display = "block";
 }
 
 // validate form
@@ -540,7 +634,7 @@ function newFoodEdit() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${isToken}`,
             },
             body: JSON.stringify(dataPost),
           }
@@ -552,7 +646,7 @@ function newFoodEdit() {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${token}`,
+                  Authorization: `Bearer ${isToken}`,
                 },
               }
             )
@@ -1456,4 +1550,11 @@ function backToFoodRequestList() {
   listUsersRequestID.classList.remove("active");
 }
 
+function getTimeFromString2(strDate) {
+  var arrDate = strDate.split("/");
+  var year = parseInt(arrDate[2]);
+  var month = parseInt(arrDate[1]) - 1;
+  var date = parseInt(arrDate[0]);
+  return new Date(year, month, date).getTime();
+}
 // end

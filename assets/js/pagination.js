@@ -15,15 +15,20 @@ function paginationFood(listFood) {
         var dataHtml = "<div>";
 
         $.each(data, function (index, item) {
-          dataHtml += `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
-                    <div class="shop-item">
-                        <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
-                        <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><i class="fa fa-eye"/> View Details</a></div>
-                        </div>
-                        <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
-                        <p>Expiration Date: ${item.expirationDate}</p>
+          dataHtml += 
+          `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
+              <div class="shop-item">
+                  <div class="shop-item-image">
+                    <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                    <div class="shop-item-detail">
+                      <a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}">
+                      <i class="fa fa-eye"></i> View Details</a>
                     </div>
-                    </div>`;
+                  </div>
+                  <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
+                  <p>Expiration Date: ${item.expirationDate}</p>
+              </div>
+          </div>`;
         });
 
         dataHtml += "</div>";
