@@ -97,6 +97,7 @@ function renderListAccount(data) {
         htmld += '<td>' + e.createdAt + '</td>';
         htmld += '<td><div class="d-flex order-actions">';
         htmld += '<a onclick="formUpdateAccount(this, \'' + e.username + '\')"><i class="bx bx-edit"></i></a>';
+        htmld += '<a class="ms-4" onclick="changeRole(this, \'' + e.id + '\')"><i class="bx bx-user"></i></a>';
         htmld += '<a class="ms-4 ' + (e.status == 1 ? '' : 'd-none') + '" onclick="deleteAccount(this, \'' + e.id + '\')"><i class="bx bx-trash"></i></a>';
         htmld += '</td>';
         return htmld;
@@ -132,9 +133,11 @@ function onDeleteAccount() {
     };
     getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/Accounts/${objDeleteAccount.id}`, JSON.stringify(dataPost), function (result) {
         if (result && result.status == 200) {
-            objDeleteAccount.ele.remove();
+            notification('success', result.message);
             $('#deleteAccount').modal('hide');
             getListAccount();
+        } else {
+            notification('warning', result.message);
         }
     },
         function (errorThrown) { }
@@ -170,6 +173,9 @@ function colorStatusAccount(status) {
             break;
     }
     return color;
+}
+function changeRole(e, id) {
+    console.log(1231)
 }
 var usernameDetail;
 function formUpdateAccount(username) {

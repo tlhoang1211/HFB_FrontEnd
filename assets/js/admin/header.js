@@ -1,3 +1,5 @@
+
+console.log(22222)
 function logout(){
     document.cookie = `token=${token}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
     document.cookie = `username=${currentUserName}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;

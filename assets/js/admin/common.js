@@ -1,5 +1,8 @@
 // $(document).ready(function() {
     "use strict"
+    $(document).ready(function () {
+        Notification.config();
+    });
     // get token
     var token, pageContent, currentUserName, objAccount;
     var pageSize = 20, pageIndex = 0;
@@ -52,6 +55,10 @@
         getConnectAPI('GET', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentUserName}`, null, function(result){
             if (result && result.data) {
                 objAccount = result.data;
+                setTimeout(() => {
+                    loadNotifyHeader();
+                }, 200);
+                
             }
         },
             function(errorThrown){}
@@ -197,6 +204,51 @@
             continueDelayOnInactiveTab: false,
             position: 'center top',
             msg: message
+        });
+    }
+    function loadNotifyHeader() {
+        console.log(objAccount)
+        Notification.show(objAccount.id, function (listNotify) {
+            console.log(listNotify)
+            var li = "";
+            var quantityNotify = 0;
+            if (listNotify && listNotify.length > 0) {
+                quantityNotify = listNotify.length;
+                for (let index = 0; index < 5; index++) {
+                    var element = listNotify[index];
+                    if (child.val().status == 1) {
+                        quantityNotify++;
+                      }
+                      li += `
+                      <li class="header__notify-item header__notify-item--status-${
+                        child.val().status
+                      }" data-id="${child.key}">
+                        <a href="#" class="header__notify-link">
+                        <img src="https://res.cloudinary.com/vernom/image/upload/${
+                          child.val().avatar
+                        }" alt="" class="header__notify-img">
+                        <div class="header__notify-info">
+                          <span class="header__notify-name">${child.val().title}</span>
+                          <span class="header__notify-des">${child.val().message}</span>
+                        </div>
+                        </a>
+                      </li>
+                      `;
+                }
+                $("#notification").html(li);
+    
+                if (quantityNotify == 0) {
+                    $('.alert-count').css('display', 'none');
+                } else {
+                    $('.alert-count').css('display', 'block');
+                    if (quantityNotify < 100){
+                        $('.alert-count').text(quantityNotify);
+                    } else {
+                        $('.alert-count').text('99+');
+                    }
+                    
+                }
+            }
         });
     }
 // });
