@@ -138,9 +138,16 @@ function showTabPanel(e) {
       document.querySelector(".myRequestInfo").style.color = "#000";
       document.querySelector(".myFeedbackInfo").style.color = "red";
 
-      document.getElementsByClassName("feedback")[0].classList.add("active");
-      document.getElementById("feedback").classList.add("active");
-      document.getElementsByClassName("feedback")[0].classList.remove("d-none");
+      document
+        .getElementsByClassName("listSentFeedback")[0]
+        .classList.add("active");
+      document.getElementById("listSentFeedback").classList.add("active");
+      document
+        .getElementsByClassName("listSentFeedback")[0]
+        .classList.remove("d-none");
+      document
+        .getElementsByClassName("listReceiveFeedback")[0]
+        .classList.remove("d-none");
       break;
     default:
       break;

@@ -274,8 +274,11 @@
                         List of your users request food</a
                       >
                     </li>
-                    <li class="tab-account feedback d-none">
-                      <a href="#feedback" data-toggle="tab"> Feedbacks</a>
+                    <li class="tab-account listSentFeedback d-none">
+                      <a href="#listSentFeedback" onclick="getFeedbackList()" data-toggle="tab"> List sent feedback</a>
+                    </li>
+                    <li class="tab-account listReceiveFeedback d-none">
+                      <a href="#listReceivedFeedback" data-toggle="tab"> List received feedback</a>
                     </li>
                   </ul>
 
@@ -753,7 +756,41 @@
                       </div>
                     </div>
                     <!-- feedback -->
-                    <div class="tab-pane" id="feedback">
+                    <div class="tab-pane" id="listSentFeedback">
+                        <div class="card radius-10">
+                          <div class="card-body" id="center-feedback-noti">
+                            <span id="no-feedback-noti" style="display: none"
+                              >No data yet!</span
+                            >
+                            <div class="table-responsive" id="feedback-data-table">
+                              <table
+                                class="table align-middle mb-0 table-striped table-bordered"
+                              >
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Food Image</th>
+                                    <th>Feedback to</th>
+                                    <th>Content</th>
+                                    <th>Point Rated</th>
+                                    <th>Created Date</th>
+                                  </tr>
+                                </thead>
+                                <tbody
+                                  class="row multi-columns-row"
+                                  id="list-sent-feedback"
+                                ></tbody>
+                              </table>
+                              <div class="row" id="pagination-button">
+                                <div class="col-sm-12">
+                                  <div class="paginationFeedback font-alt"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="listReceivedFeedback">
                       
                     </div>
                   </div>

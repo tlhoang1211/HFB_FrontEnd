@@ -16,7 +16,8 @@ var requestCount = 0;
 
 var objAccount = null;
 
-var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/";
+var cloudinary_url =
+  "https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/";
 
 function initPageAccount() {
   getAccount();
@@ -298,16 +299,16 @@ function renderListFood(listFood) {
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
         foodCount++;
-          dataHtml +=
-          `<tr id="food-row-${e.id}">
-          <td>${foodCount}</td>`
-          if(e.status == 2 || e.status == 0){
-            dataHtml +=`<td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;">${e.name || ""}</a></td>`
-          }else{
-            dataHtml +=`<td>${e.name || ""}</td>`
-        
-          }
-          dataHtml +=`<td>${formatCategory(e.categoryId)}</td>
+        dataHtml += `<tr id="food-row-${e.id}">
+          <td>${foodCount}</td>`;
+        if (e.status == 2 || e.status == 0) {
+          dataHtml += `<td><a href="./shop_single_product.html?id=${
+            e.id
+          }" style="color: blue;">${e.name || ""}</a></td>`;
+        } else {
+          dataHtml += `<td>${e.name || ""}</td>`;
+        }
+        dataHtml += `<td>${formatCategory(e.categoryId)}</td>
             <td>${e.expirationDate}</td>
             <td>${e.createdAt}</td>
             <td>${
@@ -336,7 +337,7 @@ function renderListFood(listFood) {
       .setAttribute("style", "text-align: center;");
   } else {
     foodDataTable.style.display = "block";
-    ocument.getElementById("no-food-noti").style.display = "none";
+    document.getElementById("no-food-noti").style.display = "none";
   }
 }
 
@@ -364,7 +365,7 @@ function formUpdateFood(id) {
   fetch(getDetailFood, {
     method: "GET",
     headers: {
-      "Authorization": `Bearer ${isToken}`,
+      Authorization: `Bearer ${isToken}`,
     },
   })
     .then((response) => response.json())
@@ -870,16 +871,19 @@ function renderListRequest(listRequest) {
         if (e.status == 2) {
           dataHtml1 += `<td>
               <button onclick="formConfirmRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;">Finish</button>
-            </td>`
-          }else if(e.status == 3){
-            dataHtml1 +=`<td>
+            </td>`;
+        } else if (e.status == 3) {
+          dataHtml1 += `<td>
             <button onclick="formFeedbackRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;padding: 8px 26px;">Feedback</button>
-            </td>`
-          }else{
-            dataHtml1 +=`<td onclick="formDetailRequest(${e.foodId})"><i class="fa fa-pencil-square-o"></i></td>`
-          }
-        
-        dataHtml1 +=`<td onclick=confirmDeleteRequest(` + e.foodId + `)><i class="fa fa-trash-o"></i></td></tr>`;
+            </td>`;
+        } else {
+          dataHtml1 += `<td onclick="formDetailRequest(${e.foodId})"><i class="fa fa-pencil-square-o"></i></td>`;
+        }
+
+        dataHtml1 +=
+          `<td onclick=confirmDeleteRequest(` +
+          e.foodId +
+          `)><i class="fa fa-trash-o"></i></td></tr>`;
       });
 
       dataHtml1 += "</div>";
@@ -898,7 +902,6 @@ function renderListRequest(listRequest) {
       .setAttribute("style", "text-align: center;");
   }
 }
-
 
 // display delete modal on click delete button
 function confirmDeleteRequest(foodId) {
@@ -990,35 +993,30 @@ function finishRequest() {
 }
 
 var feedbackId;
-function formFeedbackRequest(id){
-  modalfeedback.style.display ="flex";
+function formFeedbackRequest(id) {
+  modalfeedback.style.display = "flex";
   feedbackId = id;
 }
 
-var listImageFeedback= [];
+var listImageFeedback = [];
 var idSupplierUser;
-function feedbackRequest(){
-  
-  
-  
+function feedbackRequest() {
   var rateFeedback = document.getElementById("rateFeedback").value;
   var contentFeedback = document.getElementById("contentFeedback").value;
 
-  if (!rateFeedback == false &&! contentFeedback == false) {
+  if (!rateFeedback == false && !contentFeedback == false) {
     if (listImageFeedback.length == 0) {
       swal("Warning!", "You need more image!", "warning");
     } else if (listImageFeedback.length > 3) {
       swal("Warning!", "You should only add a maximum of 3 images!", "warning");
-    }
-     else {
-      
+    } else {
       let notifyFeedbackPromise = new Promise(function (myResolve) {
         fetch(
           `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${feedbackId}`,
           {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${isToken}`,
+              Authorization: `Bearer ${isToken}`,
             },
           }
         )
@@ -1026,68 +1024,67 @@ function feedbackRequest(){
           .then((request) => {
             idSupplierUser = request.data.supplierId;
           })
-          .catch(error => console.log(error))
-          if(rateFeedback <1 ){
-            rateFeedback = 1;
-          }
-          if(rateFeedback > 10){
-            rateFeedback = 10;
-          }
-          myResolve()
-      })
-      notifyFeedbackPromise.then(function(){
+          .catch((error) => console.log(error));
+        if (rateFeedback < 1) {
+          rateFeedback = 1;
+        }
+        if (rateFeedback > 10) {
+          rateFeedback = 10;
+        }
+        myResolve();
+      });
+      notifyFeedbackPromise.then(function () {
         var dataPost = {
-          "image": listImageFeedback.join(","),
-          "content": contentFeedback,
-          "createdBy": objAccount.id,
-          "rate": rateFeedback,
-          "type": 1,
-          "userId": idSupplierUser
+          image: listImageFeedback.join(","),
+          content: contentFeedback,
+          createdBy: objAccount.id,
+          rate: rateFeedback,
+          type: 1,
+          userId: idSupplierUser,
         };
         fetch("https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${isToken}`,
+            Authorization: `Bearer ${isToken}`,
           },
           body: JSON.stringify(dataPost),
         })
           .then((response) => response.json())
-          .then(data => {
-              var today = new Date();
-              time =
-                today.getDate() +
-                "-" +
-                (today.getMonth() + 1) +
-                "-" +
-                today.getFullYear() +
-                " " +
-                today.getHours() +
-                ":" +
-                today.getMinutes() +
-                ":" +
-                today.getSeconds();
-                Notification.send(data.data.userId, {
-                  "idNotify": "",
-                  "usernameaccount": data.data.username,
-                  "foodid": feedbackId,
-                  "avatar": data.data.avatar,
-                  "title": "User " + objAccount.name + " send feedback for you",
-                  "message": "Time request: " + time,
-                  "category": "food",
-                  "status": 1,
-                });
+          .then((data) => {
+            var today = new Date();
+            time =
+              today.getDate() +
+              "-" +
+              (today.getMonth() + 1) +
+              "-" +
+              today.getFullYear() +
+              " " +
+              today.getHours() +
+              ":" +
+              today.getMinutes() +
+              ":" +
+              today.getSeconds();
+            Notification.send(data.data.userId, {
+              idNotify: "",
+              usernameaccount: data.data.username,
+              foodid: feedbackId,
+              avatar: data.data.avatar,
+              title: "User " + objAccount.name + " send feedback for you",
+              message: "Time request: " + time,
+              category: "food",
+              status: 1,
+            });
           })
           .catch((error) => console.log(error));
-        modalfeedback.style.display ="none";
+        modalfeedback.style.display = "none";
         swal("Success!", "Send Feedback success!", "success");
         listImageFeedback = [];
         var frm = document.getElementsByName("upload_new_food_form")[0];
         frm.reset();
-      })
-      
+      });
     }
-  }else{
+  } else {
     swal("Warning!", "Please describe something!", "warning");
   }
 }
@@ -1558,11 +1555,10 @@ function confirmation(foodId) {
 }
 
 // send feedback nguoi cho
-function finish(foodId){
-  modalfeedback.style.display ="flex";
+function finish(foodId) {
+  modalfeedback.style.display = "flex";
   feedbackId = foodId;
 }
-
 
 // update stautus for approved request and send notify to selected user
 function acceptRequest(foodId) {
@@ -1694,5 +1690,60 @@ function getTimeFromString2(strDate) {
   var month = parseInt(arrDate[1]) - 1;
   var date = parseInt(arrDate[0]);
   return new Date(year, month, date).getTime();
+}
+// end
+
+// hoangtl0711 v3 - 07/11/2021 - feedback list
+// start
+function getFeedbackList() {
+  var feedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?type=&status=&startRate=&endRate=&page=0&limit=10&sortBy=id&order=desc`;
+  fetch(feedbankListAPI, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((feedbackList) => {
+      console.log(feedbackList);
+      // renderSentFeedback(feedbackList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
+
+function renderSentFeedback(listFeedback) {
+  sentFeedbackCount = 0;
+  let container = $(".paginationFeedback");
+  container.pagination({
+    dataSource: listFeedback,
+    pageSize: 5,
+    showGoInput: true,
+    showGoButton: true,
+    formatGoInput: "go to <%= input %>",
+    callback: function (data, pagination) {
+      var dataHtml = "<div>";
+      $.each(data, function (index, e) {
+        console.log(e);
+        sentFeedbackCount++;
+        dataHtml += `<tr>
+          <td>${sentFeedbackCount}</td>
+          <td></td>
+        </tr>`;
+      });
+
+      dataHtml += "</div>";
+      $("#list-sent-feedback").html(dataHtml);
+    },
+  });
+
+  var foodDataTable = document.getElementById("food-data-table");
+
+  if (foodCount == 0) {
+    foodDataTable.style.display = "none";
+    document.getElementById("no-food-noti").removeAttribute("style");
+    document
+      .getElementById("center-food-noti")
+      .setAttribute("style", "text-align: center;");
+  } else {
+    foodDataTable.style.display = "block";
+    ocument.getElementById("no-food-noti").style.display = "none";
+  }
 }
 // end

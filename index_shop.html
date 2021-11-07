@@ -485,7 +485,8 @@
 
       var usernameAccount = cookies.username;
 
-      var shopitemAPI = "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&limit=8&page=0";
+      var shopitemAPI =
+        "https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?status=2&limit=8&page=0";
       var shopItem = document.querySelector(".list-food");
       function getListItem() {
         fetch(shopitemAPI, {
@@ -496,9 +497,9 @@
             let myPromise = new Promise(function (myResolve) {
               if (token == "" || token == null || token == undefined) {
                 token =
-                  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW93Iiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vaGZiLXQxMDk4ZS5oZXJva3VhcHAuY29tL2FwaS92MS9oZmIvbG9naW4iLCJleHAiOjE2MzYzNzUyMTR9._BQl5QtI4GbG-w0iUpSmlSafvjWQAGRGF6BFsgAL7gQ";
+                  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
               }
-              
+
               var htmlsItem = listItems.data.content.map(function (item) {
                 return `
                 <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="shop-item-${item.id}">
@@ -541,10 +542,11 @@
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
                         status: 0,
+                        updatedBy: 1,
                       }),
                     })
                       .then((response) => response.json())
@@ -554,7 +556,6 @@
                       .catch((error) => console.log(error));
                   }
                 }
-              
               });
             });
           })
