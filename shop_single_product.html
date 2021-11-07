@@ -217,6 +217,10 @@
       </div>
       <header id="header"></header>
       <div class="main">
+        <section
+          class="custom-header-img module bg-dark-30 about-page-header"
+          data-background="/assets/images/gallery/bg/bg5.jpg"
+        ></section>
         <section class="module" style="margin-top: 100px">
           <div class="container">
             <div class="row">
@@ -246,9 +250,9 @@
                     >
                   </li>
                   <li>
-                    <a href="#data-sheet" data-toggle="tab"
+                    <!-- <a href="#data-sheet" data-toggle="tab"
                       ><span class="icon-tools-2"></span>Data sheet</a
-                    >
+                    > -->
                   </li>
                 </ul>
                 <div class="tab-content">
@@ -504,7 +508,7 @@
               listItemImages.map(function (image) {
                 htmlsItem += `
                 <div class="slider-info-food">
-                  <img src="https://res.cloudinary.com/vernom/image/upload/${image}" style="width:100%; max-height: 450px">
+                  <img src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${image}" style="width:100%; max-height: 450px">
                 </div>`;
               });
 
@@ -513,7 +517,7 @@
               for (let i = 0; i < listItemImages.length; i++) {
                 htmlsItem += `
                 <div class="column-img-info-food">
-                  <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/${
+                  <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${
                     listItemImages[i]
                   }" style="width:100%" onclick="showSlides(${
                   i + 1
@@ -640,7 +644,7 @@
                       return `
                       <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
                         <div class="shop-item">
-                          <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                          <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
                           <div class="shop-item-detail"><a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}"><i class="fa fa-eye"/> View Details</a></div>
                           </div>
                           <h4 class="shop-item-title font-alt"><a href="#">${item.name}</a></h4>
