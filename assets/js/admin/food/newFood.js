@@ -82,9 +82,10 @@ function saveFood(){
     );
 }
 function renderOptionCategory(){
+    console.log(arr_Category);
     var htmlO = '';
-    for (let index = 0; index < arrCategory.length; index++) {
-        var element = arrCategory[index];
+    for (let index = 0; index < arr_Category.length; index++) {
+        var element = arr_Category[index];
         htmlO += '<option value="' + element.id + '">' + element.name + '</option>';
     }
     console.log(htmlO)

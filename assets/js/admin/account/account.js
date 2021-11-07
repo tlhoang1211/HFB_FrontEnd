@@ -1,5 +1,5 @@
 
-var orderByAccount = 'asc', statusAccount = null, searchName_Account;
+var orderByAccount = 'desc', statusAccount = null, searchName_Account;
 function formNewAccount() {
     var pageContent = document.getElementsByClassName('page-content');
     if (pageContent.item(0)) {
@@ -38,7 +38,7 @@ function getListAccount(pageIndex) {
     if (orderByAccount) {
         optionUrl += '&order=' + orderByAccount;
     }
-    optionUrl += '&sortBy=name';
+    optionUrl += '&sortBy=createdAt';
     if (searchName_Account) {
         optionUrl += '&keyword=' + searchName_Account;
     }

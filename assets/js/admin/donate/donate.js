@@ -1,4 +1,4 @@
-var orderBy = 'asc', statusDonate = null, searchName_Donate, filter_Category, objDetail;
+var orderBy = 'desc', statusDonate = null, searchName_Donate, filter_Category, objDetail;
 
 function onChangeOrderBy(e, type){
     orderBy = type;
@@ -25,7 +25,7 @@ function getListDonate(pageIndex) {
     if (orderBy) {
         optionUrl += '&order=' + orderBy;
     }
-    optionUrl += '&sortBy=amount';
+    optionUrl += '&sortBy=createdAt';
     if (searchName_Donate) {
         optionUrl += '&name=' + searchName_Donate;
     }

@@ -5,12 +5,6 @@
                 <form class="float-lg-start">
                     <div class="row row-cols-lg-auto g-2">
                         <div class="col-12">
-                            <div class="position-relative">
-                                <input id="searchFeedback" type="text" class="form-control ps-5" onkeypress="return searchNameFeedback('#searchFeedback', this)" placeholder="Search Feedback...">
-                                <span class="position-absolute top-50 product-show translate-middle-y" onclick="searchNameFeedback('#searchFeedback')"><i class="bx bx-search"></i></span>
-                            </div>
-                        </div>
-                        <div class="col-12">
                             <div class="btn-group float-start">
                                 <button class="btn btn-light dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
@@ -35,23 +29,17 @@
             </div>
         </div>
         <hr />
-        <div class="zero-warning d-none">
-            <div class="box-icon-warning d-flex" style="justify-content: center;align-items: center;margin: auto;flex-direction: column;">
-                <div><i class='bx bx-file-find' style="font-size: 50px;"></i></div>
-                <div>No records found</div>
-            </div>
-        </div>
+        
         <div class="table-responsive" id="table-Donate">
             <table class="table align-middle mb-0 table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th class="text-end">Amount</th>
+                        <th>Rate</th>
                         <th>Content</th>
-                        <th>Phone</th>
-                        <th>Create At</th>
-                        <th>View Details</th>
+                        <th>Created At</th>
+                        <th>Created By</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +48,12 @@
         </div>
         <div class="axbox-footer mt-2 float-end">
             <div id="nextpage"></div>
+        </div>
+        <div class="zero-warning d-none">
+            <div class="box-icon-warning d-flex" style="justify-content: center;align-items: center;margin: auto;flex-direction: column;">
+                <div><i class='bx bx-file-find' style="font-size: 50px;"></i></div>
+                <div>No records found</div>
+            </div>
         </div>
     </div>
 </div>

@@ -24,7 +24,6 @@
                     <div>
                         <p class="mb-0">Charity Money</p>
                         <h4 class="my-1 countDonate"></h4>
-                        <p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>$34 Since last week</p>
                     </div>
                     <div class="widgets-icons ms-auto"><i class='bx bxs-wallet'></i>
                     </div>
@@ -39,7 +38,6 @@
                     <div>
                         <p class="mb-0">Total Food Posted</p>
                         <h4 class="my-1 countFood"></h4>
-                        <p class="mb-0 font-13"><i class='bx bxs-up-arrow align-middle'></i>14% Since last week</p>
                     </div>
                     <div class="widgets-icons ms-auto"><i class='bx bxs-group'></i>
                     </div>
@@ -54,7 +52,6 @@
                     <div>
                         <p class="mb-0">Total given food</p>
                         <h4 class="my-1 countRequest"></h4>
-                        <p class="mb-0 font-13"><i class='bx bxs-down-arrow align-middle'></i>12.4% Since last week</p>
                     </div>
                     <div class="widgets-icons ms-auto"><i class='bx bxs-binoculars'></i>
                     </div>
@@ -69,9 +66,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <h5 class="mb-1">Charity money figures</h5>
-                        <p class="mb-0 font-13"><i class='bx bxs-calendar'></i>in the last 30 days</p>
+                        <h5 class="mb-1">Charity money</h5>
                     </div>
+                    <div class="font-22 ms-auto changeChartDonate" onclick="changTypeChart('.changeChartDonate', 'donate')"><i class='bx bx-bar-chart-alt-2' ></i></div>
                 </div>
                 <div id="chart_donate"></div>
             </div>
@@ -85,9 +82,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <h5 class="mb-1">Charity money figures</h5>
-                        <p class="mb-0 font-13"><i class='bx bxs-calendar'></i>in the last 30 days</p>
+                        <h5 class="mb-1">Food</h5>
                     </div>
+                    <div class="font-22 ms-auto changeChartFood" onclick="changTypeChart('.changeChartFood', 'food')"><i class='bx bx-bar-chart-alt-2' ></i></div>
                 </div>
                 <div id="chart_food"></div>
             </div>
@@ -98,9 +95,9 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <h5 class="mb-1">Food figures</h5>
-                        <p class="mb-0 font-13"><i class='bx bxs-calendar'></i>in the last 30 days</p>
+                        <h5 class="mb-1">Request</h5>
                     </div>
+                    <div class="font-22 ms-auto changeChartRequest" onclick="changTypeChart('.changeChartRequest', 'request')"><i class='bx bx-bar-chart-alt-2' ></i></div>
                 </div>
                 <div id="chart_request"></div>
             </div>
