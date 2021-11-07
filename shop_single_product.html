@@ -204,6 +204,19 @@
       .demo-slides-img-food:hover {
         opacity: 1;
       }
+
+      #goToFoodList {
+        background-color: khaki;
+        padding: 15px;
+        border: 1px solid;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      #supplier-name {
+        margin-top: unset !important;
+        font-weight: 700;
+      }
     </style>
 
     <!-- paypal -->
@@ -221,7 +234,7 @@
           class="custom-header-img module bg-dark-30 about-page-header"
           data-background="/assets/images/gallery/bg/bg5.jpg"
         ></section>
-        <section class="module" style="margin-top: 100px">
+        <section class="module">
           <div class="container">
             <div class="row">
               <div class="col-sm-8 mb-sm-40">
@@ -245,44 +258,55 @@
               <div class="col-sm-12">
                 <ul class="nav nav-tabs font-alt" role="tablist">
                   <li class="active">
+                    <a href="#data-sheet" data-toggle="tab"
+                      ><i class="fa fa-id-card-o" aria-hidden="true"></i>
+                      Supplier info</a
+                    >
+                  </li>
+                  <li>
                     <a href="#description" data-toggle="tab"
                       ><span class="icon-tools-2"></span>Description</a
                     >
                   </li>
-                  <li>
-                    <!-- <a href="#data-sheet" data-toggle="tab"
-                      ><span class="icon-tools-2"></span>Data sheet</a
-                    > -->
-                  </li>
                 </ul>
                 <div class="tab-content">
-                  <div class="tab-pane active" id="description"></div>
-                  <div class="tab-pane" id="data-sheet">
-                    <!-- <table class="table table-striped ds-table table-responsive">
-                      <tbody>
-                        <tr>
-                          <th>Title</th>
-                          <th>Info</th>
-                        </tr>
-                        <tr>
-                          <td>Compositions</td>
-                          <td>Jeans</td>
-                        </tr>
-                        <tr>
-                          <td>Size</td>
-                          <td>44, 46, 48</td>
-                        </tr>
-                        <tr>
-                          <td>Color</td>
-                          <td>Black</td>
-                        </tr>
-                        <tr>
-                          <td>Brand</td>
-                          <td>Somebrand</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
+                  <div class="tab-pane active" id="data-sheet">
+                    <table
+                      class="table table-striped ds-table table-responsive"
+                    >
+                      <div class="col-sm-12">
+                        <div class="col-sm-3">
+                          <img src="" id="supplier-avatar" />
+                        </div>
+                        <div class="col-sm-9">
+                          <h4 id="supplier-name"></h4>
+                          <h5>Point: <span id="supplier-point"></span></h5>
+                          <ul
+                            class=""
+                            style="list-style: none; margin: 0; padding: 0"
+                          >
+                            <li>
+                              <i
+                                class="fa fa-envelope-o"
+                                aria-hidden="true"
+                              ></i>
+                              Email:
+                              <span id="supplier-email"> </span>
+                            </li>
+                            <li>
+                              <i class="fa fa-phone"></i> Phone:
+                              <span id="supplier-phone"> </span>
+                            </li>
+                            <li>
+                              <i class="fa fa-home"></i> Address:
+                              <span id="supplier-address"> </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </table>
                   </div>
+                  <div class="tab-pane" id="description"></div>
                 </div>
               </div>
             </div>
@@ -464,6 +488,52 @@
     <!-- <script src="./assets/js/app.js"></script> -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script>
+      function getSupplierInfo(supplierEmail) {
+        fetch(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${supplierEmail}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${isToken}`,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((account) => {
+            if (account && account.data) {
+              supplierAccount = account.data;
+              bindDataAccount(supplierAccount);
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+
+      function bindDataAccount(data) {
+        var avatar_url = `https://res.cloudinary.com/vernom/image/upload/${data.avatar}`;
+        console.log(data.avatar);
+        if (!data.avatar & (data.avatar == null)) {
+          document
+            .querySelector("#supplier-avatar")
+            .setAttribute(
+              "src",
+              "https://res.cloudinary.com/vernom/image/upload/v1635678562/hanoi_food_bank_project/users_avatar/null_avatar.jpg"
+            );
+        } else {
+          document
+            .querySelector("#supplier-avatar")
+            .setAttribute("src", avatar_url);
+        }
+
+        document.getElementById("supplier-name").innerHTML = data.name;
+        document.getElementById("supplier-point").innerHTML =
+          data.pointEvaluation;
+        document.getElementById("supplier-email").innerHTML = data.email;
+        document.getElementById("supplier-phone").innerHTML =
+          data.phone.slice(0, 6) + "***";
+        document.getElementById("supplier-address").innerHTML = data.address;
+      }
+    </script>
+    <script>
       $(document).ready(function () {
         Notification.config();
       });
@@ -499,9 +569,14 @@
         })
           .then((response) => response.json())
           .then((listItems) => {
+            getSupplierInfo(listItems.data.supplierEmail);
             listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
             let myPromise = new Promise(function (myResolve) {
-              var listItemImages = listItems.data.images.split(",");
+              var listItemImages = listItems.data.images;
+              if (listItemImages.slice(-1) == ",") {
+                listItemImages = listItemImages.slice(0, -1);
+              }
+              listItemImages = listItemImages.split(",");
               var htmlsItem = `
             <div class="row multi-columns-row" >
                   <div class="slider-image">`;
@@ -575,57 +650,56 @@
               var tet = getTimeFromString2(listItems.data.expirationDate);
               var now1 = new Date().getTime();
               var timeRest1 = tet - now1;
-              if(timeRest1 > 0){
+              if (timeRest1 > 0) {
                 run();
                 var countDown = setInterval(run, 1000);
-              // Tổng số giây
-              function run() {
-                var now = new Date().getTime();
-                //Số s đến thời gian hiện tại
-                var timeRest = tet - now;
-                //Số s còn lại để đến tết;
-                var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
-                //Số ngày còn lại
-                var hours = Math.floor(
-                  (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                );
-                // Số giờ còn lại
-                var minute = Math.floor(
-                  (timeRest % (1000 * 60 * 60)) / (1000 * 60)
-                );
-                // Số phút còn lại
-                var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
-                // Số giây còn lại
-                if (timeRest <= 0) {
-                  clearInterval(countDown);
-                  // document.querySelector(
-                  //   `#shop-item-${item2.id}`
-                  // ).style.display = "none";
-                  p.innerHTML = "Expired food";
-                  p.style.color = "#000"
-                  p.style.fontWeight = "900";
-                  p.style.fontSize = "16px";
-                  document.getElementById('addToCart').disabled = true;
+                // Tổng số giây
+                function run() {
+                  var now = new Date().getTime();
+                  //Số s đến thời gian hiện tại
+                  var timeRest = tet - now;
+                  //Số s còn lại để đến tết;
+                  var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
+                  //Số ngày còn lại
+                  var hours = Math.floor(
+                    (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                  );
+                  // Số giờ còn lại
+                  var minute = Math.floor(
+                    (timeRest % (1000 * 60 * 60)) / (1000 * 60)
+                  );
+                  // Số phút còn lại
+                  var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
+                  // Số giây còn lại
+                  if (timeRest <= 0) {
+                    clearInterval(countDown);
+                    // document.querySelector(
+                    //   `#shop-item-${item2.id}`
+                    // ).style.display = "none";
+                    p.innerHTML = "Expired food";
+                    p.style.color = "#000";
+                    p.style.fontWeight = "900";
+                    p.style.fontSize = "16px";
+                    document.getElementById("addToCart").disabled = true;
+                  }
+                  p.innerHTML =
+                    "TIME REMAINING: " +
+                    day +
+                    " DAY " +
+                    hours +
+                    " : " +
+                    minute +
+                    " : " +
+                    sec +
+                    "  ";
                 }
-                p.innerHTML =
-                  "TIME REMAINING: " +
-                  day +
-                  " DAY " +
-                  hours +
-                  " : " +
-                  minute +
-                  " : " +
-                  sec +
-                  "  ";
-              }
-              } else{
+              } else {
                 p.innerHTML = "Expired food";
                 p.style.color = "#000";
                 p.style.fontWeight = "900";
                 p.style.fontSize = "16px";
-                document.getElementById('addToCart').disabled = true;
+                document.getElementById("addToCart").disabled = true;
               }
-              
             });
           })
           .catch((error) => console.log(error));
@@ -633,15 +707,15 @@
       getInfoFood();
       listrelatedProducts();
       // tai day
-      function listrelatedProducts(){
-              var relatedProducts = document.querySelector(".related-products");
-              fetch(listFoodCategory)
-                .then((response) => response.json())
-                .then((listFood) => {
-                  let myPromise = new Promise(function (myResolve) {
-                    // console.log(listFood.data.content);
-                    var htmlsItem = listFood.data.content.map(function (item) {
-                      return `
+      function listrelatedProducts() {
+        var relatedProducts = document.querySelector(".related-products");
+        fetch(listFoodCategory)
+          .then((response) => response.json())
+          .then((listFood) => {
+            let myPromise = new Promise(function (myResolve) {
+              // console.log(listFood.data.content);
+              var htmlsItem = listFood.data.content.map(function (item) {
+                return `
                       <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
                         <div class="shop-item">
                           <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
@@ -652,50 +726,49 @@
                         </div>
                       </div>
                       `;
-                    });
-                    relatedProducts.innerHTML = htmlsItem.join("");
-                    myResolve(); // when successful
-                  });
-                  myPromise.then(function () {
-                    listFood.data.content.map(function (item2) {
-                      var tet = getTimeFromString2(item2.expirationDate);
-                      run();
+              });
+              relatedProducts.innerHTML = htmlsItem.join("");
+              myResolve(); // when successful
+            });
+            myPromise.then(function () {
+              listFood.data.content.map(function (item2) {
+                var tet = getTimeFromString2(item2.expirationDate);
+                run();
 
-                      // Tổng số giây
-                      var countDown = setInterval(run, 1000);
-                      function run() {
-                        var now = new Date().getTime();
-                        var timeRest = tet - now;
-                        if (timeRest <= 0) {
-                          clearInterval(countDown);
-                          document.querySelector(
-                            `#shop-item-${item2.id}`
-                          ).style.display = "none";
+                // Tổng số giây
+                var countDown = setInterval(run, 1000);
+                function run() {
+                  var now = new Date().getTime();
+                  var timeRest = tet - now;
+                  if (timeRest <= 0) {
+                    clearInterval(countDown);
+                    document.querySelector(
+                      `#shop-item-${item2.id}`
+                    ).style.display = "none";
 
-                          var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
-                          fetch(urlUpdateStatus, {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${token}`,
-                            },
-                            body: JSON.stringify({
-                              status: 0,
-                            }),
-                          })
-                            .then((response) => response.json())
-                            .then((data) => {
-                              getListItem();
-                            })
-                            .catch((error) => console.log(error));
-                        }
-                      }
-                    });
-                  });
-                })
-                .catch((error) => console.log(error));
-            }
-            
+                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                    fetch(urlUpdateStatus, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({
+                        status: 0,
+                      }),
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        getListItem();
+                      })
+                      .catch((error) => console.log(error));
+                  }
+                }
+              });
+            });
+          })
+          .catch((error) => console.log(error));
+      }
 
       // Add To Cart
       var idUserFood;

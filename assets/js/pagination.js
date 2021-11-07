@@ -21,8 +21,7 @@ function paginationFood(listFood) {
         var dataHtml = "<div>";
 
         $.each(data, function (index, item) {
-          dataHtml += 
-          `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
+          dataHtml += `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
               <div class="shop-item">
                   <div class="shop-item-image">
                     <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
