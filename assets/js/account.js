@@ -1,6 +1,5 @@
 "use strict";
 
-
 var objAccount = null;
 var listImageFood = [];
 
@@ -61,7 +60,7 @@ function onAddClassActive(e, className, parent) {
   }
 }
 
-document.querySelector('.myAccountInfo').style.color = "red";
+document.querySelector(".myAccountInfo").style.color = "red";
 function showTabPanel(e) {
   var listAction = document.getElementsByClassName("tab-account");
   if (listAction && listAction.length > 0) {
@@ -85,23 +84,25 @@ function showTabPanel(e) {
       // myRequestInfo
       // myFeedbackInfo
 
-      document.querySelector('.myAccountInfo').style.color = "red";
-      document.querySelector('.myFoodInfo').style.color = "#000";
-      document.querySelector('.myRequestInfo').style.color = "#000";
-      document.querySelector('.myFeedbackInfo').style.color = "#000";
+      document.querySelector(".myAccountInfo").style.color = "red";
+      document.querySelector(".myFoodInfo").style.color = "#000";
+      document.querySelector(".myRequestInfo").style.color = "#000";
+      document.querySelector(".myFeedbackInfo").style.color = "#000";
 
       document.getElementsByClassName("profile")[0].classList.add("active");
       document.getElementById("profile").classList.add("active");
       document.getElementsByClassName("profile")[0].classList.remove("d-none");
 
-      document.getElementsByClassName("changepassword")[0].classList.remove("d-none");
+      document
+        .getElementsByClassName("changepassword")[0]
+        .classList.remove("d-none");
       getAccount();
       break;
     case "myfood":
-      document.querySelector('.myAccountInfo').style.color = "#000";
-      document.querySelector('.myFoodInfo').style.color = "red";
-      document.querySelector('.myRequestInfo').style.color = "#000";
-      document.querySelector('.myFeedbackInfo').style.color = "#000";
+      document.querySelector(".myAccountInfo").style.color = "#000";
+      document.querySelector(".myFoodInfo").style.color = "red";
+      document.querySelector(".myRequestInfo").style.color = "#000";
+      document.querySelector(".myFeedbackInfo").style.color = "#000";
 
       document
         .getElementsByClassName("listFoodPost")[0]
@@ -117,10 +118,10 @@ function showTabPanel(e) {
       document.getElementsByClassName("listFood")[0].classList.remove("d-none");
       break;
     case "myrequest":
-      document.querySelector('.myAccountInfo').style.color = "#000";
-      document.querySelector('.myFoodInfo').style.color = "#000";
-      document.querySelector('.myRequestInfo').style.color = "red";
-      document.querySelector('.myFeedbackInfo').style.color = "#000";
+      document.querySelector(".myAccountInfo").style.color = "#000";
+      document.querySelector(".myFoodInfo").style.color = "#000";
+      document.querySelector(".myRequestInfo").style.color = "red";
+      document.querySelector(".myFeedbackInfo").style.color = "#000";
 
       document
         .getElementsByClassName("listActiveFood")[0]
@@ -132,10 +133,10 @@ function showTabPanel(e) {
         .classList.remove("d-none");
       break;
     case "myfeedback":
-      document.querySelector('.myAccountInfo').style.color = "#000";
-      document.querySelector('.myFoodInfo').style.color = "#000";
-      document.querySelector('.myRequestInfo').style.color = "#000";
-      document.querySelector('.myFeedbackInfo').style.color = "red";
+      document.querySelector(".myAccountInfo").style.color = "#000";
+      document.querySelector(".myFoodInfo").style.color = "#000";
+      document.querySelector(".myRequestInfo").style.color = "#000";
+      document.querySelector(".myFeedbackInfo").style.color = "red";
 
       document.getElementsByClassName("feedback")[0].classList.add("active");
       document.getElementById("feedback").classList.add("active");
@@ -145,8 +146,6 @@ function showTabPanel(e) {
       break;
   }
 }
-
-
 
 // format category
 function formatCategory(id) {

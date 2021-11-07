@@ -204,6 +204,18 @@
       .demo-slides-img-food:hover {
         opacity: 1;
       }
+
+      #goToFoodList {
+        background-color: khaki;
+        padding: 15px;
+        border: 1px solid;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .supplier-name {
+        margin-top: unset !important;
+      }
     </style>
 
     <!-- paypal -->
@@ -244,45 +256,55 @@
             <div class="row" style="margin-top: 100px">
               <div class="col-sm-12">
                 <ul class="nav nav-tabs font-alt" role="tablist">
-                  <li class="active">
+                  <li class="active" onclick="getSupplierInfo()">
+                    <a href="#data-sheet" data-toggle="tab"
+                      ><i class="fa fa-id-card-o" aria-hidden="true"></i>
+                      Supplier info</a
+                    >
+                  </li>
+                  <li>
                     <a href="#description" data-toggle="tab"
                       ><span class="icon-tools-2"></span>Description</a
                     >
                   </li>
-                  <li>
-                    <!-- <a href="#data-sheet" data-toggle="tab"
-                      ><span class="icon-tools-2"></span>Data sheet</a
-                    > -->
-                  </li>
                 </ul>
                 <div class="tab-content">
-                  <div class="tab-pane active" id="description"></div>
-                  <div class="tab-pane" id="data-sheet">
-                    <!-- <table class="table table-striped ds-table table-responsive">
-                      <tbody>
-                        <tr>
-                          <th>Title</th>
-                          <th>Info</th>
-                        </tr>
-                        <tr>
-                          <td>Compositions</td>
-                          <td>Jeans</td>
-                        </tr>
-                        <tr>
-                          <td>Size</td>
-                          <td>44, 46, 48</td>
-                        </tr>
-                        <tr>
-                          <td>Color</td>
-                          <td>Black</td>
-                        </tr>
-                        <tr>
-                          <td>Brand</td>
-                          <td>Somebrand</td>
-                        </tr>
-                      </tbody>
-                    </table> -->
+                  <div class="tab-pane active" id="data-sheet">
+                    <table
+                      class="table table-striped ds-table table-responsive"
+                    >
+                      <div class="col-sm-12">
+                        <div class="col-sm-3">
+                          <img
+                            src="https://res.cloudinary.com/vernom/image/upload/v1636104837/hanoi_food_bank_project/users_avatar/volunteer.png"
+                            class="supplier-avatar"
+                          />
+                        </div>
+                        <div class="col-sm-9">
+                          <h4 class="supplier-name">Leanne Boulton</h4>
+                          <h5 class="supplier-point">Point:</h5>
+                          <ul
+                            class=""
+                            style="list-style: none; margin: 0; padding: 0"
+                          >
+                            <li>
+                              <i class="fa fa-phone"></i> Email:
+                              <span class="supplier-email"> </span>
+                            </li>
+                            <li>
+                              <i class="fa fa-phone"></i> Phone:
+                              <span class="supplier-phone"> </span>
+                            </li>
+                            <li>
+                              <i class="fa fa-home"></i> Address:
+                              <span class="supplier-address"> </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </table>
                   </div>
+                  <div class="tab-pane" id="description"></div>
                 </div>
               </div>
             </div>
@@ -464,6 +486,9 @@
     <!-- <script src="./assets/js/app.js"></script> -->
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script>
+      function getSupplierInfo() {}
+    </script>
+    <script>
       $(document).ready(function () {
         Notification.config();
       });
@@ -477,6 +502,7 @@
       var getDetailFood = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`;
       var shopItem = document.querySelector(".view-image-product");
       var viewInfoProduct = document.querySelector(".view-info-product");
+      var addTocartButton = document.getElementById("addToCart");
       var listFoodCategory;
 
       // get token
@@ -557,15 +583,22 @@
                       <p>Content: ${listItems.data.content}</p>
                     </div>
                   </div>
-                </div>
-                <div class="row mb-20">
-                  <div class="col-sm-12"><button class="btn btn-lg btn-block btn-round btn-b" type="button" id="addToCart" onclick="addToCart()">Ask for food</button></div>
                 </div>`;
+              //if (listItems.data.createdBy == idAccount) {
+              //var handleButton = `<div class="row mb-20">
+              //<div class="col-sm-12"><div class="col-sm-12"><button class="btn btn-lg btn-block btn-round btn-b" disabled data-toggle="tooltip" data-placement="top" title="You cannot ask for your own food!">Ask for food</button></div>
+              //</div>`;
+              //} else {
+              //var handleButton = `<div class="row mb-20">
+              //<div class="col-sm-12"><button class="btn btn-lg btn-block btn-round btn-b" type="button" id="addToCart" onclick="addToCart()">Ask for food</button></div>
+              //</div>`;
+              //}
+
               var htmlsInfoDes = `<p> ${listItems.data.description}</p>`;
 
               document.querySelector("#description").innerHTML = htmlsInfoDes;
               shopItem.innerHTML = htmlsItem;
-              viewInfoProduct.innerHTML = htmlsInfoProduct;
+              viewInfoProduct.innerHTML = htmlsInfoProduct + handleButton;
               myResolve();
             });
 
@@ -575,73 +608,82 @@
               var tet = getTimeFromString2(listItems.data.expirationDate);
               var now1 = new Date().getTime();
               var timeRest1 = tet - now1;
-              if(timeRest1 > 0){
+              if (timeRest1 > 0) {
                 run();
                 var countDown = setInterval(run, 1000);
-              // Tổng số giây
-              function run() {
-                var now = new Date().getTime();
-                //Số s đến thời gian hiện tại
-                var timeRest = tet - now;
-                //Số s còn lại để đến tết;
-                var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
-                //Số ngày còn lại
-                var hours = Math.floor(
-                  (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                );
-                // Số giờ còn lại
-                var minute = Math.floor(
-                  (timeRest % (1000 * 60 * 60)) / (1000 * 60)
-                );
-                // Số phút còn lại
-                var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
-                // Số giây còn lại
-                if (timeRest <= 0) {
-                  clearInterval(countDown);
-                  // document.querySelector(
-                  //   `#shop-item-${item2.id}`
-                  // ).style.display = "none";
-                  p.innerHTML = "Expired food";
-                  p.style.color = "#000"
-                  p.style.fontWeight = "900";
-                  p.style.fontSize = "16px";
-                  document.getElementById('addToCart').disabled = true;
+                // Tổng số giây
+                function run() {
+                  var now = new Date().getTime();
+                  //Số s đến thời gian hiện tại
+                  var timeRest = tet - now;
+                  //Số s còn lại để đến tết;
+                  var day = Math.floor(timeRest / (1000 * 60 * 60 * 24));
+                  //Số ngày còn lại
+                  var hours = Math.floor(
+                    (timeRest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                  );
+                  // Số giờ còn lại
+                  var minute = Math.floor(
+                    (timeRest % (1000 * 60 * 60)) / (1000 * 60)
+                  );
+                  // Số phút còn lại
+                  var sec = Math.floor((timeRest % (1000 * 60)) / 1000);
+                  // Số giây còn lại
+                  if (timeRest <= 0) {
+                    clearInterval(countDown);
+                    // document.querySelector(
+                    //   `#shop-item-${item2.id}`
+                    // ).style.display = "none";
+                    p.innerHTML = "Expired food";
+                    p.style.color = "#000";
+                    p.style.fontWeight = "900";
+                    p.style.fontSize = "16px";
+                    document.getElementById("addToCart").disabled = true;
+                  }
+                  p.innerHTML =
+                    "TIME REMAINING: " +
+                    day +
+                    " DAY " +
+                    hours +
+                    " : " +
+                    minute +
+                    " : " +
+                    sec +
+                    "  ";
                 }
-                p.innerHTML =
-                  "TIME REMAINING: " +
-                  day +
-                  " DAY " +
-                  hours +
-                  " : " +
-                  minute +
-                  " : " +
-                  sec +
-                  "  ";
-              }
-              } else{
+              } else {
                 p.innerHTML = "Expired food";
                 p.style.color = "#000";
                 p.style.fontWeight = "900";
                 p.style.fontSize = "16px";
-                document.getElementById('addToCart').disabled = true;
+                document.getElementById("addToCart").disabled = true;
               }
-              
             });
           })
           .catch((error) => console.log(error));
       }
       getInfoFood();
       listrelatedProducts();
+
+      function goToFoodList() {
+        console.log(111);
+        document.getElementsByClassName("listFood")[0].classList.add("active");
+        document.getElementById("listFood").classList.add("active");
+        document
+          .getElementsByClassName("listFood")[0]
+          .classList.remove("d-none");
+      }
+
       // tai day
-      function listrelatedProducts(){
-              var relatedProducts = document.querySelector(".related-products");
-              fetch(listFoodCategory)
-                .then((response) => response.json())
-                .then((listFood) => {
-                  let myPromise = new Promise(function (myResolve) {
-                    // console.log(listFood.data.content);
-                    var htmlsItem = listFood.data.content.map(function (item) {
-                      return `
+      function listrelatedProducts() {
+        var relatedProducts = document.querySelector(".related-products");
+        fetch(listFoodCategory)
+          .then((response) => response.json())
+          .then((listFood) => {
+            let myPromise = new Promise(function (myResolve) {
+              // console.log(listFood.data.content);
+              var htmlsItem = listFood.data.content.map(function (item) {
+                return `
                       <div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px" id="shop-item-${item.id}">
                         <div class="shop-item">
                           <div class="shop-item-image"><img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
@@ -652,50 +694,49 @@
                         </div>
                       </div>
                       `;
-                    });
-                    relatedProducts.innerHTML = htmlsItem.join("");
-                    myResolve(); // when successful
-                  });
-                  myPromise.then(function () {
-                    listFood.data.content.map(function (item2) {
-                      var tet = getTimeFromString2(item2.expirationDate);
-                      run();
+              });
+              relatedProducts.innerHTML = htmlsItem.join("");
+              myResolve(); // when successful
+            });
+            myPromise.then(function () {
+              listFood.data.content.map(function (item2) {
+                var tet = getTimeFromString2(item2.expirationDate);
+                run();
 
-                      // Tổng số giây
-                      var countDown = setInterval(run, 1000);
-                      function run() {
-                        var now = new Date().getTime();
-                        var timeRest = tet - now;
-                        if (timeRest <= 0) {
-                          clearInterval(countDown);
-                          document.querySelector(
-                            `#shop-item-${item2.id}`
-                          ).style.display = "none";
+                // Tổng số giây
+                var countDown = setInterval(run, 1000);
+                function run() {
+                  var now = new Date().getTime();
+                  var timeRest = tet - now;
+                  if (timeRest <= 0) {
+                    clearInterval(countDown);
+                    document.querySelector(
+                      `#shop-item-${item2.id}`
+                    ).style.display = "none";
 
-                          var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
-                          fetch(urlUpdateStatus, {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                              Authorization: `Bearer ${token}`,
-                            },
-                            body: JSON.stringify({
-                              status: 0,
-                            }),
-                          })
-                            .then((response) => response.json())
-                            .then((data) => {
-                              getListItem();
-                            })
-                            .catch((error) => console.log(error));
-                        }
-                      }
-                    });
-                  });
-                })
-                .catch((error) => console.log(error));
-            }
-            
+                    var urlUpdateStatus = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${item2.id}`;
+                    fetch(urlUpdateStatus, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({
+                        status: 0,
+                      }),
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        getListItem();
+                      })
+                      .catch((error) => console.log(error));
+                  }
+                }
+              });
+            });
+          })
+          .catch((error) => console.log(error));
+      }
 
       // Add To Cart
       var idUserFood;
@@ -722,31 +763,32 @@
               idUserFood = itemFood.data.createdBy;
               avatarFood = itemFood.data.avatar;
 
-              if (itemFood.data.createdBy == idAccount) {
-                modalsinglefood.style.display = "none";
-                swal("Error!", "You can't ask for your food!", "error");
-              } else {
-                var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
-                fetch(getRequestById, {
-                  method: "GET",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                  .then((response) => response.json())
-                  .then((itemRequest) => {
-                    if (itemRequest.status == 200) {
-                      modalsinglefood.style.display = "none";
-                      swal(
-                        "Error!",
-                        "You have applied, please wait for the giver to confirm",
-                        "error"
-                      );
-                    } else {
-                      modalsinglefood.style.display = "flex";
-                    }
-                  });
-              }
+              //if (itemFood.data.createdBy == idAccount) {
+              //console.log(itemFood.data);
+              //modalsinglefood.style.display = "none";
+              //swal("Error!", "You can't ask for your food!", "error");
+              //} else {
+              var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
+              fetch(getRequestById, {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => response.json())
+                .then((itemRequest) => {
+                  if (itemRequest.status == 200) {
+                    modalsinglefood.style.display = "none";
+                    swal(
+                      "Error!",
+                      "You have applied, please wait for the giver to confirm",
+                      "error"
+                    );
+                  } else {
+                    modalsinglefood.style.display = "flex";
+                  }
+                });
+              //}
             });
         }
       }
