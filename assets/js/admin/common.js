@@ -29,6 +29,7 @@
             loadHtml( '../../../inc/layout/admin/content/dashboard/dashboard.html', '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/dashboard/dashboard.js');
             getAccount();
             listCategory();
+
         } else {
             loadHtml('login.html', 'body', 'div', 'wrapper', '', 'afterbegin', '../../../assets/js/admin/login.js');
         }
@@ -55,10 +56,7 @@
         getConnectAPI('GET', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${currentUserName}`, null, function(result){
             if (result && result.data) {
                 objAccount = result.data;
-                setTimeout(() => {
-                    loadNotifyHeader();
-                }, 200);
-                
+                loadNotifyHeader();
             }
         },
             function(errorThrown){}
@@ -156,12 +154,12 @@
         }
         ele.classList.add('active');
     }
-    var arrCategory = [];
+    var arr_Category = [];
     function listCategory(){
         getConnectAPI('GET', 'https://hfb-t1098e.herokuapp.com/api/v1/hfb/categories?status=1', null, function(result){
             if (result && result.status == 200) {
                 if (result && result.data && result.data.content && result.data.content.length > 0) {
-                    arrCategory = result.data.content;
+                    arr_Category = result.data.content;
                     
                 }
             }
@@ -206,49 +204,6 @@
             msg: message
         });
     }
-    function loadNotifyHeader() {
-        console.log(objAccount)
-        Notification.show(objAccount.id, function (listNotify) {
-            console.log(listNotify)
-            var li = "";
-            var quantityNotify = 0;
-            if (listNotify && listNotify.length > 0) {
-                quantityNotify = listNotify.length;
-                for (let index = 0; index < 5; index++) {
-                    var element = listNotify[index];
-                    if (child.val().status == 1) {
-                        quantityNotify++;
-                      }
-                      li += `
-                      <li class="header__notify-item header__notify-item--status-${
-                        child.val().status
-                      }" data-id="${child.key}">
-                        <a href="#" class="header__notify-link">
-                        <img src="https://res.cloudinary.com/vernom/image/upload/${
-                          child.val().avatar
-                        }" alt="" class="header__notify-img">
-                        <div class="header__notify-info">
-                          <span class="header__notify-name">${child.val().title}</span>
-                          <span class="header__notify-des">${child.val().message}</span>
-                        </div>
-                        </a>
-                      </li>
-                      `;
-                }
-                $("#notification").html(li);
     
-                if (quantityNotify == 0) {
-                    $('.alert-count').css('display', 'none');
-                } else {
-                    $('.alert-count').css('display', 'block');
-                    if (quantityNotify < 100){
-                        $('.alert-count').text(quantityNotify);
-                    } else {
-                        $('.alert-count').text('99+');
-                    }
-                    
-                }
-            }
-        });
-    }
+    
 // });

@@ -1,5 +1,5 @@
 
-var orderBy = 'desc', statusFood = 1, searchName, filter_Category;
+var orderBy = 'desc', statusFood = null, searchName, filter_Category;
 function formAddFood() {
     var pageContent = document.getElementsByClassName('page-content');
     if (pageContent.item(0)) {
@@ -139,17 +139,17 @@ function approvalFood(e, id, createdBy, avatar){
     $('#approvalFood').modal('show');
 }
 function onBrowseFood(){
+    var arrId = [idApproval.id];
     var dataPost = {
-        status: 2
+        status: 2,
+        arrId: JSON.stringify(arrId),
+        updatedBy: objAccount.id
     };
     var today = new Date();
     var time = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/status/${idApproval.id}`, JSON.stringify(dataPost), function(result){
+    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/update-list-status`, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             notification('success', result.message);
-            if (result.data) {
-                sendMail(result.data);
-            }
             $('#approvalFood').modal('hide');
             getListFood();
             Notification.send(parseInt(idApproval.createdBy), {
@@ -163,22 +163,6 @@ function onBrowseFood(){
                 category: "food",
                 status: 1,
             });
-        }
-    },
-        function(errorThrown){}
-    );
-}
-function sendMail(result) {
-    var dataPost = {
-        userId: objAccount.id,
-        foodName: result.name,
-        description: result.description,
-        urlDetail: "http://127.0.0.1:5500/shop_single_product.html?id=" + result.id,
-        urlImage: 'https://res.cloudinary.com/vernom/image/upload/' + result.avatar
-    }
-    getConnectAPI('POST', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/mail/send`, JSON.stringify(dataPost), function(result){
-        if (result && result.status == 200) {
-            notification('success', "Successfully added new");
         }
     },
         function(errorThrown){}
@@ -262,8 +246,8 @@ function colorStatusFood(status){
 
 function convertCategory(id){
     var text = '';
-    if (id && arrCategory) {
-        var find = arrCategory.find(function(e){return id == e.id});
+    if (id && arr_Category) {
+        var find = arr_Category.find(function(e){return id == e.id});
         if (find) {
             text = find.name;
         }
@@ -274,8 +258,8 @@ function convertCategory(id){
 function renderDropdowFilterCategory(){
     var html = '';
     html += '<a class="dropdown-item active" onclick="filterCategory(this)">All</a>';
-    for (let index = 0; index < arrCategory.length; index++) {
-        var element = arrCategory[index];
+    for (let index = 0; index < arr_Category.length; index++) {
+        var element = arr_Category[index];
         html += '<a class="dropdown-item" onclick="filterCategory(this, \'' + element.id + '\')">'+ element.name +'</a>';
     }
     $('.filter-category .dropdown-menu').append(html);
@@ -286,7 +270,6 @@ function formUpdateFood(e, id){
     $('#modalAddFood').modal('show');
     getConnectAPI('GET', 'http://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/' + id, null, function(result){
         if (result && result.status == 200) {
-            console.log(result)
             dataFindFood = result;
         }
     },
@@ -321,7 +304,6 @@ function saveUpdateFood(){
     getConnectAPI('POST', 'http://localhost:8080/api/v1/hfb/foods/' + id, JSON.stringify(dataPost), function(result){
         if (result && result.status == 200) {
             $('#modalAddFood').modal('hide');
-            console.log(result)
         }
     },
         function(errorThrown){}
