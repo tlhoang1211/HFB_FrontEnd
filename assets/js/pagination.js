@@ -1,3 +1,9 @@
+var cookies = {};
+for (var i = 0; i < pairs.length; i++) {
+  var pair = pairs[i].split("=");
+  cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
+}
+var token = cookies.token;
 function paginationFood(listFood) {
   let container = $(".pagination");
   container.pagination({
@@ -56,11 +62,11 @@ function paginationFood(listFood) {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
+                  "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                  status: 0,
-                  updatedBy: 1,
+                  "status": 0,
+                  "updatedBy": 1
                 }),
               })
                 .then((response) => response.json())

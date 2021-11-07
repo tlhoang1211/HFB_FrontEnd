@@ -545,8 +545,8 @@
                         Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        status: 0,
-                        updatedBy: 1,
+                        "status": 0,
+                        "updatedBy": 1
                       }),
                     })
                       .then((response) => response.json())
