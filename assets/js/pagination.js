@@ -19,7 +19,7 @@ function paginationFood(listFood) {
           `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
               <div class="shop-item">
                   <div class="shop-item-image">
-                    <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/${item.avatar}" class="img-food" alt="Cold Garb"/>
+                    <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
                     <div class="shop-item-detail">
                       <a class="btn btn-round btn-b" href="./shop_single_product.html?id=${item.id}">
                       <i class="fa fa-eye"></i> View Details</a>

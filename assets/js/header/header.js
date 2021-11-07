@@ -92,7 +92,7 @@ if (token === null || token === undefined || token === NaN || token === "") {
               child.val().status
             }" data-id="${child.key}">
               <a href="#" class="header__notify-link">
-              <img src="https://res.cloudinary.com/vernom/image/upload/${
+              <img src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${
                 child.val().avatar
               }" alt="" class="header__notify-img">
               <div class="header__notify-info">
@@ -508,6 +508,7 @@ function formatCategory(id) {
   }
   return text;
 }
+
 
 // hoangtl2 - 29/10/2021
 // start
