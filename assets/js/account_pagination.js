@@ -16,7 +16,7 @@ var requestCount = 0;
 
 var objAccount = null;
 
-var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/";
+var cloudinary_url = "https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/";
 
 function initPageAccount() {
   getAccount();
@@ -292,15 +292,14 @@ function renderListFood(listFood) {
       $.each(data, function (index, e) {
         foodCount++;
           dataHtml +=
-            `<tr id="food-row-${e.id}">
-            <td>${foodCount}</td>`
-            if(e.status == 2 || e.status == 0){
-              dataHtml +=`<td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;">${e.name || ""}</a></td>`
-            }
-            if(e.status ==1){
-              dataHtml +=`<td>${e.name || ""}</td>`
-          
-            }
+          `<tr id="food-row-${e.id}">
+          <td>${foodCount}</td>`
+          if(e.status == 2 || e.status == 0){
+            dataHtml +=`<td><a href="./shop_single_product.html?id=${e.id}" style="color: blue;">${e.name || ""}</a></td>`
+          }else{
+            dataHtml +=`<td>${e.name || ""}</td>`
+        
+          }
           dataHtml +=`<td>${formatCategory(e.categoryId)}</td>
             <td>${e.expirationDate}</td>
             <td>${e.createdAt}</td>
@@ -356,7 +355,7 @@ function formUpdateFood(id) {
   fetch(getDetailFood, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${isToken}`,
+      "Authorization": `Bearer ${isToken}`,
     },
   })
     .then((response) => response.json())
@@ -370,7 +369,7 @@ function formUpdateFood(id) {
       <div class="row multi-columns-row" >
         <div class="slider-image">
           <div class="slider-info-food">
-            <img src="https://res.cloudinary.com/vernom/image/upload/${foodInfo.data.avatar}" style="width:100%; max-height: 450px">
+            <img src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${foodInfo.data.avatar}" style="width:100%; max-height: 450px">
           </div>
         </div>
       </div>
@@ -781,6 +780,7 @@ function formatCategoryStringToInt(category) {
 // display donate modal on click delete button
 var modal3 = document.querySelector(".modal-account-confirm-delete");
 var modalfinish = document.querySelector(".modal-account-confirm-finish");
+var modalfeedback = document.querySelector(".modal-account-confirm-feedback");
 function confirmDeleteFood(id) {
   modal3.style.display = "flex";
   var buttonValue = document.getElementById("accept-button");
@@ -866,7 +866,9 @@ function renderListRequest(listRequest) {
               <button onclick="formConfirmRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;">Finish</button>
             </td>`
           }else if(e.status == 3){
-            dataHtml1 +=`<td><i class="fa fa-pencil-square-o" style="pointer-events: none; opacity: 0.5;"></i></td>`
+            dataHtml1 +=`<td>
+            <button onclick="formFeedbackRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;padding: 8px 26px;">Feedback</button>
+            </td>`
           }else{
             dataHtml1 +=`<td onclick="formDetailRequest(${e.foodId})"><i class="fa fa-pencil-square-o"></i></td>`
           }
@@ -890,6 +892,7 @@ function renderListRequest(listRequest) {
       .setAttribute("style", "text-align: center;");
   }
 }
+
 
 // display delete modal on click delete button
 function confirmDeleteRequest(foodId) {
@@ -936,6 +939,7 @@ function deleteRequest(foodId) {
 function cancelModal() {
   modal3.style.display = "none";
   modalfinish.style.display = "none";
+  modalfeedback.style.display = "none";
 }
 
 // close Modal by clicking "esc" button
@@ -978,6 +982,170 @@ function finishRequest(){
     })
     .catch(error => console.log(error))
 }
+
+var feedbackId;
+function formFeedbackRequest(id){
+  modalfeedback.style.display ="flex";
+  feedbackId = id;
+}
+
+var listImageFeedback= [];
+var idSupplierUser;
+function feedbackRequest(){
+  
+  
+  
+  var rateFeedback = document.getElementById("rateFeedback").value;
+  var contentFeedback = document.getElementById("contentFeedback").value;
+
+  if (!rateFeedback == false &&! contentFeedback == false) {
+    if (listImageFeedback.length == 0) {
+      swal("Warning!", "You need more image!", "warning");
+    } else if (listImageFeedback.length > 3) {
+      swal("Warning!", "You should only add a maximum of 3 images!", "warning");
+    }
+     else {
+      
+      let notifyFeedbackPromise = new Promise(function (myResolve) {
+        fetch(
+          `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${objAccount.id}/${feedbackId}`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${isToken}`,
+            },
+          }
+        )
+          .then((response) => response.json())
+          .then((request) => {
+            idSupplierUser = request.data.supplierId;
+          })
+          .catch(error => console.log(error))
+          if(rateFeedback <1 ){
+            rateFeedback = 1;
+          }
+          if(rateFeedback > 10){
+            rateFeedback = 10;
+          }
+          myResolve()
+      })
+      notifyFeedbackPromise.then(function(){
+        var dataPost = {
+          "image": listImageFeedback.join(","),
+          "content": contentFeedback,
+          "createdBy": objAccount.id,
+          "rate": rateFeedback,
+          "type": 1,
+          "userId": idSupplierUser
+        };
+        fetch("https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${isToken}`,
+          },
+          body: JSON.stringify(dataPost),
+        })
+          .then((response) => response.json())
+          .then(data => {
+              var today = new Date();
+              time =
+                today.getDate() +
+                "-" +
+                (today.getMonth() + 1) +
+                "-" +
+                today.getFullYear() +
+                " " +
+                today.getHours() +
+                ":" +
+                today.getMinutes() +
+                ":" +
+                today.getSeconds();
+                Notification.send(data.data.userId, {
+                  "idNotify": "",
+                  "usernameaccount": data.data.username,
+                  "foodid": feedbackId,
+                  "avatar": data.data.avatar,
+                  "title": "User " + objAccount.name + " send feedback for you",
+                  "message": "Time request: " + time,
+                  "category": "food",
+                  "status": 1,
+                });
+          })
+          .catch((error) => console.log(error));
+        modalfeedback.style.display ="none";
+        swal("Success!", "Send Feedback success!", "success");
+        listImageFeedback = [];
+        var frm = document.getElementsByName("upload_new_food_form")[0];
+        frm.reset();
+      })
+      
+    }
+  }else{
+    swal("Warning!", "Please describe something!", "warning");
+  }
+}
+
+var listImageFeedback;
+// food
+var myWidgetFoodFeedback = cloudinary.createUploadWidget(
+  {
+    cloudName: "vernom",
+    uploadPreset: "fn5rpymu",
+    form: "#addformFeedback",
+    folder: "hanoi_food_bank_project/uploaded_food",
+    fieldName: "thumbnailsFoodFeedback[]",
+    thumbnails: ".thumbnailsFoodFeedback",
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      listImageFeedback.push(result.info.path);
+      var arrayThumnailInputs = document.querySelectorAll(
+        'input[name="thumbnailsFoodFeedback[]"]'
+      );
+      for (let i = 0; i < arrayThumnailInputs.length; i++) {
+        arrayThumnailInputs[i].value = arrayThumnailInputs[i].getAttribute(
+          "data-cloudinary-public-id"
+        );
+      }
+    }
+  }
+);
+
+document.getElementById("upload_image_foodFeedback").addEventListener(
+  "click",
+  function () {
+    myWidgetFoodFeedback.open();
+  },
+  false
+);
+
+$("body").on("click", ".cloudinary-delete", function () {
+  var splittedImg = $(this).parent().find("img").attr("src").split("/");
+  var imgName =
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+  var publicId = $(this).parent().attr("data-cloudinary");
+  $(this).parent().remove();
+  var imgName2 =
+    splittedImg[splittedImg.length - 4] +
+    "/" +
+    splittedImg[splittedImg.length - 3] +
+    "/" +
+    splittedImg[splittedImg.length - 2] +
+    "/" +
+    splittedImg[splittedImg.length - 1];
+
+  for (let i = 0; i < listImageFeedback.length; i++) {
+    if (listImageFeedback[i] == imgName2) {
+      listImageFeedback.splice(i, 1);
+    }
+  }
+  $(`input[data-cloudinary-public-id="${imgName}"]`).remove();
+});
 
 
 // detail request
@@ -1293,7 +1461,7 @@ function renderUserRequests(listUserRequests) {
             style="float: left">Back</button></div><div class="col-sm-6"><button
             type="button"
             onclick="finish(${e.foodId})" id="finish-button"
-            class="btn btn-success btn-round btnSubmit">Finish</button></div>`;
+            class="btn btn-success btn-round btnSubmit">Feedback</button></div>`;
 
           dataHtml += `<tr>
           <td>${userRequestCount}</td>
@@ -1391,6 +1559,14 @@ function confirmation(foodId) {
     );
   }
 }
+
+// send feedback nguoi cho
+function finish(foodId){
+  modalfeedback.style.display ="flex";
+  feedbackId = foodId;
+}
+
+
 // update stautus for approved request and send notify to selected user
 function acceptRequest(foodId) {
   var confirmDataPost = {
