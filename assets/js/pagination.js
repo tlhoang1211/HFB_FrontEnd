@@ -10,13 +10,12 @@ function paginationFood(listFood) {
       let paginationFoodPromise = new Promise(function (myResolve) {
         if (token == "" || token == null || token == undefined) {
           token =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYWMiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cHM6Ly9oZmItdDEwOThlLmhlcm9rdWFwcC5jb20vYXBpL3YxL2hmYi9sb2dpbiIsImV4cCI6MTYzNjA4ODI4NH0.oPVqUCKQKWRyByh-NHBQ3mWXpSNg8QsTnzllmZ0rXB4";
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
         }
         var dataHtml = "<div>";
 
         $.each(data, function (index, item) {
-          dataHtml += 
-          `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
+          dataHtml += `<div class="col-sm-6 col-md-3 col-lg-3" style="min-height: 350px;" id="pg-shop-item-${item.id}">
               <div class="shop-item">
                   <div class="shop-item-image">
                     <img class="img-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${item.avatar}" class="img-food" alt="Cold Garb"/>
@@ -61,6 +60,7 @@ function paginationFood(listFood) {
                 },
                 body: JSON.stringify({
                   status: 0,
+                  updatedBy: 1,
                 }),
               })
                 .then((response) => response.json())
