@@ -1,3 +1,9 @@
+var cookies = {};
+for (var i = 0; i < pairs.length; i++) {
+  var pair = pairs[i].split("=");
+  cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
+}
+var token = cookies.token;
 function paginationFood(listFood) {
   let container = $(".pagination");
   container.pagination({
@@ -10,7 +16,7 @@ function paginationFood(listFood) {
       let paginationFoodPromise = new Promise(function (myResolve) {
         if (token == "" || token == null || token == undefined) {
           token =
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYWMiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiaHR0cHM6Ly9oZmItdDEwOThlLmhlcm9rdWFwcC5jb20vYXBpL3YxL2hmYi9sb2dpbiIsImV4cCI6MTYzNjA4ODI4NH0.oPVqUCKQKWRyByh-NHBQ3mWXpSNg8QsTnzllmZ0rXB4";
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
         }
         var dataHtml = "<div>";
 
@@ -57,10 +63,11 @@ function paginationFood(listFood) {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
+                  "Authorization": `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                  status: 0,
+                  "status": 0,
+                  "updatedBy": 1
                 }),
               })
                 .then((response) => response.json())

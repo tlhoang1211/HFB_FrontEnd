@@ -496,7 +496,7 @@
             let myPromise = new Promise(function (myResolve) {
               if (token == "" || token == null || token == undefined) {
                 token =
-                  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZW93Iiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vaGZiLXQxMDk4ZS5oZXJva3VhcHAuY29tL2FwaS92MS9oZmIvbG9naW4iLCJleHAiOjE2MzYzNzUyMTR9._BQl5QtI4GbG-w0iUpSmlSafvjWQAGRGF6BFsgAL7gQ";
+                  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
               }
               
               var htmlsItem = listItems.data.content.map(function (item) {
@@ -544,7 +544,8 @@
                         "Authorization": `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        status: 0,
+                        "status": 0,
+                        "updatedBy": 1
                       }),
                     })
                       .then((response) => response.json())
