@@ -275,10 +275,10 @@
                       >
                     </li>
                     <li class="tab-account listSentFeedback d-none">
-                      <a href="#listSentFeedback" onclick="getFeedbackList()" data-toggle="tab"> List sent feedback</a>
+                      <a href="#listSentFeedback" onclick="getSentFeedbackList()" data-toggle="tab"> List sent feedback</a>
                     </li>
                     <li class="tab-account listReceiveFeedback d-none">
-                      <a href="#listReceivedFeedback" data-toggle="tab"> List received feedback</a>
+                      <a href="#listReceivedFeedback" onclick="getReceivedFeedbackList()" data-toggle="tab"> List received feedback</a>
                     </li>
                   </ul>
 
@@ -365,7 +365,7 @@
                       <div class="card radius-10 listFoodPagination">
                         <div class="card-body" id="center-food-noti">
                           <span id="no-food-noti" style="display: none"
-                            >You haven't uploaded any food yet!</span
+                            >No data yet!</span
                           >
                           <div class="table-responsive" id="food-data-table">
                             <table
@@ -677,7 +677,7 @@
                       <div class="card radius-10 listActiveFoodPagination">
                         <div class="card-body" id="center-food-noti">
                           <span id="no-food-noti" style="display: none"
-                            >You haven't uploaded any food yet!</span
+                            >No data yet!</span
                           >
                           <div
                             class="table-responsive"
@@ -757,7 +757,7 @@
                       </div>
                     </div>
                     <!-- feedback -->
-                    <div class="tab-pane" id="listSentFeedback">
+                    <div class="tab-pane" id="listFeedback">
                         <div class="card radius-10">
                           <div class="card-body" id="center-feedback-noti">
                             <span id="no-feedback-noti" style="display: none"
@@ -771,7 +771,7 @@
                                   <tr>
                                     <th>#</th>
                                     <th>Food Image</th>
-                                    <th>Feedback to</th>
+                                    <th id="changeFinal">Feedback To</th>
                                     <th>Content</th>
                                     <th>Point Rated</th>
                                     <th>Created Date</th>
@@ -779,7 +779,7 @@
                                 </thead>
                                 <tbody
                                   class="row multi-columns-row"
-                                  id="list-sent-feedback"
+                                  id="list-feedback"
                                 ></tbody>
                               </table>
                               <div class="row" id="pagination-button">
@@ -790,9 +790,6 @@
                             </div>
                           </div>
                       </div>
-                    </div>
-                    <div class="tab-pane" id="listReceivedFeedback">
-                      
                     </div>
                   </div>
                 </div>

@@ -184,7 +184,8 @@
 .pagination1,
 .pagination2,
 .pagination3,
-.pagination4 {
+.pagination4,
+.paginationFeedback {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -194,7 +195,8 @@
 .pagination1 a,
 .pagination2 a,
 .pagination3 a,
-.pagination4 a {
+.pagination4 a,
+.paginationFeedback a {
   padding: 0 !important;
 }
 

@@ -21,7 +21,7 @@ var cloudinary_url =
 
 function initPageAccount() {
   getAccount();
-  expirationDateRequest()
+  expirationDateRequest();
 }
 initPageAccount();
 
@@ -72,28 +72,24 @@ function bindDataAccount(data) {
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
 }
 
-function expirationDateRequest(){
-  fetch(
-    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`,
-    {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${isToken}`,
-      },
-    }
-  )
+function expirationDateRequest() {
+  fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${isToken}`,
+    },
+  })
     .then((response) => response.json())
     .then(function (data) {
       data.data.content.map(function (request) {
-        if(request.status == 4 || request.status == 0){
-
-        }else{
+        if (request.status == 4 || request.status == 0) {
+        } else {
           var expirationDateReq = getTimeFromString2(request.expirationDate);
           var now1 = new Date().getTime();
           var timeRest1 = expirationDateReq - now1;
           if (timeRest1 <= 0) {
             updateStatusRequest(request);
-          }else{
+          } else {
             run();
             // Tổng số giây
             var countDown = setInterval(run, 1000);
@@ -107,55 +103,53 @@ function expirationDateRequest(){
             }
           }
         }
-      })
+      });
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error));
 }
 
-function updateStatusRequest(request){
+function updateStatusRequest(request) {
   fetch(
     `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${request.recipientId}/${request.foodId}`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${isToken}`,
+        Authorization: `Bearer ${isToken}`,
       },
       body: JSON.stringify({
-        "status": 4,
-        "updatedBy": 1
+        status: 4,
+        updatedBy: 1,
       }),
     }
   )
     .then((response) => response.json())
     .then(function (data) {
       var today = new Date();
-      var time =today.getDate() +
-                    "-" +
-                    (today.getMonth() + 1) +
-                    "-" +
-                    today.getFullYear() +
-                    " " +
-                    today.getHours() +
-                    ":" +
-                    today.getMinutes() +
-                    ":" +
-                    today.getSeconds();
+      var time =
+        today.getDate() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getFullYear() +
+        " " +
+        today.getHours() +
+        ":" +
+        today.getMinutes() +
+        ":" +
+        today.getSeconds();
       Notification.send(request.recipientId, {
-        "idNotify": "",
-        "usernameaccount": "",
-        "foodid": data.data.foodId,
-        "avatar": data.data.foodDTO.avatar,
-        "title":
-          "Request " +
-          data.data.foodDTO.name +
-          " has expired",
-        "message": "Time request: " + time,
-        "category": "request",
-        "status": 1,
+        idNotify: "",
+        usernameaccount: "",
+        foodid: data.data.foodId,
+        avatar: data.data.foodDTO.avatar,
+        title: "Request " + data.data.foodDTO.name + " has expired",
+        message: "Time request: " + time,
+        category: "request",
+        status: 1,
       });
     })
-    .catch(error => console.log(error))
+    .catch((error) => console.log(error));
 }
 
 // update profile
@@ -313,11 +307,11 @@ function getListFoodAll() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${isToken}`,
+                Authorization: `Bearer ${isToken}`,
               },
               body: JSON.stringify({
-                "status": 0,
-                "updatedBy": 1
+                status: 0,
+                updatedBy: 1,
               }),
             })
               .then((response) => response.json())
@@ -650,7 +644,7 @@ function newFoodEdit() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${isToken}`,
+              Authorization: `Bearer ${isToken}`,
             },
             body: JSON.stringify(dataPost),
           }
@@ -662,7 +656,7 @@ function newFoodEdit() {
               {
                 method: "GET",
                 headers: {
-                  "Authorization": `Bearer ${isToken}`,
+                  Authorization: `Bearer ${isToken}`,
                 },
               }
             )
@@ -916,7 +910,7 @@ function deleteFood(id) {
 // start
 function getListRequest(userID) {
   // console.log(userID);
-  var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}`;
+  var requestListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests?userId=${userID}&order=desc&sortBy=createdAt`;
   // console.log(requestListAPI);
   fetch(requestListAPI, {
     method: "GET",
@@ -1112,6 +1106,7 @@ function feedbackRequest() {
           .then((response) => response.json())
           .then((request) => {
             idSupplierUser = request.data.supplierId;
+            console.log(request.data);
           })
           .catch((error) => console.log(error));
         if (rateFeedback < 1) {
@@ -1795,9 +1790,10 @@ function getTimeFromString2(strDate) {
 
 // hoangtl0711 v3 - 07/11/2021 - feedback list
 // start
-function getFeedbackList() {
-  var feedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?`;
-  fetch(feedbankListAPI, {
+var feedbackCount = 0;
+function getSentFeedbackList() {
+  var sentFeedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?createdBy=${objAccount.id}&status=1`;
+  fetch(sentFeedbankListAPI, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -1805,15 +1801,30 @@ function getFeedbackList() {
     },
   })
     .then((response) => response.json())
-    .then((feedbackList) => {
-      // console.log(feedbackList);
-      renderSentFeedback(feedbackList.data.content);
+    .then((sentFeedbackList) => {
+      renderFeedback(sentFeedbackList.data.content);
     })
     .catch((error) => console.log(error));
 }
 
-function renderSentFeedback(listFeedback) {
-  sentFeedbackCount = 0;
+function getReceivedFeedbackList() {
+  var receivedFeedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?userId=${objAccount.id}&status=1`;
+  fetch(receivedFeedbankListAPI, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${isToken}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((receivedFeedbackList) => {
+      document.getElementById("changeFinal").innerText = "Feedback From";
+      renderFeedback(receivedFeedbackList.data.content);
+    })
+    .catch((error) => console.log(error));
+}
+
+function renderFeedback(listFeedback) {
   let container = $(".paginationFeedback");
   container.pagination({
     dataSource: listFeedback,
@@ -1822,18 +1833,23 @@ function renderSentFeedback(listFeedback) {
     showGoButton: true,
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
-      // console.log(container);
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
-        sentFeedbackCount++;
+        var food_image = `https://res.cloudinary.com/vernom/image/upload/${e.image}`;
+        feedbackCount++;
         dataHtml += `<tr>
-          <td>${sentFeedbackCount}</td>
-          <td>${e.images}</td>
+          <td>${feedbackCount}</td>
+          <td><img style="max-width: 20% !important" src=${food_image}></td>
+          <td>${objAccount.id == e.createdBy ? e.name : e.sentName}</td>
+          <td>${e.content}</td>
+          <td>${e.rate}</td>
+          <td>${e.createdAt}</td>
         </tr>`;
       });
 
       dataHtml += "</div>";
-      $("#list-sent-feedback").html(dataHtml);
+      $("#list-feedback").html(dataHtml);
+      feedbackCount = 0;
     },
   });
 
