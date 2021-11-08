@@ -1,8 +1,4 @@
 var cookies = {};
-for (var i = 0; i < pairs.length; i++) {
-  var pair = pairs[i].split("=");
-  cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
-}
 var token = cookies.token;
 function paginationFood(listFood) {
   let container = $(".pagination");

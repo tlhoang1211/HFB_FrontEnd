@@ -467,7 +467,7 @@
     <script src="assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
     <script src="assets/js/plugins.js"></script>
     <script
-      src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
+      src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"
       type="text/javascript"
     ></script>
     <script src="assets/js/user/common.js"></script>
@@ -545,8 +545,8 @@
                         Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        "status": 0,
-                        "updatedBy": 1
+                        status: 0,
+                        updatedBy: 1,
                       }),
                     })
                       .then((response) => response.json())

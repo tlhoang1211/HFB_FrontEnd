@@ -21,6 +21,7 @@ var cloudinary_url =
 
 function initPageAccount() {
   getAccount();
+  expirationDateRequest()
 }
 initPageAccount();
 
@@ -69,6 +70,92 @@ function bindDataAccount(data) {
   document.querySelector("#avatar_account").parentElement.href =
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
+}
+
+function expirationDateRequest(){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`,
+    {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${isToken}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then(function (data) {
+      data.data.content.map(function (request) {
+        if(request.status == 4 || request.status == 0){
+
+        }else{
+          var expirationDateReq = getTimeFromString2(request.expirationDate);
+          var now1 = new Date().getTime();
+          var timeRest1 = expirationDateReq - now1;
+          if (timeRest1 <= 0) {
+            updateStatusRequest(request);
+          }else{
+            run();
+            // Tổng số giây
+            var countDown = setInterval(run, 1000);
+            function run() {
+              var now = new Date().getTime();
+              var timeRest = expirationDateReq - now;
+              if (timeRest <= 0) {
+                updateStatusRequest(request);
+                clearInterval(countDown);
+              }
+            }
+          }
+        }
+      })
+    })
+    .catch(error => console.log(error))
+}
+
+function updateStatusRequest(request){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${request.recipientId}/${request.foodId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        "status": 4,
+        "updatedBy": 1
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then(function (data) {
+      var today = new Date();
+      var time =today.getDate() +
+                    "-" +
+                    (today.getMonth() + 1) +
+                    "-" +
+                    today.getFullYear() +
+                    " " +
+                    today.getHours() +
+                    ":" +
+                    today.getMinutes() +
+                    ":" +
+                    today.getSeconds();
+      Notification.send(request.recipientId, {
+        "idNotify": "",
+        "usernameaccount": "",
+        "foodid": data.data.foodId,
+        "avatar": data.data.foodDTO.avatar,
+        "title":
+          "Request " +
+          data.data.foodDTO.name +
+          " has expired",
+        "message": "Time request: " + time,
+        "category": "request",
+        "status": 1,
+      });
+    })
+    .catch(error => console.log(error))
 }
 
 // update profile
@@ -226,10 +313,11 @@ function getListFoodAll() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${isToken}`,
+                "Authorization": `Bearer ${isToken}`,
               },
               body: JSON.stringify({
-                status: 0,
+                "status": 0,
+                "updatedBy": 1
               }),
             })
               .then((response) => response.json())
@@ -562,7 +650,7 @@ function newFoodEdit() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${isToken}`,
+              "Authorization": `Bearer ${isToken}`,
             },
             body: JSON.stringify(dataPost),
           }
@@ -574,7 +662,7 @@ function newFoodEdit() {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${isToken}`,
+                  "Authorization": `Bearer ${isToken}`,
                 },
               }
             )
@@ -861,13 +949,15 @@ function renderListRequest(listRequest) {
     callback: function (data, pagination) {
       var dataHtml1 = "<div>";
       $.each(data, function (index, e) {
+        // do sdt cua nguoi dang do
+        // var supplierPhone = e.supplier
         requestCount++;
         dataHtml1 += `<tr id="request-row-${
           e.recipientId
         }"><td>${requestCount}</td><td>${e.foodName}
-          </td><td id="supplier-name">${
-            e.supplierName
-          }</td><td>${convertRequestStatus(e.status)}</td>`;
+          </td><td id="supplier-name">${e.supplierName}</td><td>${
+          e.supplierPhone
+        }</td><td>${convertRequestStatus(e.status)}</td>`;
         if (e.status == 2) {
           dataHtml1 += `<td>
               <button onclick="formConfirmRequest(${e.foodId})" type="button" class="btn btn-round" style="color: #fff; background-color: #5cb85c; border-color: #4cae4c;">Finish</button>
@@ -885,7 +975,6 @@ function renderListRequest(listRequest) {
           e.foodId +
           `)><i class="fa fa-trash-o"></i></td></tr>`;
       });
-
       dataHtml1 += "</div>";
 
       $("#list-request").html(dataHtml1);
@@ -1052,6 +1141,7 @@ function feedbackRequest() {
         })
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             var today = new Date();
             time =
               today.getDate() +
@@ -1436,7 +1526,7 @@ function renderUserRequests(listUserRequests) {
           <td>${e.message}</td>
           <td>${e.createdAt}</td>
           <td>${e.recipientPhone}</td>
-          <td><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="${e.recipientId}" name="${e.recipientId}"></td>`;
+          <td id="tdCheckbox"><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="${e.recipientId}" name="${e.recipientId}"></td>`;
 
           buttonsHtml = `<div class="col-sm-6" style="padding-left: unset"><button
           type="button"
@@ -1452,10 +1542,8 @@ function renderUserRequests(listUserRequests) {
             type="button"
             onclick="backToFoodRequestList()"
             class="btn btn-b btn-round btnSubmit"
-            style="float: left">Back</button></div><div class="col-sm-6"><button
-            type="button"
-            onclick="finish(${e.foodId})" id="finish-button"
-            class="btn btn-success btn-round btnSubmit">Feedback</button></div>`;
+            style="float: left">Back</button></div>
+            `;
 
           dataHtml += `<tr>
           <td>${userRequestCount}</td>
@@ -1463,17 +1551,17 @@ function renderUserRequests(listUserRequests) {
           <td>${e.message}</td>
           <td>${e.createdAt}</td>
           <td>${e.recipientPhone}</td>
-          <td><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="${e.recipientId}" name="${e.recipientId}"></td>`;
+          <td>${
+            e.status == 2
+              ? `<button
+            type="button"
+            onclick="finish(${e.foodId})" id="finish-button"
+            class="btn btn-success btn-round">Feedback</button>`
+              : `<input class="form-check-input" id="flexCheckChecked" type="checkbox" value=" ${e.recipientId}" name="${e.recipientId}" disabled>`
+          }</td>`;
 
-          console.log(listCheckedValue);
-          var checked_cb = document.getElementsByName(listCheckedValue);
-          checked_cb.checked = true;
-          var checkboxes = document.querySelectorAll(
-            '#list-users-request input[type="checkbox"]'
-          );
-          for (var i = 0, n = checkboxes.length; i < n; i++) {
-            checkboxes[i].disabled = true;
-          }
+          // document.getElementById("checkAll").style.display = "none";
+          document.getElementById("checkAllCell").innerText = "Feedback";
         }
       });
 
@@ -1495,6 +1583,8 @@ function checkAll(source) {
 }
 
 function confirmation(foodId) {
+  document.getElementById("checkAllCell").innerText = "Feedback";
+
   $('#list-users-request input[type="checkbox"]:checked').each(function () {
     listCheckedValue.push($(this).val());
   });
@@ -1503,17 +1593,27 @@ function confirmation(foodId) {
       listUncheckedValue.push($(this).val());
     }
   );
+
+  var changeToFeedbackButton = document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  );
+
+  for (var i = 0; i < changeToFeedbackButton.length; i++) {
+    console.log(changeToFeedbackButton[i]);
+    changeToFeedbackButton[i].parentElement.innerHTML = `<button
+    type="button"
+    onclick="finish(${foodId})" id="finish-button"
+    class="btn btn-success btn-round">Feedback</button>`;
+  }
+  // document.getElementById("checkAll").disabled = "true";
   var checkboxes = document.querySelectorAll(
     '#list-users-request input[type="checkbox"]'
   );
   for (var i = 0, n = checkboxes.length; i < n; i++) {
     checkboxes[i].disabled = true;
   }
-  document.getElementById("checkAll").disabled = true;
-  var confirm_btn = document.getElementById("confirm-button");
-  confirm_btn.innerText = "Finish";
-  confirm_btn.id = "finish-button";
-  confirm_btn.setAttribute("onclick", `finish(${foodId})`);
+  // document.getElementById("checkAll").disabled = true;
+  document.getElementById("confirm-button").style.display = "none";
 
   if (listCheckedValue.length == 0) {
     swal(
@@ -1696,14 +1796,18 @@ function getTimeFromString2(strDate) {
 // hoangtl0711 v3 - 07/11/2021 - feedback list
 // start
 function getFeedbackList() {
-  var feedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?type=&status=&startRate=&endRate=&page=0&limit=10&sortBy=id&order=desc`;
+  var feedbankListAPI = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/feedbacks/search?`;
   fetch(feedbankListAPI, {
     method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${isToken}`,
+    },
   })
     .then((response) => response.json())
     .then((feedbackList) => {
-      console.log(feedbackList);
-      // renderSentFeedback(feedbackList.data.content);
+      // console.log(feedbackList);
+      renderSentFeedback(feedbackList.data.content);
     })
     .catch((error) => console.log(error));
 }
@@ -1718,13 +1822,13 @@ function renderSentFeedback(listFeedback) {
     showGoButton: true,
     formatGoInput: "go to <%= input %>",
     callback: function (data, pagination) {
+      // console.log(container);
       var dataHtml = "<div>";
       $.each(data, function (index, e) {
-        console.log(e);
         sentFeedbackCount++;
         dataHtml += `<tr>
           <td>${sentFeedbackCount}</td>
-          <td></td>
+          <td>${e.images}</td>
         </tr>`;
       });
 
@@ -1743,7 +1847,7 @@ function renderSentFeedback(listFeedback) {
       .setAttribute("style", "text-align: center;");
   } else {
     foodDataTable.style.display = "block";
-    ocument.getElementById("no-food-noti").style.display = "none";
+    document.getElementById("no-food-noti").style.display = "none";
   }
 }
 // end
