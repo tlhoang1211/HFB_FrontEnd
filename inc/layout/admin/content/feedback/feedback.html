@@ -10,8 +10,8 @@
                                     data-bs-toggle="dropdown" aria-expanded="true">Order by</button>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"
                                     style="margin: 0px;">
-                                    <a class="dropdown-item active" onclick="onChangeOrderByDonate(this, 'asc')">From a-z</a>
-                                    <a class="dropdown-item" onclick="onChangeOrderBy(this, 'desc')">From z-a</a>
+                                    <a class="dropdown-item active" onclick="onChangeOrderByFeedback(this, 'asc')">From a-z</a>
+                                    <a class="dropdown-item" onclick="onChangeOrderByFeedback(this, 'desc')">From z-a</a>
                                 </div>
                             </div>
                         </div>
@@ -30,16 +30,19 @@
         </div>
         <hr />
         
-        <div class="table-responsive" id="table-Donate">
+        <div class="table-responsive" id="table-Feedback">
             <table class="table align-middle mb-0 table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
+                        <th>Avatar</th>
+                        <th>Sender</th>
+                        <th>Food</th>
                         <th>Rate</th>
                         <th>Content</th>
+                        <th>Recipient</th>
                         <th>Created At</th>
-                        <th>Created By</th>
+                        
                     </tr>
                 </thead>
                 <tbody>

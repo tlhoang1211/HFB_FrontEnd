@@ -62,11 +62,13 @@ function renderListFeedback(data) {
         var htmlS = '';
         htmlS += '<tr>';
         htmlS += '<td>' + count + '</td>';
-        htmlS += '<td>'+ (e.name || '') +'</td>';
+        htmlS += '<td><img src="https://res.cloudinary.com/vernom/image/upload/'+ e.avatar +'" width="40" height="40"></td>';
+        htmlS += '<td>'+ (e.sentName || '') +'</td>';
+        htmlS += '<td><img src="https://res.cloudinary.com/vernom/image/upload/'+ e.image +'" width="40" height="40"></td>';
         htmlS += '<td>' + (e.rate || 0) + ' $</td>';
         htmlS += '<td>' + (e.content || '') + '</td>';
+        htmlS += '<td>' + (e.name || '') +'</td>';
         htmlS += '<td>' + (e.createdAt || "") + '</td>';
-        htmlS += '<td>' + (e.createdBy) +'</td>';
         htmlS += '</tr>';
         return htmlS;
     });
