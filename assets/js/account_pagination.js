@@ -21,6 +21,7 @@ var cloudinary_url =
 
 function initPageAccount() {
   getAccount();
+  expirationDateRequest()
 }
 initPageAccount();
 
@@ -69,6 +70,93 @@ function bindDataAccount(data) {
   document.querySelector("#avatar_account").parentElement.href =
     data.avatar ||
     "https://thumbs.dreamstime.com/b/user-icon-trendy-flat-style-isolated-grey-background-user-symbol-user-icon-trendy-flat-style-isolated-grey-background-123663211.jpg";
+}
+
+function expirationDateRequest(){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests`,
+    {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${isToken}`,
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then(function (data) {
+      data.data.content.map(function (request) {
+        if(request.status == 4 || request.status == 0){
+
+        }else{
+          var expirationDateReq = getTimeFromString2(request.expirationDate);
+          var now1 = new Date().getTime();
+          var timeRest1 = expirationDateReq - now1;
+          if (timeRest1 <= 0) {
+            updateStatusRequest(request);
+          }else{
+            run();
+            // Tổng số giây
+            var countDown = setInterval(run, 1000);
+            function run() {
+              var now = new Date().getTime();
+              var timeRest = expirationDateReq - now;
+              if (timeRest <= 0) {
+                updateStatusRequest(request);
+                clearInterval(countDown);
+              }
+            }
+          }
+        }
+      })
+    })
+    .catch(error => console.log(error))
+}
+
+function updateStatusRequest(request){
+  fetch(
+    `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/status/${request.recipientId}/${request.foodId}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${isToken}`,
+      },
+      body: JSON.stringify({
+        // 4-expired
+        "status": 4,
+        "updatedBy": 1
+      }),
+    }
+  )
+    .then((response) => response.json())
+    .then(function (data) {
+      var today = new Date();
+      var time =today.getDate() +
+                    "-" +
+                    (today.getMonth() + 1) +
+                    "-" +
+                    today.getFullYear() +
+                    " " +
+                    today.getHours() +
+                    ":" +
+                    today.getMinutes() +
+                    ":" +
+                    today.getSeconds();
+      Notification.send(request.recipientId, {
+        "idNotify": "",
+        "usernameaccount": "",
+        "foodid": data.data.foodId,
+        "avatar": data.data.foodDTO.avatar,
+        "title":
+          "Request " +
+          data.data.foodDTO.name +
+          " has expired",
+        "message": "Time request: " + time,
+        "category": "request",
+        "status": 1,
+      });
+    })
+    .catch(error => console.log(error))
 }
 
 // update profile
@@ -562,7 +650,7 @@ function newFoodEdit() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${isToken}`,
+              "Authorization": `Bearer ${isToken}`,
             },
             body: JSON.stringify(dataPost),
           }
@@ -574,7 +662,7 @@ function newFoodEdit() {
               {
                 method: "GET",
                 headers: {
-                  Authorization: `Bearer ${isToken}`,
+                  "Authorization": `Bearer ${isToken}`,
                 },
               }
             )

@@ -169,13 +169,6 @@ $(document).on("click", ".header__notify-item", function () {
         }
       });
     });
-
-    // console.log(
-    //   "category: " + categoryNoti,
-    //   "FoodIdNoti:" + foodIdNoti,
-    //   "UsernameAccount: " + usernameAccount,
-    //   "Title" + title
-    // );
     myResolve();
   });
 
@@ -186,6 +179,7 @@ $(document).on("click", ".header__notify-item", function () {
       Notification.update(idAccount, idNoti, {
         status: 0,
       });
+      location.replace(`../shop_single_product.html?id=${foodIdNoti}`);
     }
     if (categoryNoti == "food") {
       // console.log("start notification food");
@@ -240,6 +234,7 @@ $(document).on("click", ".header__notify-item", function () {
                               Notification.update(admin.id, idNotiAdmin, {
                                   "status": 0
                               });
+                              location.replace(`../inc/layout/admin/`)
                             }
                           });
                         });
@@ -249,7 +244,12 @@ $(document).on("click", ".header__notify-item", function () {
                   .catch(function (error) {
                     console.log(error);
                   });
-              }
+              } else{
+                  Notification.update(idAccount, idNoti, {
+                    status: 0,
+                  });
+                  location.replace(`../shop_single_product.html?id=${foodIdNoti}`);
+                }
             });
           });
         })
