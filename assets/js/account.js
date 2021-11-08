@@ -148,6 +148,7 @@ function showTabPanel(e) {
       document
         .getElementsByClassName("listReceiveFeedback")[0]
         .classList.remove("d-none");
+      getFeedbackList();
       break;
     default:
       break;
