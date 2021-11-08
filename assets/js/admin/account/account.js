@@ -95,7 +95,7 @@ function renderListAccount(data) {
         htmld += '<span>' + convertStatusAccount(e.status) +'</span></div></td>';
         htmld += '<td>' + e.createdAt + '</td>';
         htmld += '<td><div class="d-flex order-actions">';
-        htmld += '<a onclick="formUpdateAccount(this, \'' + e.username + '\')"><i class="bx bx-edit"></i></a>';
+        htmld += '<a onclick="formUpdateAccount(this, \'' + e.id + '\', \'' + e.username + '\')"><i class="bx bx-edit"></i></a>';
         htmld += '<a class="ms-4" onclick="changeRole(this, \'' + e.id + '\')"><i class="bx bx-user"></i></a>';
         htmld += '<a class="ms-4 ' + (e.status == 1 ? '' : 'd-none') + '" onclick="deleteAccount(this, \'' + e.id + '\')"><i class="bx bx-trash"></i></a>';
         htmld += '</td>';
@@ -174,10 +174,11 @@ function colorStatusAccount(status) {
     return color;
 }
 function changeRole(e, id) {
-    console.log(1231)
+    $('#modal-changeRole').modal('show');
 }
-var usernameDetail;
-function formUpdateAccount(username) {
+var usernameDetail, idUserDetail;
+function formUpdateAccount(e, id, username) {
+    idUserDetail = id;
     usernameDetail = username;
     var pageContent = document.getElementsByClassName('page-content');
     if (pageContent.item(0)) {
