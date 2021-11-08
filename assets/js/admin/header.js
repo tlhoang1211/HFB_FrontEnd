@@ -1,5 +1,7 @@
 
 function loadNotifyHeader() {
+    document.getElementsByClassName("user-name").item(0).innerHTML = currentUserName;
+    document.getElementsByClassName("user-img").item(0).src = 'https://res.cloudinary.com/vernom/image/upload/' + objAccount.avatar;
     Notification.show(objAccount.id, function (listNotify) {
         var arrNotify = [];
         var quantityNotify = 0;
@@ -7,7 +9,7 @@ function loadNotifyHeader() {
             if (child.val().status == 1) {
                 quantityNotify++;
             }
-            if (quantityNotify < 5) {
+            if (quantityNotify <= 5) {
                 var htmlC = '';
                 htmlC += '<a class="dropdown-item header__notify-item--status-' + child.val().status + '" onclick="changePageFormHeader(\'' + (child.val().category == 'food' ? 'food' : 'request') + '\', \'' + (child.val().category == 'food' ? 'page_food' : 'page_request') + '\')">';
                 htmlC += '<div class="d-flex align-items-center">';
@@ -66,4 +68,4 @@ function logout(){
     document.getElementsByClassName("wrapper").item(0).innerHTML = '';
     startLoad(null);
 }
-document.getElementsByClassName("user-name").item(0).innerHTML = currentUserName;
+console.log(objAccount)
