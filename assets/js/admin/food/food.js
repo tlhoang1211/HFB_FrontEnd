@@ -276,3 +276,13 @@ function formUpdateFood(e, id){
     loadHtml( '../../../inc/layout/admin/content/food/foodDetail.html',
     '.page-wrapper', 'div', 'page-content', '', 'afterbegin', '../../../assets/js/admin/food/updateFood.js');
 }
+
+function reloadFood() {
+    getConnectAPI('GET', `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/scan`, null, function(result){
+        if (result && result.status == 200) {
+            getListFood();
+        }
+    },
+        function(errorThrown){}
+    );
+}
