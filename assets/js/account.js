@@ -141,14 +141,14 @@ function showTabPanel(e) {
       document
         .getElementsByClassName("listSentFeedback")[0]
         .classList.add("active");
-      document.getElementById("listSentFeedback").classList.add("active");
+      document.getElementById("listFeedback").classList.add("active");
       document
         .getElementsByClassName("listSentFeedback")[0]
         .classList.remove("d-none");
       document
         .getElementsByClassName("listReceiveFeedback")[0]
         .classList.remove("d-none");
-      getFeedbackList();
+      getSentFeedbackList();
       break;
     default:
       break;

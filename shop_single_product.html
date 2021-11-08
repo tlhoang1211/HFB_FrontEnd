@@ -270,7 +270,11 @@
                   </li>
                 </ul>
                 <div class="tab-content">
-                  <div class="tab-pane active" style="min-height: 257px;" id="data-sheet">
+                  <div
+                    class="tab-pane active"
+                    style="min-height: 257px"
+                    id="data-sheet"
+                  >
                     <table
                       class="table table-striped ds-table table-responsive"
                     >
@@ -306,7 +310,11 @@
                       </div>
                     </table>
                   </div>
-                  <div class="tab-pane" id="description" style="min-height: 257px;"></div>
+                  <div
+                    class="tab-pane"
+                    id="description"
+                    style="min-height: 257px"
+                  ></div>
                 </div>
               </div>
             </div>
@@ -489,8 +497,9 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script>
       function getSupplierInfo(supplierEmail) {
-        if(!isToken){
-          isToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
+        if (!isToken) {
+          isToken =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M";
         }
         fetch(
           `https://hfb-t1098e.herokuapp.com/api/v1/hfb/users/${supplierEmail}`,
@@ -505,7 +514,10 @@
           .then((account) => {
             if (account && account.data) {
               supplierAccount = account.data;
-              if(isToken == "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M"){
+              if (
+                isToken ==
+                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwaHVvbmdsdmQwMDYzMUBmcHQuZWR1LnZuIiwicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJpc3MiOiJodHRwczovL2hmYi10MTA5OGUuaGVyb2t1YXBwLmNvbS9hcGkvdjEvaGZiL2xvZ2luIiwiZXhwIjoxNjM2NTU4MzQyfQ.GWSbBk2gvGqsvgq8s-3c7P-bmO0PeFKgjsLczox5L6M"
+              ) {
                 token = "";
               }
               bindDataAccount(supplierAccount);
@@ -570,13 +582,13 @@
         fetch(getDetailFood, {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         })
           .then((response) => response.json())
           .then((listItems) => {
             getSupplierInfo(listItems.data.supplierEmail);
-            
+
             let myPromiseInfoFood = new Promise(function (myResolve) {
               listFoodCategory = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/search?categoryId=${listItems.data.categoryId}&page=0&limit=4&status=2`;
               var listItemImages = listItems.data.images;
@@ -599,7 +611,11 @@
               for (let i = 0; i < listItemImages.length; i++) {
                 htmlsItem += `
                 <div class="column-img-info-food">
-                  <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${listItemImages[i]}" style="width:100%" onclick="showSlides(${i + 1})" alt="The Image ${i + 1}">
+                  <img class="demo-slides-img-food cursor-img-info-food" src="https://res.cloudinary.com/vernom/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/${
+                    listItemImages[i]
+                  }" style="width:100%" onclick="showSlides(${
+                  i + 1
+                })" alt="The Image ${i + 1}">
                 </div>
               `;
               }
@@ -644,53 +660,53 @@
               document.querySelector("#description").innerHTML = htmlsInfoDes;
               shopItem.innerHTML = htmlsItem;
               viewInfoProduct.innerHTML = htmlsInfoProduct;
-              var expiration = getTimeFromString2(listItems.data.expirationDate);
+              var expiration = getTimeFromString2(
+                listItems.data.expirationDate
+              );
               var now1 = new Date().getTime();
               var timeRest1 = expiration - now1;
               if (timeRest1 <= 0) {
-                document.querySelector('#addToCart').disabled = true;
-                document.querySelector('#addToCart').innerText = "Expired food";
+                document.querySelector("#addToCart").disabled = true;
+                document.querySelector("#addToCart").innerText = "Expired food";
               }
               showSlides(1);
 
-                console.log("chay den day 1");
               fetch(`https://hfb-t1098e.herokuapp.com/api/v1/hfb/foods/${id}`, {
                 method: "GET",
                 headers: {
-                  "Authorization": `Bearer ${token}`,
+                  Authorization: `Bearer ${token}`,
                 },
               })
                 .then((response) => response.json())
                 .then((itemFood) => {
                   itemFoodInfo = itemFood.data;
-                console.log("chay den day 2");
 
                   if (itemFood.data.createdBy == idAccount) {
-                    document.querySelector('#addToCart').disabled = true;
-                    document.querySelector('#addToCart').innerText = "Your Food";
+                    document.querySelector("#addToCart").disabled = true;
+                    document.querySelector("#addToCart").innerText =
+                      "Your Food";
 
-                    document.querySelector('#expirationdate').innerHTML = "Expired food";
-                    document.querySelector('#expirationdate').style.color = "#000";
-                    document.querySelector('#expirationdate').style.fontWeight = "900";
-                    document.querySelector('#expirationdate').style.fontSize = "16px";
+                    document.querySelector("#expirationdate").innerHTML =
+                      "Expired food";
+                    document.querySelector("#expirationdate").style.color =
+                      "#000";
+                    document.querySelector("#expirationdate").style.fontWeight =
+                      "900";
+                    document.querySelector("#expirationdate").style.fontSize =
+                      "16px";
                   }
                 })
-                .catch(error => console.log(error))
+                .catch((error) => console.log(error));
 
-                myResolve();
-              })
+              myResolve();
+            });
 
             myPromiseInfoFood.then(function () {
-              console.log("chay den day 3");
-
               var p = document.querySelector(`#expirationdate`);
               var tet = getTimeFromString2(listItems.data.expirationDate);
               var now1 = new Date().getTime();
               var timeRest1 = tet - now1;
-              console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-              console.log(timeRest1);
               if (timeRest1 > 0) {
-                console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 run();
                 var countDown = setInterval(run, 1000);
                 // Tổng số giây
@@ -740,13 +756,12 @@
                 document.getElementById("addToCart").disabled = true;
                 document.getElementById("addToCart").innerText = "Expired food";
               }
-              
             });
           })
           .catch((error) => console.log(error));
       }
       getInfoFood();
-      
+
       // tai day
       function listrelatedProducts() {
         var relatedProducts = document.querySelector(".related-products");
@@ -797,11 +812,11 @@
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                       },
                       body: JSON.stringify({
-                        "status": 0,
-                        "updatedBy": 1
+                        status: 0,
+                        updatedBy: 1,
                       }),
                     })
                       .then((response) => response.json())
@@ -831,28 +846,29 @@
         ) {
           location.replace("../login_register.html");
         } else {
-              idUserFood = itemFoodInfo.createdBy;
-              avatarFood = itemFoodInfo.avatar;
-                var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
-                fetch(getRequestById, {
-                  method: "GET",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                  .then((response) => response.json())
-                  .then((itemRequest) => {
-                    if (itemRequest.status == 200) {
-                      modalsinglefood.style.display = "none";
-                      swal(
-                        "Error!",
-                        "You have applied, please wait for the giver to confirm",
-                        "error"
-                      );
-                    } else {
-                      modalsinglefood.style.display = "flex";
-                    }
-                  }).catch(error => console.log(error));
+          idUserFood = itemFoodInfo.createdBy;
+          avatarFood = itemFoodInfo.avatar;
+          var getRequestById = `https://hfb-t1098e.herokuapp.com/api/v1/hfb/requests/${idAccount}/${id}`;
+          fetch(getRequestById, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((itemRequest) => {
+              if (itemRequest.status == 200) {
+                modalsinglefood.style.display = "none";
+                swal(
+                  "Error!",
+                  "You have applied, please wait for the giver to confirm",
+                  "error"
+                );
+              } else {
+                modalsinglefood.style.display = "flex";
+              }
+            })
+            .catch((error) => console.log(error));
         }
       }
 
