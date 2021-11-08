@@ -122,7 +122,6 @@ function updateStatusRequest(request){
         "Authorization": `Bearer ${isToken}`,
       },
       body: JSON.stringify({
-        // 4-expired
         "status": 4,
         "updatedBy": 1
       }),
@@ -314,10 +313,11 @@ function getListFoodAll() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${isToken}`,
+                "Authorization": `Bearer ${isToken}`,
               },
               body: JSON.stringify({
-                status: 0,
+                "status": 0,
+                "updatedBy": 1
               }),
             })
               .then((response) => response.json())
